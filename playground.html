@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zero2Leetcode 在线练习场 - 在浏览器中直接编写和运行 Python 代码">
+    <title>在线练习场 | Zero2Leetcode</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/playground.css">
+    <!-- CodeMirror 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/material-darker.min.css">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="./" class="nav-logo">
+                <img src="assets/images/logo.svg" alt="Logo" class="logo-icon">
+                <span class="logo-text">Zero2Leetcode</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="./#roadmap" class="nav-link">学习路线</a></li>
+                <li><a href="./#modules" class="nav-link">知识模块</a></li>
+                <li><a href="./#problems" class="nav-link">题目清单</a></li>
+                <li><a href="playground.html" class="nav-link nav-link-active">在线练习</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="打开菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="playground-main">
+        <!-- 顶部工具栏 -->
+        <div class="playground-toolbar">
+            <div class="toolbar-left">
+                <select id="problem-select" class="problem-select">
+                    <!-- JS 动态填充 -->
+                </select>
+            </div>
+            <div class="toolbar-right">
+                <span id="pyodide-status" class="pyodide-status loading">Pyodide 加载中...</span>
+                <button id="run-btn" class="btn btn-run" disabled>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M4 2l10 6-10 6V2z" />
+                    </svg>
+                    运行代码
+                </button>
+                <button id="reset-btn" class="btn btn-reset">重置代码</button>
+            </div>
+        </div>
+
+        <!-- 两栏布局 -->
+        <div class="playground-layout">
+            <!-- 左侧：题目描述 -->
+            <div class="panel panel-problem">
+                <div class="panel-header">
+                    <span class="panel-title">题目描述</span>
+                </div>
+                <div class="panel-body" id="problem-description">
+                    <!-- JS 动态填充 -->
+                </div>
+            </div>
+
+            <!-- 右侧：编辑器 + 输出 -->
+            <div class="panel-right">
+                <!-- 代码编辑器 -->
+                <div class="panel panel-editor">
+                    <div class="panel-header">
+                        <span class="panel-title">代码编辑器</span>
+                        <span class="panel-hint">Python 3</span>
+                    </div>
+                    <div class="panel-body editor-body">
+                        <textarea id="code-editor"></textarea>
+                    </div>
+                </div>
+
+                <!-- 输出/测试结果 -->
+                <div class="panel panel-output">
+                    <div class="panel-header">
+                        <span class="panel-title">测试结果</span>
+                        <span id="result-summary" class="result-summary"></span>
+                    </div>
+                    <div class="panel-body" id="output-area">
+                        <div class="output-placeholder">点击「运行代码」查看测试结果</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js"></script>
+    <!-- Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+    <!-- Playground Logic -->
+    <script src="assets/js/playground.js"></script>
+</body>
+
+</html>
