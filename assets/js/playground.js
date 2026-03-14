@@ -124,6 +124,78 @@ const PROBLEMS = [
     },
 ];
 
+// ---------- 本地缓存 ----------
+const STORAGE_KEY = 'z2l_playground_';
+
+function saveCode(problemId, code) {
+    try { localStorage.setItem(STORAGE_KEY + problemId, code); } catch (e) { /* quota */ }
+}
+
+function loadCode(problemId) {
+    try { return localStorage.getItem(STORAGE_KEY + problemId); } catch (e) { return null; }
+}
+
+function clearSavedCode(problemId) {
+    try { localStorage.removeItem(STORAGE_KEY + problemId); } catch (e) { /* noop */ }
+}
+
+// ---------- Python 自动补全 ----------
+const PYTHON_KEYWORDS = [
+    // 关键字
+    'False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await',
+    'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except',
+    'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
+    'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return',
+    'try', 'while', 'with', 'yield',
+    // 内置函数
+    'abs', 'all', 'any', 'bin', 'bool', 'chr', 'dict', 'dir',
+    'divmod', 'enumerate', 'filter', 'float', 'format', 'frozenset',
+    'getattr', 'hasattr', 'hash', 'hex', 'id', 'input', 'int',
+    'isinstance', 'issubclass', 'iter', 'len', 'list', 'map', 'max',
+    'min', 'next', 'object', 'oct', 'open', 'ord', 'pow', 'print',
+    'property', 'range', 'repr', 'reversed', 'round', 'set',
+    'setattr', 'slice', 'sorted', 'str', 'sum', 'super', 'tuple',
+    'type', 'vars', 'zip',
+    // 常用方法
+    'append', 'extend', 'insert', 'remove', 'pop', 'clear', 'index',
+    'count', 'sort', 'reverse', 'copy', 'keys', 'values', 'items',
+    'get', 'update', 'add', 'discard', 'union', 'intersection',
+    'split', 'join', 'strip', 'replace', 'find', 'startswith', 'endswith',
+    'upper', 'lower', 'isdigit', 'isalpha',
+];
+
+function pythonHint(cm) {
+    const cur = cm.getCursor();
+    const token = cm.getTokenAt(cur);
+    let start = token.start;
+    let end = cur.ch;
+    const word = token.string.slice(0, end - start);
+
+    if (!word || word.length < 1) return;
+
+    // 从代码中提取用户定义的标识符
+    const code = cm.getValue();
+    const userIdents = new Set();
+    const identRe = /\b([a-zA-Z_]\w*)\b/g;
+    let m;
+    while ((m = identRe.exec(code)) !== null) {
+        if (m[1] !== word) userIdents.add(m[1]);
+    }
+
+    const allWords = [...new Set([...PYTHON_KEYWORDS, ...userIdents])];
+    const matches = allWords.filter(w =>
+        w.startsWith(word) && w !== word
+    ).sort();
+
+    if (!matches.length) return;
+
+    return {
+        list: matches.slice(0, 15),
+        from: CodeMirror.Pos(cur.line, start),
+        to: CodeMirror.Pos(cur.line, end),
+    };
+}
+
 // ---------- 全局状态 ----------
 let pyodide = null;
 let editor = null;
@@ -149,11 +221,35 @@ function initEditor() {
         lineWrapping: true,
         matchBrackets: true,
         autoCloseBrackets: true,
+        hintOptions: { completeSingle: false },
         extraKeys: {
             'Tab': (cm) => cm.replaceSelection('    ', 'end'),
             'Ctrl-Enter': () => runCode(),
             'Cmd-Enter': () => runCode(),
+            'Ctrl-Space': (cm) => cm.showHint({ hint: pythonHint }),
         },
+    });
+
+    // 输入时自动弹出补全
+    editor.on('inputRead', (cm, change) => {
+        if (change.origin !== '+input') return;
+        const ch = change.text[0];
+        // 输入字母/下划线且当前 token 长度 >= 2 时触发
+        if (/[a-zA-Z_]/.test(ch)) {
+            const token = cm.getTokenAt(cm.getCursor());
+            if (token.string.length >= 2) {
+                cm.showHint({ hint: pythonHint });
+            }
+        }
+    });
+
+    // 自动保存到 localStorage（防抖）
+    let saveTimer = null;
+    editor.on('change', () => {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+            saveCode(currentProblem.id, editor.getValue());
+        }, 500);
     });
 }
 
@@ -174,7 +270,9 @@ function loadProblem(problem) {
         html += `<div class="solution-link"><a href="${problem.solutionUrl}" target="_blank" rel="noopener">查看题解 ↗</a></div>`;
     }
     document.getElementById('problem-description').innerHTML = html;
-    editor.setValue(problem.template);
+    // 优先从缓存恢复代码
+    const cached = loadCode(problem.id);
+    editor.setValue(cached || problem.template);
     clearOutput();
 }
 
@@ -204,6 +302,7 @@ function bindEvents() {
 
     document.getElementById('reset-btn').addEventListener('click', () => {
         editor.setValue(currentProblem.template);
+        clearSavedCode(currentProblem.id);
         clearOutput();
     });
 
