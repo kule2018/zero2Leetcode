@@ -52,7 +52,7 @@ function initNavbar() {
  */
 
 // Playground 已收录的题目 ID 集合
-const PLAYGROUND_PROBLEM_IDS = new Set([1, 70, 206]);
+const PLAYGROUND_PROBLEM_IDS = new Set([1, 20, 21, 35, 70, 118, 121, 136, 169, 206, 283]);
 
 function initProblemsTable() {
     renderProblemsTable(window.PROBLEMS_DATA || []);

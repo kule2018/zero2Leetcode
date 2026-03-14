@@ -122,6 +122,326 @@ const PROBLEMS = [
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/reverse-linked-list/solutions/',
     },
+    {
+        id: 20,
+        title: 'LC 20 - 有效的括号',
+        difficulty: 'Easy',
+        tags: ['栈'],
+        description: `
+<h3>20. 有效的括号 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给定一个只包括 <code>'('</code>，<code>')'</code>，<code>'{'</code>，<code>'}'</code>，<code>'['</code>，<code>']'</code> 的字符串 <code>s</code>，判断字符串是否有效。</p>
+<p>有效字符串需满足：</p>
+<ul>
+<li>左括号必须用相同类型的右括号闭合。</li>
+<li>左括号必须以正确的顺序闭合。</li>
+<li>每个右括号都有一个对应的相同类型的左括号。</li>
+</ul>
+<h4>示例</h4>
+<pre>输入：s = "()"
+输出：True</pre>
+<pre>输入：s = "()[]{}"
+输出：True</pre>
+<pre>输入：s = "(]"
+输出：False</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= s.length &lt;= 10<sup>4</sup></li>
+<li>s 仅由括号 '()[]{}' 组成</li>
+</ul>`,
+        template: `def is_valid(s):
+    """
+    :type s: str
+    :rtype: bool
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'is_valid',
+        testCases: [
+            { input: ['()'], expected: true },
+            { input: ['()[]{}'], expected: true },
+            { input: ['(]'], expected: false },
+            { input: ['([)]'], expected: false },
+            { input: ['{[]}'], expected: true },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/valid-parentheses/solutions/',
+    },
+    {
+        id: 21,
+        title: 'LC 21 - 合并两个有序链表',
+        difficulty: 'Easy',
+        tags: ['链表'],
+        description: `
+<h3>21. 合并两个有序链表 <span class="difficulty-tag easy">Easy</span></h3>
+<p>将两个升序链表合并为一个新的<strong>升序</strong>链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。</p>
+<p><strong>注意：</strong>本题使用<strong>数组模拟链表</strong>，输入和输出均为升序数组。</p>
+<h4>示例</h4>
+<pre>输入：list1 = [1,2,4], list2 = [1,3,4]
+输出：[1,1,2,3,4,4]</pre>
+<pre>输入：list1 = [], list2 = []
+输出：[]</pre>
+<pre>输入：list1 = [], list2 = [0]
+输出：[0]</pre>
+<h4>提示</h4>
+<ul>
+<li>两个链表的节点数目范围是 [0, 50]</li>
+<li>-100 &lt;= Node.val &lt;= 100</li>
+<li>两个链表均按非递减顺序排列</li>
+</ul>`,
+        template: `def merge_two_lists(list1, list2):
+    """
+    合并两个有序链表（用数组模拟）
+    :type list1: List[int]
+    :type list2: List[int]
+    :rtype: List[int]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'merge_two_lists',
+        testCases: [
+            { input: [[1, 2, 4], [1, 3, 4]], expected: [1, 1, 2, 3, 4, 4] },
+            { input: [[], []], expected: [] },
+            { input: [[], [0]], expected: [0] },
+            { input: [[1], [2]], expected: [1, 2] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/merge-two-sorted-lists/solutions/',
+    },
+    {
+        id: 35,
+        title: 'LC 35 - 搜索插入位置',
+        difficulty: 'Easy',
+        tags: ['二分查找'],
+        description: `
+<h3>35. 搜索插入位置 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
+<p>请必须使用时间复杂度为 <code>O(log n)</code> 的算法。</p>
+<h4>示例</h4>
+<pre>输入：nums = [1,3,5,6], target = 5
+输出：2</pre>
+<pre>输入：nums = [1,3,5,6], target = 2
+输出：1</pre>
+<pre>输入：nums = [1,3,5,6], target = 7
+输出：4</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10<sup>4</sup></li>
+<li>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></li>
+<li>nums 为无重复元素的升序排列数组</li>
+</ul>`,
+        template: `def search_insert(nums, target):
+    """
+    :type nums: List[int]
+    :type target: int
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'search_insert',
+        testCases: [
+            { input: [[1, 3, 5, 6], 5], expected: 2 },
+            { input: [[1, 3, 5, 6], 2], expected: 1 },
+            { input: [[1, 3, 5, 6], 7], expected: 4 },
+            { input: [[1, 3, 5, 6], 0], expected: 0 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/search-insert-position/solutions/',
+    },
+    {
+        id: 118,
+        title: 'LC 118 - 杨辉三角',
+        difficulty: 'Easy',
+        tags: ['动态规划'],
+        description: `
+<h3>118. 杨辉三角 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给定一个非负整数 <code>numRows</code>，生成「杨辉三角」的前 <code>numRows</code> 行。</p>
+<p>在「杨辉三角」中，每个数是它左上方和右上方的数的和。</p>
+<h4>示例</h4>
+<pre>输入：numRows = 5
+输出：[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]</pre>
+<pre>输入：numRows = 1
+输出：[[1]]</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= numRows &lt;= 30</li>
+</ul>`,
+        template: `def generate(num_rows):
+    """
+    :type num_rows: int
+    :rtype: List[List[int]]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'generate',
+        testCases: [
+            { input: [5], expected: [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]] },
+            { input: [1], expected: [[1]] },
+            { input: [3], expected: [[1], [1, 1], [1, 2, 1]] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/pascals-triangle/solutions/',
+    },
+    {
+        id: 121,
+        title: 'LC 121 - 买卖股票的最佳时机',
+        difficulty: 'Easy',
+        tags: ['贪心'],
+        description: `
+<h3>121. 买卖股票的最佳时机 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给定一个数组 <code>prices</code>，它的第 <code>i</code> 个元素 <code>prices[i]</code> 表示一支给定股票第 <code>i</code> 天的价格。</p>
+<p>你只能选择<strong>某一天</strong>买入这只股票，并选择在<strong>未来的某一个不同的日子</strong>卖出该股票。设计一个算法来计算你所能获取的最大利润。</p>
+<p>返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 <code>0</code>。</p>
+<h4>示例</h4>
+<pre>输入：prices = [7,1,5,3,6,4]
+输出：5
+解释：在第 2 天买入（价格 = 1），第 5 天卖出（价格 = 6），利润 = 6-1 = 5</pre>
+<pre>输入：prices = [7,6,4,3,1]
+输出：0
+解释：在这种情况下, 没有交易完成, 所以最大利润为 0</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= prices.length &lt;= 10<sup>5</sup></li>
+<li>0 &lt;= prices[i] &lt;= 10<sup>4</sup></li>
+</ul>`,
+        template: `def max_profit(prices):
+    """
+    :type prices: List[int]
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'max_profit',
+        testCases: [
+            { input: [[7, 1, 5, 3, 6, 4]], expected: 5 },
+            { input: [[7, 6, 4, 3, 1]], expected: 0 },
+            { input: [[2, 4, 1]], expected: 2 },
+            { input: [[1]], expected: 0 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/solutions/',
+    },
+    {
+        id: 136,
+        title: 'LC 136 - 只出现一次的数字',
+        difficulty: 'Easy',
+        tags: ['位运算'],
+        description: `
+<h3>136. 只出现一次的数字 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你一个<strong>非空</strong>整数数组 <code>nums</code>，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<p>你必须设计并实现线性时间复杂度的算法来解决此问题，且该算法只使用常量额外空间。</p>
+<h4>示例</h4>
+<pre>输入：nums = [2,2,1]
+输出：1</pre>
+<pre>输入：nums = [4,1,2,1,2]
+输出：4</pre>
+<pre>输入：nums = [1]
+输出：1</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 3 * 10<sup>4</sup></li>
+<li>-3 * 10<sup>4</sup> &lt;= nums[i] &lt;= 3 * 10<sup>4</sup></li>
+<li>除了某个元素只出现一次以外，其余每个元素均出现两次</li>
+</ul>`,
+        template: `def single_number(nums):
+    """
+    :type nums: List[int]
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'single_number',
+        testCases: [
+            { input: [[2, 2, 1]], expected: 1 },
+            { input: [[4, 1, 2, 1, 2]], expected: 4 },
+            { input: [[1]], expected: 1 },
+            { input: [[0, 1, 0]], expected: 1 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/single-number/solutions/',
+    },
+    {
+        id: 169,
+        title: 'LC 169 - 多数元素',
+        difficulty: 'Easy',
+        tags: ['技巧'],
+        description: `
+<h3>169. 多数元素 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给定一个大小为 <code>n</code> 的数组 <code>nums</code>，返回其中的多数元素。多数元素是指在数组中出现次数<strong>大于</strong> <code>⌊ n/2 ⌋</code> 的元素。</p>
+<p>你可以假设数组是非空的，并且给定的数组总是存在多数元素。</p>
+<h4>示例</h4>
+<pre>输入：nums = [3,2,3]
+输出：3</pre>
+<pre>输入：nums = [2,2,1,1,1,2,2]
+输出：2</pre>
+<h4>提示</h4>
+<ul>
+<li>n == nums.length</li>
+<li>1 &lt;= n &lt;= 5 * 10<sup>4</sup></li>
+<li>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></li>
+</ul>
+<p><strong>进阶：</strong>尝试设计时间复杂度为 O(n)、空间复杂度为 O(1) 的算法（Boyer-Moore 投票法）。</p>`,
+        template: `def majority_element(nums):
+    """
+    :type nums: List[int]
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'majority_element',
+        testCases: [
+            { input: [[3, 2, 3]], expected: 3 },
+            { input: [[2, 2, 1, 1, 1, 2, 2]], expected: 2 },
+            { input: [[1]], expected: 1 },
+            { input: [[6, 5, 5]], expected: 5 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/majority-element/solutions/',
+    },
+    {
+        id: 283,
+        title: 'LC 283 - 移动零',
+        difficulty: 'Easy',
+        tags: ['双指针'],
+        description: `
+<h3>283. 移动零 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给定一个数组 <code>nums</code>，编写一个函数将所有 <code>0</code> 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
+<p><strong>请注意</strong>，必须在不复制数组的情况下原地对数组进行操作。</p>
+<h4>示例</h4>
+<pre>输入：nums = [0,1,0,3,12]
+输出：[0,1,0,3,12] → [1,3,12,0,0]</pre>
+<pre>输入：nums = [0]
+输出：[0]</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10<sup>4</sup></li>
+<li>-2<sup>31</sup> &lt;= nums[i] &lt;= 2<sup>31</sup> - 1</li>
+</ul>
+<p><strong>说明：</strong>本题返回修改后的数组即可。</p>`,
+        template: `def move_zeroes(nums):
+    """
+    :type nums: List[int]
+    :rtype: List[int]
+    """
+    # 在这里写你的代码（原地修改 nums 后返回）
+    pass
+`,
+        functionName: 'move_zeroes',
+        testCases: [
+            { input: [[0, 1, 0, 3, 12]], expected: [1, 3, 12, 0, 0] },
+            { input: [[0]], expected: [0] },
+            { input: [[1, 0, 0, 2]], expected: [1, 2, 0, 0] },
+            { input: [[1, 2, 3]], expected: [1, 2, 3] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/move-zeroes/solutions/',
+    },
 ];
 
 // ---------- 本地缓存 ----------
