@@ -822,6 +822,28 @@ img {
     box-shadow: var(--shadow-glow);
 }
 
+.practice-links {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+}
+
+.practice-local {
+    background: linear-gradient(135deg, var(--easy), #00d4aa);
+    color: #000;
+}
+
+.practice-lc {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.practice-lc:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
 .problems-footer {
     text-align: center;
     margin-top: var(--spacing-xl);

@@ -205,6 +205,17 @@ let currentProblem = PROBLEMS[0];
 document.addEventListener('DOMContentLoaded', () => {
     initEditor();
     initProblemSelect();
+
+    // 支持 URL 参数 ?id=70 直接跳转到指定题目
+    const urlId = new URLSearchParams(window.location.search).get('id');
+    if (urlId) {
+        const idx = PROBLEMS.findIndex(p => p.id === parseInt(urlId));
+        if (idx !== -1) {
+            currentProblem = PROBLEMS[idx];
+            document.getElementById('problem-select').value = idx;
+        }
+    }
+
     loadProblem(currentProblem);
     initPyodide();
     bindEvents();

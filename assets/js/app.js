@@ -50,6 +50,10 @@ function initNavbar() {
 /**
  * 渲染题目表格
  */
+
+// Playground 已收录的题目 ID 集合
+const PLAYGROUND_PROBLEM_IDS = new Set([1, 70, 206]);
+
 function initProblemsTable() {
     renderProblemsTable(window.PROBLEMS_DATA || []);
 }
@@ -58,7 +62,14 @@ function renderProblemsTable(problems) {
     const tbody = document.getElementById('problems-tbody');
     if (!tbody || !Array.isArray(problems)) return;
 
-    tbody.innerHTML = problems.map(problem => `
+    tbody.innerHTML = problems.map(problem => {
+        const hasLocal = PLAYGROUND_PROBLEM_IDS.has(problem.id);
+        const practiceHtml = hasLocal
+            ? `<a href="playground.html?id=${problem.id}" class="practice-link practice-local">本地练习</a>
+               <a href="${problem.url}" target="_blank" rel="noopener" class="practice-link practice-lc">LeetCode ↗</a>`
+            : `<a href="${problem.url}" target="_blank" rel="noopener" class="practice-link">LeetCode ↗</a>`;
+
+        return `
         <tr data-difficulty="${problem.difficulty}" data-category="${problem.category}">
             <td class="problem-number">${problem.id}</td>
             <td class="problem-title">
@@ -76,13 +87,11 @@ function renderProblemsTable(problems) {
                     ${window.CATEGORY_NAMES[problem.category] || problem.category}
                 </span>
             </td>
-            <td>
-                <a href="${problem.url}" target="_blank" rel="noopener" class="practice-link">
-                    去练习 →
-                </a>
+            <td class="practice-links">
+                ${practiceHtml}
             </td>
-        </tr>
-    `).join('');
+        </tr>`;
+    }).join('');
 }
 
 function getDifficultyIcon(difficulty) {
