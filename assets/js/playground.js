@@ -42,6 +42,7 @@ const PROBLEMS = [
             { input: [[3, 3], 6], expected: [0, 1] },
         ],
         compareFunc: 'sorted',
+        solutionUrl: 'https://leetcode.cn/problems/two-sum/solutions/',
     },
     {
         id: 70,
@@ -79,6 +80,7 @@ const PROBLEMS = [
             { input: [10], expected: 89 },
         ],
         compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/climbing-stairs/solutions/',
     },
     {
         id: 206,
@@ -118,6 +120,7 @@ const PROBLEMS = [
             { input: [[1]], expected: [1] },
         ],
         compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/reverse-linked-list/solutions/',
     },
 ];
 
@@ -166,7 +169,11 @@ function initProblemSelect() {
 
 function loadProblem(problem) {
     currentProblem = problem;
-    document.getElementById('problem-description').innerHTML = problem.description;
+    let html = problem.description;
+    if (problem.solutionUrl) {
+        html += `<div class="solution-link"><a href="${problem.solutionUrl}" target="_blank" rel="noopener">查看题解 ↗</a></div>`;
+    }
+    document.getElementById('problem-description').innerHTML = html;
     editor.setValue(problem.template);
     clearOutput();
 }
@@ -226,6 +233,7 @@ async function runCode() {
     const problem = currentProblem;
     let passed = 0;
     const total = problem.testCases.length;
+    const totalStart = performance.now();
 
     for (let i = 0; i < total; i++) {
         const tc = problem.testCases[i];
@@ -234,12 +242,14 @@ async function runCode() {
         if (result.passed) passed++;
     }
 
+    const totalTime = (performance.now() - totalStart).toFixed(1);
+
     // 更新总结
     if (passed === total) {
-        summary.textContent = `${passed}/${total} 全部通过`;
+        summary.textContent = `${passed}/${total} 全部通过  ${totalTime} ms`;
         summary.className = 'result-summary all-pass';
     } else {
-        summary.textContent = `${passed}/${total} 通过`;
+        summary.textContent = `${passed}/${total} 通过  ${totalTime} ms`;
         summary.className = 'result-summary has-fail';
     }
 
@@ -258,7 +268,9 @@ ${userCode}
 
 __result__ = ${problem.functionName}(${argsStr})
 `;
+        const t0 = performance.now();
         await pyodide.runPythonAsync(fullCode);
+        const elapsed = (performance.now() - t0).toFixed(1);
         const actual = pyodide.globals.get('__result__');
         const actualJS = toJS(actual);
 
@@ -269,6 +281,7 @@ __result__ = ${problem.functionName}(${argsStr})
 <div class="test-header">
     <span class="test-icon">${pass ? '&#10004;' : '&#10008;'}</span>
     <span class="test-label">测试用例 ${index}</span>
+    <span class="test-time">${elapsed} ms</span>
     <span class="test-status ${pass ? 'pass' : 'fail'}">${pass ? '通过' : '失败'}</span>
 </div>
 <div class="test-detail">
