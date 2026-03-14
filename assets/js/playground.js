@@ -265,11 +265,15 @@ function initProblemSelect() {
 
 function loadProblem(problem) {
     currentProblem = problem;
-    let html = problem.description;
+    document.getElementById('problem-description').innerHTML = problem.description;
+    const footer = document.getElementById('problem-footer');
     if (problem.solutionUrl) {
-        html += `<div class="solution-link"><a href="${problem.solutionUrl}" target="_blank" rel="noopener">查看题解 ↗</a></div>`;
+        footer.innerHTML = `<a href="${problem.solutionUrl}" target="_blank" rel="noopener" class="solution-btn">查看题解 ↗</a>`;
+        footer.style.display = '';
+    } else {
+        footer.innerHTML = '';
+        footer.style.display = 'none';
     }
-    document.getElementById('problem-description').innerHTML = html;
     // 优先从缓存恢复代码
     const cached = loadCode(problem.id);
     editor.setValue(cached || problem.template);

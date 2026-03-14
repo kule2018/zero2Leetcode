@@ -269,27 +269,28 @@
     color: var(--hard);
 }
 
-/* 题解链接 */
-.solution-link {
-    margin-top: var(--spacing-lg);
-    padding-top: var(--spacing-md);
+/* 题目面板底部固定栏 */
+.panel-footer {
+    flex-shrink: 0;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-tertiary);
     border-top: 1px solid var(--border-color);
 }
 
-.solution-link a {
+.solution-btn {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
     padding: var(--spacing-sm) var(--spacing-md);
     background: linear-gradient(135deg, var(--primary), var(--accent));
     border-radius: var(--radius-md);
-    color: white;
+    color: white !important;
     font-size: 0.85rem;
     font-weight: 600;
     transition: all var(--transition-fast);
 }
 
-.solution-link a:hover {
+.solution-btn:hover {
     transform: translateY(-1px);
     box-shadow: var(--shadow-glow);
 }
