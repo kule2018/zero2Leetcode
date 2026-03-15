@@ -2,6 +2,36 @@
 // Zero2Leetcode Playground - 在线 OJ
 // =============================================
 
+// ---------- 链表基础设施（注入到 Python 环境）----------
+const LINKED_LIST_SETUP = `
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+    def __repr__(self):
+        vals = []
+        node = self
+        while node:
+            vals.append(str(node.val))
+            node = node.next
+        return ' -> '.join(vals)
+
+def _to_linked_list(arr):
+    dummy = ListNode()
+    curr = dummy
+    for v in arr:
+        curr.next = ListNode(v)
+        curr = curr.next
+    return dummy.next
+
+def _to_array(node):
+    result = []
+    while node:
+        result.append(node.val)
+        node = node.next
+    return result
+`;
+
 // ---------- 题目数据 ----------
 const PROBLEMS = [
     {
@@ -89,8 +119,8 @@ const PROBLEMS = [
         tags: ['链表'],
         description: `
 <h3>206. 反转链表 <span class="difficulty-tag easy">Easy</span></h3>
-<p>给你单链表的头节点，请你反转链表，并返回反转后的链表。</p>
-<p><strong>注意：</strong>本题使用<strong>数组模拟链表</strong>，输入和输出均为数组。</p>
+<p>给你单链表的头节点 <code>head</code>，请你反转链表，并返回反转后的链表。</p>
+<p><strong>说明：</strong>已内置 <code>ListNode</code> 类（<code>val</code> + <code>next</code>），输入输出自动转换，直接操作链表即可。</p>
 <h4>示例</h4>
 <pre>输入：head = [1,2,3,4,5]
 输出：[5,4,3,2,1]</pre>
@@ -105,14 +135,17 @@ const PROBLEMS = [
 </ul>`,
         template: `def reverse_list(head):
     """
-    反转链表（用数组模拟）
-    :type head: List[int]
-    :rtype: List[int]
+    反转链表
+    :type head: ListNode
+    :rtype: ListNode
     """
     # 在这里写你的代码
     pass
 `,
         functionName: 'reverse_list',
+        setup: LINKED_LIST_SETUP,
+        argWrappers: ['_to_linked_list'],
+        returnWrapper: '_to_array',
         testCases: [
             { input: [[1, 2, 3, 4, 5]], expected: [5, 4, 3, 2, 1] },
             { input: [[1, 2]], expected: [2, 1] },
@@ -175,7 +208,7 @@ const PROBLEMS = [
         description: `
 <h3>21. 合并两个有序链表 <span class="difficulty-tag easy">Easy</span></h3>
 <p>将两个升序链表合并为一个新的<strong>升序</strong>链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。</p>
-<p><strong>注意：</strong>本题使用<strong>数组模拟链表</strong>，输入和输出均为升序数组。</p>
+<p><strong>说明：</strong>已内置 <code>ListNode</code> 类（<code>val</code> + <code>next</code>），输入输出自动转换，直接操作链表即可。</p>
 <h4>示例</h4>
 <pre>输入：list1 = [1,2,4], list2 = [1,3,4]
 输出：[1,1,2,3,4,4]</pre>
@@ -191,15 +224,18 @@ const PROBLEMS = [
 </ul>`,
         template: `def merge_two_lists(list1, list2):
     """
-    合并两个有序链表（用数组模拟）
-    :type list1: List[int]
-    :type list2: List[int]
-    :rtype: List[int]
+    合并两个有序链表
+    :type list1: ListNode
+    :type list2: ListNode
+    :rtype: ListNode
     """
     # 在这里写你的代码
     pass
 `,
         functionName: 'merge_two_lists',
+        setup: LINKED_LIST_SETUP,
+        argWrappers: ['_to_linked_list', '_to_linked_list'],
+        returnWrapper: '_to_array',
         testCases: [
             { input: [[1, 2, 4], [1, 3, 4]], expected: [1, 1, 2, 3, 4, 4] },
             { input: [[], []], expected: [] },
@@ -695,12 +731,21 @@ async function runTestCase(userCode, problem, testCase, index) {
     const div = document.createElement('div');
 
     try {
-        // 构建 Python 代码：用户函数 + 调用
-        const argsStr = testCase.input.map(pythonRepr).join(', ');
+        // 构建 Python 代码：setup + 用户函数 + 调用
+        const argsStr = testCase.input.map((arg, i) => {
+            const repr = pythonRepr(arg);
+            const wrapper = problem.argWrappers?.[i];
+            return wrapper ? `${wrapper}(${repr})` : repr;
+        }).join(', ');
+        const callExpr = `${problem.functionName}(${argsStr})`;
+        const resultExpr = problem.returnWrapper
+            ? `${problem.returnWrapper}(${callExpr})`
+            : callExpr;
         const fullCode = `
+${problem.setup || ''}
 ${userCode}
 
-__result__ = ${problem.functionName}(${argsStr})
+__result__ = ${resultExpr}
 `;
         const t0 = performance.now();
         await pyodide.runPythonAsync(fullCode);
