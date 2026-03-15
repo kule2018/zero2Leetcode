@@ -203,6 +203,11 @@ a:hover {
     line-height: 1.7;
 }
 
+/* highlight.js 背景融合站点主题 */
+.doc-article pre code.hljs {
+    background: transparent;
+}
+
 /* 表格 */
 .doc-article table {
     width: 100%;
