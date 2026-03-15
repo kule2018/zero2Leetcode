@@ -133,9 +133,14 @@ const PROBLEMS = [
 <li>链表中节点的数目范围是 [0, 5000]</li>
 <li>-5000 &lt;= Node.val &lt;= 5000</li>
 </ul>`,
-        template: `def reverse_list(head):
+        template: `# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+def reverse_list(head):
     """
-    反转链表
     :type head: ListNode
     :rtype: ListNode
     """
@@ -222,9 +227,14 @@ const PROBLEMS = [
 <li>-100 &lt;= Node.val &lt;= 100</li>
 <li>两个链表均按非递减顺序排列</li>
 </ul>`,
-        template: `def merge_two_lists(list1, list2):
+        template: `# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+def merge_two_lists(list1, list2):
     """
-    合并两个有序链表
     :type list1: ListNode
     :type list2: ListNode
     :rtype: ListNode
