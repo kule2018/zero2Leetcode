@@ -844,6 +844,16 @@ img {
     color: var(--text-primary);
 }
 
+.practice-blog {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: #fff;
+}
+
+.practice-blog:hover {
+    filter: brightness(1.15);
+    color: #fff;
+}
+
 .problems-footer {
     text-align: center;
     margin-top: var(--spacing-xl);

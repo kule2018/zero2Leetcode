@@ -90,6 +90,9 @@ function renderProblemsTable(problems) {
             <td class="practice-links">
                 ${practiceHtml}
             </td>
+            <td class="blog-link">
+                ${problem.blogUrl ? `<a href="${problem.blogUrl}" target="_blank" rel="noopener" class="practice-link practice-blog">博客详解 ↗</a>` : ''}
+            </td>
         </tr>`;
     }).join('');
 }
