@@ -1846,7 +1846,9 @@ function loadProblem(problem) {
     document.getElementById('problem-description').innerHTML = problem.description;
     const footer = document.getElementById('problem-footer');
     if (problem.solutionUrl) {
-        footer.innerHTML = `<a href="${problem.solutionUrl}" target="_blank" rel="noopener" class="solution-btn">查看题解 ↗</a>`;
+        const lcUrl = problem.solutionUrl.replace(/solutions\/$/, '');
+        footer.innerHTML = `<a href="${problem.solutionUrl}" target="_blank" rel="noopener" class="solution-btn">查看题解 ↗</a>`
+            + `<a href="${lcUrl}" target="_blank" rel="noopener" class="solution-btn leetcode-btn">LeetCode 提交 ↗</a>`;
         footer.style.display = '';
     } else {
         footer.innerHTML = '';

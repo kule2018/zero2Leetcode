@@ -295,6 +295,11 @@
     box-shadow: var(--shadow-glow);
 }
 
+.leetcode-btn {
+    background: linear-gradient(135deg, #ffa116, #ff6b00);
+    margin-left: var(--spacing-sm);
+}
+
 /* ---------- CodeMirror 覆盖 ---------- */
 .editor-body {
     padding: 0 !important;
