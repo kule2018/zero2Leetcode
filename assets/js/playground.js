@@ -32,6 +32,52 @@ def _to_array(node):
     return result
 `;
 
+// ---------- 二叉树基础设施（注入到 Python 环境）----------
+const BINARY_TREE_SETUP = `
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+    def __repr__(self):
+        return f'TreeNode({self.val})'
+
+def _to_tree(arr):
+    if not arr or arr[0] is None:
+        return None
+    root = TreeNode(arr[0])
+    queue = [root]
+    i = 1
+    while queue and i < len(arr):
+        node = queue.pop(0)
+        if i < len(arr) and arr[i] is not None:
+            node.left = TreeNode(arr[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i])
+            queue.append(node.right)
+        i += 1
+    return root
+
+def _tree_to_array(root):
+    if not root:
+        return []
+    result = []
+    queue = [root]
+    while queue:
+        node = queue.pop(0)
+        if node:
+            result.append(node.val)
+            queue.append(node.left)
+            queue.append(node.right)
+        else:
+            result.append(None)
+    while result and result[-1] is None:
+        result.pop()
+    return result
+`;
+
 // ---------- 题目数据 ----------
 const PROBLEMS = [
     {
@@ -488,6 +534,1161 @@ def merge_two_lists(list1, list2):
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/move-zeroes/solutions/',
     },
+    // ========== 二叉树 ==========
+    {
+        id: 94,
+        title: 'LC 94 - 二叉树的中序遍历',
+        difficulty: 'Easy',
+        tags: ['二叉树'],
+        description: `
+<h3>94. 二叉树的中序遍历 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给定一个二叉树的根节点 <code>root</code>，返回它的<strong>中序遍历</strong>结果。</p>
+<p><strong>说明：</strong>已内置 <code>TreeNode</code> 类（<code>val</code> + <code>left</code> + <code>right</code>），输入自动从数组转换为二叉树，直接操作树即可。</p>
+<h4>示例</h4>
+<pre>输入：root = [1,null,2,3]
+输出：[1,3,2]</pre>
+<pre>输入：root = []
+输出：[]</pre>
+<pre>输入：root = [1]
+输出：[1]</pre>
+<h4>提示</h4>
+<ul>
+<li>树中节点数目在范围 [0, 100] 内</li>
+<li>-100 &lt;= Node.val &lt;= 100</li>
+</ul>`,
+        template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def inorder_traversal(root):
+    """
+    :type root: TreeNode
+    :rtype: List[int]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'inorder_traversal',
+        setup: BINARY_TREE_SETUP,
+        argWrappers: ['_to_tree'],
+        testCases: [
+            { input: [[1, null, 2, 3]], expected: [1, 3, 2] },
+            { input: [[]], expected: [] },
+            { input: [[1]], expected: [1] },
+            { input: [[1, 2, 3, 4, 5]], expected: [4, 2, 5, 1, 3] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/binary-tree-inorder-traversal/solutions/',
+    },
+    {
+        id: 104,
+        title: 'LC 104 - 二叉树的最大深度',
+        difficulty: 'Easy',
+        tags: ['二叉树'],
+        description: `
+<h3>104. 二叉树的最大深度 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给定一个二叉树 <code>root</code>，返回其<strong>最大深度</strong>。</p>
+<p>二叉树的最大深度是指从根节点到最远叶子节点的最长路径上的节点数。</p>
+<p><strong>说明：</strong>已内置 <code>TreeNode</code> 类（<code>val</code> + <code>left</code> + <code>right</code>），输入自动从数组转换为二叉树，直接操作树即可。</p>
+<h4>示例</h4>
+<pre>输入：root = [3,9,20,null,null,15,7]
+输出：3</pre>
+<pre>输入：root = [1,null,2]
+输出：2</pre>
+<h4>提示</h4>
+<ul>
+<li>树中节点的数量在 [0, 10<sup>4</sup>] 范围内</li>
+<li>-100 &lt;= Node.val &lt;= 100</li>
+</ul>`,
+        template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def max_depth(root):
+    """
+    :type root: TreeNode
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'max_depth',
+        setup: BINARY_TREE_SETUP,
+        argWrappers: ['_to_tree'],
+        testCases: [
+            { input: [[3, 9, 20, null, null, 15, 7]], expected: 3 },
+            { input: [[1, null, 2]], expected: 2 },
+            { input: [[]], expected: 0 },
+            { input: [[1]], expected: 1 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/maximum-depth-of-binary-tree/solutions/',
+    },
+    {
+        id: 226,
+        title: 'LC 226 - 翻转二叉树',
+        difficulty: 'Easy',
+        tags: ['二叉树'],
+        description: `
+<h3>226. 翻转二叉树 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你一棵二叉树的根节点 <code>root</code>，翻转这棵二叉树，并返回其根节点。</p>
+<p><strong>说明：</strong>已内置 <code>TreeNode</code> 类（<code>val</code> + <code>left</code> + <code>right</code>），输入输出自动转换，直接操作树即可。</p>
+<h4>示例</h4>
+<pre>输入：root = [4,2,7,1,3,6,9]
+输出：[4,7,2,9,6,3,1]</pre>
+<pre>输入：root = [2,1,3]
+输出：[2,3,1]</pre>
+<pre>输入：root = []
+输出：[]</pre>
+<h4>提示</h4>
+<ul>
+<li>树中节点数目范围在 [0, 100] 内</li>
+<li>-100 &lt;= Node.val &lt;= 100</li>
+</ul>`,
+        template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def invert_tree(root):
+    """
+    :type root: TreeNode
+    :rtype: TreeNode
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'invert_tree',
+        setup: BINARY_TREE_SETUP,
+        argWrappers: ['_to_tree'],
+        returnWrapper: '_tree_to_array',
+        testCases: [
+            { input: [[4, 2, 7, 1, 3, 6, 9]], expected: [4, 7, 2, 9, 6, 3, 1] },
+            { input: [[2, 1, 3]], expected: [2, 3, 1] },
+            { input: [[]], expected: [] },
+            { input: [[1]], expected: [1] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/invert-binary-tree/solutions/',
+    },
+    {
+        id: 101,
+        title: 'LC 101 - 对称二叉树',
+        difficulty: 'Easy',
+        tags: ['二叉树'],
+        description: `
+<h3>101. 对称二叉树 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你一个二叉树的根节点 <code>root</code>，检查它是否轴对称。</p>
+<p><strong>说明：</strong>已内置 <code>TreeNode</code> 类（<code>val</code> + <code>left</code> + <code>right</code>），输入自动从数组转换为二叉树，直接操作树即可。</p>
+<h4>示例</h4>
+<pre>输入：root = [1,2,2,3,4,4,3]
+输出：True</pre>
+<pre>输入：root = [1,2,2,null,3,null,3]
+输出：False</pre>
+<h4>提示</h4>
+<ul>
+<li>树中节点数目在范围 [1, 1000] 内</li>
+<li>-100 &lt;= Node.val &lt;= 100</li>
+</ul>`,
+        template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def is_symmetric(root):
+    """
+    :type root: TreeNode
+    :rtype: bool
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'is_symmetric',
+        setup: BINARY_TREE_SETUP,
+        argWrappers: ['_to_tree'],
+        testCases: [
+            { input: [[1, 2, 2, 3, 4, 4, 3]], expected: true },
+            { input: [[1, 2, 2, null, 3, null, 3]], expected: false },
+            { input: [[1]], expected: true },
+            { input: [[1, 2, 2, null, 3, 3]], expected: true },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/symmetric-tree/solutions/',
+    },
+    {
+        id: 543,
+        title: 'LC 543 - 二叉树的直径',
+        difficulty: 'Easy',
+        tags: ['二叉树'],
+        description: `
+<h3>543. 二叉树的直径 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你一棵二叉树的根节点，返回该树的<strong>直径</strong>。</p>
+<p>二叉树的直径是指树中任意两个节点之间最长路径的<strong>长度</strong>。这条路径可能经过也可能不经过根节点 <code>root</code>。</p>
+<p>两节点之间路径的长度由它们之间边的数目表示。</p>
+<p><strong>说明：</strong>已内置 <code>TreeNode</code> 类（<code>val</code> + <code>left</code> + <code>right</code>），输入自动从数组转换为二叉树，直接操作树即可。</p>
+<h4>示例</h4>
+<pre>输入：root = [1,2,3,4,5]
+输出：3
+解释：取路径 [4,2,1,3] 或 [5,2,1,3] 的长度</pre>
+<pre>输入：root = [1,2]
+输出：1</pre>
+<h4>提示</h4>
+<ul>
+<li>树中节点数目在范围 [1, 10<sup>4</sup>] 内</li>
+<li>-100 &lt;= Node.val &lt;= 100</li>
+</ul>`,
+        template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def diameter_of_binary_tree(root):
+    """
+    :type root: TreeNode
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'diameter_of_binary_tree',
+        setup: BINARY_TREE_SETUP,
+        argWrappers: ['_to_tree'],
+        testCases: [
+            { input: [[1, 2, 3, 4, 5]], expected: 3 },
+            { input: [[1, 2]], expected: 1 },
+            { input: [[1]], expected: 0 },
+            { input: [[1, 2, 3, 4, 5, null, null, 8]], expected: 4 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/diameter-of-binary-tree/solutions/',
+    },
+    {
+        id: 102,
+        title: 'LC 102 - 二叉树的层序遍历',
+        difficulty: 'Medium',
+        tags: ['二叉树'],
+        description: `
+<h3>102. 二叉树的层序遍历 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你二叉树的根节点 <code>root</code>，返回其节点值的<strong>层序遍历</strong>（即逐层地，从左到右访问所有节点）。</p>
+<p><strong>说明：</strong>已内置 <code>TreeNode</code> 类（<code>val</code> + <code>left</code> + <code>right</code>），输入自动从数组转换为二叉树，直接操作树即可。</p>
+<h4>示例</h4>
+<pre>输入：root = [3,9,20,null,null,15,7]
+输出：[[3],[9,20],[15,7]]</pre>
+<pre>输入：root = [1]
+输出：[[1]]</pre>
+<pre>输入：root = []
+输出：[]</pre>
+<h4>提示</h4>
+<ul>
+<li>树中节点数目在范围 [0, 2000] 内</li>
+<li>-1000 &lt;= Node.val &lt;= 1000</li>
+</ul>`,
+        template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def level_order(root):
+    """
+    :type root: TreeNode
+    :rtype: List[List[int]]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'level_order',
+        setup: BINARY_TREE_SETUP,
+        argWrappers: ['_to_tree'],
+        testCases: [
+            { input: [[3, 9, 20, null, null, 15, 7]], expected: [[3], [9, 20], [15, 7]] },
+            { input: [[1]], expected: [[1]] },
+            { input: [[]], expected: [] },
+            { input: [[1, 2, 3, 4, 5]], expected: [[1], [2, 3], [4, 5]] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/binary-tree-level-order-traversal/solutions/',
+    },
+    // ========== 滑动窗口 ==========
+    {
+        id: 3,
+        title: 'LC 3 - 无重复字符的最长子串',
+        difficulty: 'Medium',
+        tags: ['滑动窗口'],
+        description: `
+<h3>3. 无重复字符的最长子串 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给定一个字符串 <code>s</code>，请你找出其中不含有重复字符的<strong>最长子串</strong>的长度。</p>
+<h4>示例</h4>
+<pre>输入：s = "abcabcbb"
+输出：3
+解释：无重复字符的最长子串是 "abc"，长度为 3</pre>
+<pre>输入：s = "bbbbb"
+输出：1</pre>
+<pre>输入：s = "pwwkew"
+输出：3
+解释：无重复字符的最长子串是 "wke"，长度为 3</pre>
+<h4>提示</h4>
+<ul>
+<li>0 &lt;= s.length &lt;= 5 * 10<sup>4</sup></li>
+<li>s 由英文字母、数字、符号和空格组成</li>
+</ul>`,
+        template: `def length_of_longest_substring(s):
+    """
+    :type s: str
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'length_of_longest_substring',
+        testCases: [
+            { input: ['abcabcbb'], expected: 3 },
+            { input: ['bbbbb'], expected: 1 },
+            { input: ['pwwkew'], expected: 3 },
+            { input: [' '], expected: 1 },
+            { input: [''], expected: 0 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/longest-substring-without-repeating-characters/solutions/',
+    },
+    // ========== 双指针 ==========
+    {
+        id: 11,
+        title: 'LC 11 - 盛最多水的容器',
+        difficulty: 'Medium',
+        tags: ['双指针'],
+        description: `
+<h3>11. 盛最多水的容器 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给定一个长度为 <code>n</code> 的整数数组 <code>height</code>。有 <code>n</code> 条垂线，第 <code>i</code> 条线的两个端点是 <code>(i, 0)</code> 和 <code>(i, height[i])</code>。</p>
+<p>找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。返回容器可以储存的最大水量。</p>
+<h4>示例</h4>
+<pre>输入：height = [1,8,6,2,5,4,8,3,7]
+输出：49
+解释：选择第 2 条线和第 9 条线，容器面积 = min(8,7) * (8-1) = 49</pre>
+<pre>输入：height = [1,1]
+输出：1</pre>
+<h4>提示</h4>
+<ul>
+<li>n == height.length</li>
+<li>2 &lt;= n &lt;= 10<sup>5</sup></li>
+<li>0 &lt;= height[i] &lt;= 10<sup>4</sup></li>
+</ul>`,
+        template: `def max_area(height):
+    """
+    :type height: List[int]
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'max_area',
+        testCases: [
+            { input: [[1, 8, 6, 2, 5, 4, 8, 3, 7]], expected: 49 },
+            { input: [[1, 1]], expected: 1 },
+            { input: [[4, 3, 2, 1, 4]], expected: 16 },
+            { input: [[1, 2, 1]], expected: 2 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/container-with-most-water/solutions/',
+    },
+    // ========== 二分查找 ==========
+    {
+        id: 34,
+        title: 'LC 34 - 在排序数组中查找元素的第一个和最后一个位置',
+        difficulty: 'Medium',
+        tags: ['二分查找'],
+        description: `
+<h3>34. 在排序数组中查找元素的第一个和最后一个位置 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个按照非递减顺序排列的整数数组 <code>nums</code>，和一个目标值 <code>target</code>。请你找出给定目标值在数组中的开始位置和结束位置。</p>
+<p>如果数组中不存在目标值 <code>target</code>，返回 <code>[-1, -1]</code>。</p>
+<p>你必须设计并实现时间复杂度为 <code>O(log n)</code> 的算法解决此问题。</p>
+<h4>示例</h4>
+<pre>输入：nums = [5,7,7,8,8,10], target = 8
+输出：[3,4]</pre>
+<pre>输入：nums = [5,7,7,8,8,10], target = 6
+输出：[-1,-1]</pre>
+<pre>输入：nums = [], target = 0
+输出：[-1,-1]</pre>
+<h4>提示</h4>
+<ul>
+<li>0 &lt;= nums.length &lt;= 10<sup>5</sup></li>
+<li>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></li>
+<li>nums 是一个非递减数组</li>
+</ul>`,
+        template: `def search_range(nums, target):
+    """
+    :type nums: List[int]
+    :type target: int
+    :rtype: List[int]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'search_range',
+        testCases: [
+            { input: [[5, 7, 7, 8, 8, 10], 8], expected: [3, 4] },
+            { input: [[5, 7, 7, 8, 8, 10], 6], expected: [-1, -1] },
+            { input: [[], 0], expected: [-1, -1] },
+            { input: [[1], 1], expected: [0, 0] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/',
+    },
+    // ========== 回溯 ==========
+    {
+        id: 46,
+        title: 'LC 46 - 全排列',
+        difficulty: 'Medium',
+        tags: ['回溯'],
+        description: `
+<h3>46. 全排列 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给定一个不含重复数字的数组 <code>nums</code>，返回其<strong>所有可能的全排列</strong>。你可以按任意顺序返回答案。</p>
+<h4>示例</h4>
+<pre>输入：nums = [1,2,3]
+输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]</pre>
+<pre>输入：nums = [0,1]
+输出：[[0,1],[1,0]]</pre>
+<pre>输入：nums = [1]
+输出：[[1]]</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 6</li>
+<li>-10 &lt;= nums[i] &lt;= 10</li>
+<li>nums 中的所有整数互不相同</li>
+</ul>`,
+        template: `def permute(nums):
+    """
+    :type nums: List[int]
+    :rtype: List[List[int]]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'permute',
+        testCases: [
+            { input: [[1, 2, 3]], expected: [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]] },
+            { input: [[0, 1]], expected: [[0, 1], [1, 0]] },
+            { input: [[1]], expected: [[1]] },
+        ],
+        compareFunc: 'sorted_nested',
+        solutionUrl: 'https://leetcode.cn/problems/permutations/solutions/',
+    },
+    // ========== 矩阵 ==========
+    {
+        id: 48,
+        title: 'LC 48 - 旋转图像',
+        difficulty: 'Medium',
+        tags: ['矩阵'],
+        description: `
+<h3>48. 旋转图像 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给定一个 <code>n × n</code> 的二维矩阵 <code>matrix</code> 表示一个图像。请你将图像顺时针旋转 90 度。</p>
+<p>你必须在<strong>原地</strong>旋转图像，直接修改输入的二维矩阵。</p>
+<p><strong>说明：</strong>本题返回修改后的矩阵即可。</p>
+<h4>示例</h4>
+<pre>输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[[7,4,1],[8,5,2],[9,6,3]]</pre>
+<pre>输入：matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+输出：[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]</pre>
+<h4>提示</h4>
+<ul>
+<li>n == matrix.length == matrix[i].length</li>
+<li>1 &lt;= n &lt;= 20</li>
+<li>-1000 &lt;= matrix[i][j] &lt;= 1000</li>
+</ul>`,
+        template: `def rotate(matrix):
+    """
+    :type matrix: List[List[int]]
+    :rtype: List[List[int]]
+    """
+    # 在这里写你的代码（原地修改 matrix 后返回）
+    pass
+`,
+        functionName: 'rotate',
+        testCases: [
+            { input: [[[1, 2, 3], [4, 5, 6], [7, 8, 9]]], expected: [[7, 4, 1], [8, 5, 2], [9, 6, 3]] },
+            { input: [[[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]], expected: [[15, 13, 2, 5], [14, 3, 4, 1], [12, 6, 8, 9], [16, 7, 10, 11]] },
+            { input: [[[1]]], expected: [[1]] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/rotate-image/solutions/',
+    },
+    // ========== 哈希表 ==========
+    {
+        id: 49,
+        title: 'LC 49 - 字母异位词分组',
+        difficulty: 'Medium',
+        tags: ['哈希表'],
+        description: `
+<h3>49. 字母异位词分组 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个字符串数组，请你将<strong>字母异位词</strong>组合在一起。可以按任意顺序返回结果列表。</p>
+<p><strong>字母异位词</strong>是由重新排列源单词的所有字母得到的一个新单词。</p>
+<h4>示例</h4>
+<pre>输入：strs = ["eat","tea","tan","ate","nat","bat"]
+输出：[["bat"],["nat","tan"],["ate","eat","tea"]]</pre>
+<pre>输入：strs = [""]
+输出：[[""]]</pre>
+<pre>输入：strs = ["a"]
+输出：[["a"]]</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= strs.length &lt;= 10<sup>4</sup></li>
+<li>0 &lt;= strs[i].length &lt;= 100</li>
+<li>strs[i] 仅包含小写字母</li>
+</ul>`,
+        template: `def group_anagrams(strs):
+    """
+    :type strs: List[str]
+    :rtype: List[List[str]]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'group_anagrams',
+        testCases: [
+            { input: [['eat', 'tea', 'tan', 'ate', 'nat', 'bat']], expected: [['bat'], ['nat', 'tan'], ['ate', 'eat', 'tea']] },
+            { input: [['']],  expected: [['']] },
+            { input: [['a']], expected: [['a']] },
+        ],
+        compareFunc: 'sorted_nested',
+        solutionUrl: 'https://leetcode.cn/problems/group-anagrams/solutions/',
+    },
+    // ========== 子串/子数组 ==========
+    {
+        id: 53,
+        title: 'LC 53 - 最大子数组和',
+        difficulty: 'Medium',
+        tags: ['子串/子数组'],
+        description: `
+<h3>53. 最大子数组和 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个整数数组 <code>nums</code>，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<h4>示例</h4>
+<pre>输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出：6
+解释：连续子数组 [4,-1,2,1] 的和最大，为 6</pre>
+<pre>输入：nums = [1]
+输出：1</pre>
+<pre>输入：nums = [5,4,-1,7,8]
+输出：23</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10<sup>5</sup></li>
+<li>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></li>
+</ul>`,
+        template: `def max_sub_array(nums):
+    """
+    :type nums: List[int]
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'max_sub_array',
+        testCases: [
+            { input: [[-2, 1, -3, 4, -1, 2, 1, -5, 4]], expected: 6 },
+            { input: [[1]], expected: 1 },
+            { input: [[5, 4, -1, 7, 8]], expected: 23 },
+            { input: [[-1]], expected: -1 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/maximum-subarray/solutions/',
+    },
+    {
+        id: 55,
+        title: 'LC 55 - 跳跃游戏',
+        difficulty: 'Medium',
+        tags: ['贪心'],
+        description: `
+<h3>55. 跳跃游戏 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个非负整数数组 <code>nums</code>，你最初位于数组的<strong>第一个下标</strong>。数组中的每个元素代表你在该位置可以跳跃的最大长度。</p>
+<p>判断你是否能够到达最后一个下标。如果可以，返回 <code>True</code>；否则，返回 <code>False</code>。</p>
+<h4>示例</h4>
+<pre>输入：nums = [2,3,1,1,4]
+输出：True
+解释：可以先跳 1 步到下标 1，然后跳 3 步到最后一个下标</pre>
+<pre>输入：nums = [3,2,1,0,4]
+输出：False
+解释：无论怎样，总会到达下标为 3 的位置，该位置最大跳跃长度是 0</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10<sup>4</sup></li>
+<li>0 &lt;= nums[i] &lt;= 10<sup>5</sup></li>
+</ul>`,
+        template: `def can_jump(nums):
+    """
+    :type nums: List[int]
+    :rtype: bool
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'can_jump',
+        testCases: [
+            { input: [[2, 3, 1, 1, 4]], expected: true },
+            { input: [[3, 2, 1, 0, 4]], expected: false },
+            { input: [[0]], expected: true },
+            { input: [[2, 0, 0]], expected: true },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/jump-game/solutions/',
+    },
+    {
+        id: 56,
+        title: 'LC 56 - 合并区间',
+        difficulty: 'Medium',
+        tags: ['子串/子数组'],
+        description: `
+<h3>56. 合并区间 <span class="difficulty-tag medium">Medium</span></h3>
+<p>以数组 <code>intervals</code> 表示若干个区间的集合，其中单个区间为 <code>intervals[i] = [start<sub>i</sub>, end<sub>i</sub>]</code>。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。</p>
+<h4>示例</h4>
+<pre>输入：intervals = [[1,3],[2,6],[8,10],[15,18]]
+输出：[[1,6],[8,10],[15,18]]
+解释：区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6]</pre>
+<pre>输入：intervals = [[1,4],[4,5]]
+输出：[[1,5]]
+解释：区间 [1,4] 和 [4,5] 可被视为重叠区间</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= intervals.length &lt;= 10<sup>4</sup></li>
+<li>intervals[i].length == 2</li>
+<li>0 &lt;= start<sub>i</sub> &lt;= end<sub>i</sub> &lt;= 10<sup>4</sup></li>
+</ul>`,
+        template: `def merge(intervals):
+    """
+    :type intervals: List[List[int]]
+    :rtype: List[List[int]]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'merge',
+        testCases: [
+            { input: [[[1, 3], [2, 6], [8, 10], [15, 18]]], expected: [[1, 6], [8, 10], [15, 18]] },
+            { input: [[[1, 4], [4, 5]]], expected: [[1, 5]] },
+            { input: [[[1, 4], [0, 4]]], expected: [[0, 4]] },
+            { input: [[[1, 4], [2, 3]]], expected: [[1, 4]] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/merge-intervals/solutions/',
+    },
+    // ========== 回溯 ==========
+    {
+        id: 78,
+        title: 'LC 78 - 子集',
+        difficulty: 'Medium',
+        tags: ['回溯'],
+        description: `
+<h3>78. 子集 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个整数数组 <code>nums</code>，数组中的元素<strong>互不相同</strong>。返回该数组所有可能的子集（幂集）。</p>
+<p>解集<strong>不能</strong>包含重复的子集。你可以按<strong>任意顺序</strong>返回解集。</p>
+<h4>示例</h4>
+<pre>输入：nums = [1,2,3]
+输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]</pre>
+<pre>输入：nums = [0]
+输出：[[],[0]]</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10</li>
+<li>-10 &lt;= nums[i] &lt;= 10</li>
+<li>nums 中的所有元素互不相同</li>
+</ul>`,
+        template: `def subsets(nums):
+    """
+    :type nums: List[int]
+    :rtype: List[List[int]]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'subsets',
+        testCases: [
+            { input: [[1, 2, 3]], expected: [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]] },
+            { input: [[0]], expected: [[], [0]] },
+            { input: [[1, 2]], expected: [[], [1], [2], [1, 2]] },
+        ],
+        compareFunc: 'sorted_nested',
+        solutionUrl: 'https://leetcode.cn/problems/subsets/solutions/',
+    },
+    // ========== 动态规划 ==========
+    {
+        id: 198,
+        title: 'LC 198 - 打家劫舍',
+        difficulty: 'Medium',
+        tags: ['动态规划'],
+        description: `
+<h3>198. 打家劫舍 <span class="difficulty-tag medium">Medium</span></h3>
+<p>你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，<strong>如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警</strong>。</p>
+<p>给定一个代表每个房屋存放金额的非负整数数组，计算你<strong>不触动警报装置的情况下</strong>，一夜之内能够偷窃到的最高金额。</p>
+<h4>示例</h4>
+<pre>输入：nums = [1,2,3,1]
+输出：4
+解释：偷窃 1 号房屋 (金额 = 1) 和 3 号房屋 (金额 = 3)，总金额 = 1 + 3 = 4</pre>
+<pre>输入：nums = [2,7,9,3,1]
+输出：12
+解释：偷窃 1、3、5 号房屋，总金额 = 2 + 9 + 1 = 12</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 100</li>
+<li>0 &lt;= nums[i] &lt;= 400</li>
+</ul>`,
+        template: `def rob(nums):
+    """
+    :type nums: List[int]
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'rob',
+        testCases: [
+            { input: [[1, 2, 3, 1]], expected: 4 },
+            { input: [[2, 7, 9, 3, 1]], expected: 12 },
+            { input: [[2, 1, 1, 2]], expected: 4 },
+            { input: [[0]], expected: 0 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/house-robber/solutions/',
+    },
+    // ========== 图论 ==========
+    {
+        id: 200,
+        title: 'LC 200 - 岛屿数量',
+        difficulty: 'Medium',
+        tags: ['图论'],
+        description: `
+<h3>200. 岛屿数量 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个由 <code>'1'</code>（陆地）和 <code>'0'</code>（水）组成的的二维网格，请你计算网格中岛屿的数量。</p>
+<p>岛屿总是被水包围，并且每座岛屿只能由水平方向和/或垂直方向上相邻的陆地连接形成。</p>
+<p>此外，你可以假设该网格的四条边均被水包围。</p>
+<h4>示例</h4>
+<pre>输入：grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+输出：1</pre>
+<pre>输入：grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+输出：3</pre>
+<h4>提示</h4>
+<ul>
+<li>m == grid.length</li>
+<li>n == grid[i].length</li>
+<li>1 &lt;= m, n &lt;= 300</li>
+<li>grid[i][j] 的值为 '0' 或 '1'</li>
+</ul>`,
+        template: `def num_islands(grid):
+    """
+    :type grid: List[List[str]]
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'num_islands',
+        testCases: [
+            { input: [[['1', '1', '1', '1', '0'], ['1', '1', '0', '1', '0'], ['1', '1', '0', '0', '0'], ['0', '0', '0', '0', '0']]], expected: 1 },
+            { input: [[['1', '1', '0', '0', '0'], ['1', '1', '0', '0', '0'], ['0', '0', '1', '0', '0'], ['0', '0', '0', '1', '1']]], expected: 3 },
+            { input: [[['1']]], expected: 1 },
+            { input: [[['0']]], expected: 0 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/number-of-islands/solutions/',
+    },
+    // ========== 堆 ==========
+    {
+        id: 215,
+        title: 'LC 215 - 数组中的第K个最大元素',
+        difficulty: 'Medium',
+        tags: ['堆'],
+        description: `
+<h3>215. 数组中的第K个最大元素 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给定整数数组 <code>nums</code> 和整数 <code>k</code>，请返回数组中第 <code>k</code> 个最大的元素。</p>
+<p>请注意，你需要找的是数组排序后的第 <code>k</code> 个最大的元素，而不是第 <code>k</code> 个不同的元素。</p>
+<p>你必须设计并实现时间复杂度为 <code>O(n)</code> 的算法解决此问题。</p>
+<h4>示例</h4>
+<pre>输入：nums = [3,2,1,5,6,4], k = 2
+输出：5</pre>
+<pre>输入：nums = [3,2,3,1,2,4,5,5,6], k = 4
+输出：4</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= k &lt;= nums.length &lt;= 10<sup>5</sup></li>
+<li>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></li>
+</ul>`,
+        template: `def find_kth_largest(nums, k):
+    """
+    :type nums: List[int]
+    :type k: int
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'find_kth_largest',
+        testCases: [
+            { input: [[3, 2, 1, 5, 6, 4], 2], expected: 5 },
+            { input: [[3, 2, 3, 1, 2, 4, 5, 5, 6], 4], expected: 4 },
+            { input: [[1], 1], expected: 1 },
+            { input: [[7, 6, 5, 4, 3, 2, 1], 5], expected: 3 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/kth-largest-element-in-an-array/solutions/',
+    },
+    // ========== 链表 ==========
+    {
+        id: 234,
+        title: 'LC 234 - 回文链表',
+        difficulty: 'Easy',
+        tags: ['链表'],
+        description: `
+<h3>234. 回文链表 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你一个单链表的头节点 <code>head</code>，请你判断该链表是否为<strong>回文链表</strong>。如果是，返回 <code>True</code>；否则，返回 <code>False</code>。</p>
+<p><strong>说明：</strong>已内置 <code>ListNode</code> 类（<code>val</code> + <code>next</code>），输入自动转换，直接操作链表即可。</p>
+<h4>示例</h4>
+<pre>输入：head = [1,2,2,1]
+输出：True</pre>
+<pre>输入：head = [1,2]
+输出：False</pre>
+<h4>提示</h4>
+<ul>
+<li>链表中节点数目在范围 [1, 10<sup>5</sup>] 内</li>
+<li>0 &lt;= Node.val &lt;= 9</li>
+</ul>
+<p><strong>进阶：</strong>你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？</p>`,
+        template: `# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+def is_palindrome(head):
+    """
+    :type head: ListNode
+    :rtype: bool
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'is_palindrome',
+        setup: LINKED_LIST_SETUP,
+        argWrappers: ['_to_linked_list'],
+        testCases: [
+            { input: [[1, 2, 2, 1]], expected: true },
+            { input: [[1, 2]], expected: false },
+            { input: [[1]], expected: true },
+            { input: [[1, 2, 3, 2, 1]], expected: true },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/palindrome-linked-list/solutions/',
+    },
+    // ========== 动态规划 ==========
+    {
+        id: 322,
+        title: 'LC 322 - 零钱兑换',
+        difficulty: 'Medium',
+        tags: ['动态规划'],
+        description: `
+<h3>322. 零钱兑换 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个整数数组 <code>coins</code>，表示不同面额的硬币；以及一个整数 <code>amount</code>，表示总金额。</p>
+<p>计算并返回可以凑成总金额所需的<strong>最少的硬币个数</strong>。如果没有任何一种硬币组合能组成总金额，返回 <code>-1</code>。</p>
+<p>你可以认为每种硬币的数量是无限的。</p>
+<h4>示例</h4>
+<pre>输入：coins = [1,2,5], amount = 11
+输出：3
+解释：11 = 5 + 5 + 1</pre>
+<pre>输入：coins = [2], amount = 3
+输出：-1</pre>
+<pre>输入：coins = [1], amount = 0
+输出：0</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= coins.length &lt;= 12</li>
+<li>1 &lt;= coins[i] &lt;= 2<sup>31</sup> - 1</li>
+<li>0 &lt;= amount &lt;= 10<sup>4</sup></li>
+</ul>`,
+        template: `def coin_change(coins, amount):
+    """
+    :type coins: List[int]
+    :type amount: int
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'coin_change',
+        testCases: [
+            { input: [[1, 2, 5], 11], expected: 3 },
+            { input: [[2], 3], expected: -1 },
+            { input: [[1], 0], expected: 0 },
+            { input: [[1, 2, 5], 100], expected: 20 },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/coin-change/solutions/',
+    },
+    // ========== 栈 ==========
+    {
+        id: 739,
+        title: 'LC 739 - 每日温度',
+        difficulty: 'Medium',
+        tags: ['栈'],
+        description: `
+<h3>739. 每日温度 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给定一个整数数组 <code>temperatures</code>，表示每天的温度，返回一个数组 <code>answer</code>，其中 <code>answer[i]</code> 是指对于第 <code>i</code> 天，下一个更高温度出现在几天后。如果气温在这之后都不会升高，请在该位置用 <code>0</code> 来代替。</p>
+<h4>示例</h4>
+<pre>输入：temperatures = [73,74,75,71,69,72,76,73]
+输出：[1,1,4,2,1,1,0,0]</pre>
+<pre>输入：temperatures = [30,40,50,60]
+输出：[1,1,1,0]</pre>
+<pre>输入：temperatures = [30,60,90]
+输出：[1,1,0]</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= temperatures.length &lt;= 10<sup>5</sup></li>
+<li>30 &lt;= temperatures[i] &lt;= 100</li>
+</ul>`,
+        template: `def daily_temperatures(temperatures):
+    """
+    :type temperatures: List[int]
+    :rtype: List[int]
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'daily_temperatures',
+        testCases: [
+            { input: [[73, 74, 75, 71, 69, 72, 76, 73]], expected: [1, 1, 4, 2, 1, 1, 0, 0] },
+            { input: [[30, 40, 50, 60]], expected: [1, 1, 1, 0] },
+            { input: [[30, 60, 90]], expected: [1, 1, 0] },
+            { input: [[100]], expected: [0] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/daily-temperatures/solutions/',
+    },
+    // ========== 二叉树 ==========
+    {
+        id: 108,
+        title: 'LC 108 - 将有序数组转换为二叉搜索树',
+        difficulty: 'Easy',
+        tags: ['二叉树'],
+        description: `
+<h3>108. 将有序数组转换为二叉搜索树 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你一个整数数组 <code>nums</code>，其中元素已经按<strong>严格递增</strong>顺序排列，请你将其转换为一棵<strong>平衡</strong>二叉搜索树。</p>
+<p><strong>说明：</strong>已内置 <code>TreeNode</code> 类。系统会自动验证你返回的树是否为合法的平衡 BST（中序遍历结果与原数组一致即通过）。</p>
+<h4>示例</h4>
+<pre>输入：nums = [-10,-3,0,5,9]
+输出：[0,-3,9,-10,null,5]（答案不唯一，合法即可）</pre>
+<pre>输入：nums = [1,3]
+输出：[3,1]（也接受 [1,null,3]）</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10<sup>4</sup></li>
+<li>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></li>
+<li>nums 按严格递增顺序排列</li>
+</ul>`,
+        template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def sorted_array_to_bst(nums):
+    """
+    :type nums: List[int]
+    :rtype: TreeNode
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'sorted_array_to_bst',
+        setup: BINARY_TREE_SETUP + `
+def _validate_balanced_bst(root):
+    if root is None:
+        return []
+    def height(node):
+        if not node:
+            return 0
+        l, r = height(node.left), height(node.right)
+        if l < 0 or r < 0 or abs(l - r) > 1:
+            return -1
+        return max(l, r) + 1
+    if height(root) < 0:
+        return "ERROR: not height-balanced"
+    vals = []
+    def inorder(node):
+        if node:
+            inorder(node.left)
+            vals.append(node.val)
+            inorder(node.right)
+    inorder(root)
+    for i in range(1, len(vals)):
+        if vals[i] <= vals[i - 1]:
+            return "ERROR: not a valid BST"
+    return vals
+`,
+        returnWrapper: '_validate_balanced_bst',
+        testCases: [
+            { input: [[-10, -3, 0, 5, 9]], expected: [-10, -3, 0, 5, 9] },
+            { input: [[1, 3]], expected: [1, 3] },
+            { input: [[0]], expected: [0] },
+            { input: [[-5, -3, 0, 1, 4, 7]], expected: [-5, -3, 0, 1, 4, 7] },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/solutions/',
+    },
+    // ========== 链表 ==========
+    {
+        id: 141,
+        title: 'LC 141 - 环形链表',
+        difficulty: 'Easy',
+        tags: ['链表'],
+        description: `
+<h3>141. 环形链表 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你一个链表的头节点 <code>head</code>，判断链表中是否有环。</p>
+<p>如果链表中存在环（即某个节点的 <code>next</code> 指针指向链表中之前的某个节点），则返回 <code>True</code>；否则，返回 <code>False</code>。</p>
+<p><strong>说明：</strong>已内置 <code>ListNode</code> 类。输入格式为 <code>[节点值数组, pos]</code>，其中 <code>pos</code> 表示尾节点连接到的节点下标（-1 表示无环），系统自动构造链表。</p>
+<h4>示例</h4>
+<pre>输入：head = [3,2,0,-4], pos = 1
+输出：True
+解释：链表中有一个环，尾节点连接到下标为 1 的节点</pre>
+<pre>输入：head = [1,2], pos = 0
+输出：True</pre>
+<pre>输入：head = [1], pos = -1
+输出：False</pre>
+<h4>提示</h4>
+<ul>
+<li>链表中节点的数目范围是 [0, 10<sup>4</sup>]</li>
+<li>-10<sup>5</sup> &lt;= Node.val &lt;= 10<sup>5</sup></li>
+</ul>
+<p><strong>进阶：</strong>你能用 O(1) 内存解决此题吗？（快慢指针）</p>`,
+        template: `# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+def has_cycle(head):
+    """
+    :type head: ListNode
+    :rtype: bool
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: 'has_cycle',
+        setup: LINKED_LIST_SETUP + `
+def _to_cyclic_list(args):
+    arr, pos = args
+    if not arr:
+        return None
+    nodes = [ListNode(v) for v in arr]
+    for i in range(len(nodes) - 1):
+        nodes[i].next = nodes[i + 1]
+    if 0 <= pos < len(nodes):
+        nodes[-1].next = nodes[pos]
+    return nodes[0]
+`,
+        argWrappers: ['_to_cyclic_list'],
+        testCases: [
+            { input: [[[3, 2, 0, -4], 1]], expected: true },
+            { input: [[[1, 2], 0]], expected: true },
+            { input: [[[1], -1]], expected: false },
+            { input: [[[1, 2, 3, 4], -1]], expected: false },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/linked-list-cycle/solutions/',
+    },
+    {
+        id: 160,
+        title: 'LC 160 - 相交链表',
+        difficulty: 'Easy',
+        tags: ['链表'],
+        description: `
+<h3>160. 相交链表 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你两个单链表的头节点 <code>headA</code> 和 <code>headB</code>，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 <code>null</code>。</p>
+<p><strong>说明：</strong>已内置 <code>ListNode</code> 类。输入格式为 <code>[listA, listB, skipA, skipB]</code>，其中 <code>skipA/skipB</code> 表示各链表在相交前的节点数，系统自动构造共享尾部的两条链表。</p>
+<h4>示例</h4>
+<pre>输入：listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+输出：8
+解释：相交节点的值为 8，A 跳过 2 个节点后、B 跳过 3 个节点后汇合</pre>
+<pre>输入：listA = [1,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1
+输出：2</pre>
+<pre>输入：listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2
+输出：null（无相交）</pre>
+<h4>提示</h4>
+<ul>
+<li>listA 中节点数目为 m，listB 中节点数目为 n</li>
+<li>1 &lt;= m, n &lt;= 3 * 10<sup>4</sup></li>
+</ul>
+<p><strong>进阶：</strong>你能设计一个时间复杂度 O(m + n)、空间复杂度 O(1) 的解法吗？</p>`,
+        template: `# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+def get_intersection_node(headA, headB):
+    """
+    :type headA: ListNode
+    :type headB: ListNode
+    :rtype: ListNode
+    """
+    # 在这里写你的代码
+    pass
+`,
+        functionName: '_test_intersection',
+        setup: LINKED_LIST_SETUP + `
+def _test_intersection(params):
+    listA_vals, listB_vals, skipA, skipB = params
+    shared = None
+    if skipA < len(listA_vals):
+        shared_nodes = [ListNode(v) for v in listA_vals[skipA:]]
+        for i in range(len(shared_nodes) - 1):
+            shared_nodes[i].next = shared_nodes[i + 1]
+        shared = shared_nodes[0]
+    headA = shared
+    if skipA > 0:
+        a_nodes = [ListNode(v) for v in listA_vals[:skipA]]
+        for i in range(len(a_nodes) - 1):
+            a_nodes[i].next = a_nodes[i + 1]
+        a_nodes[-1].next = shared
+        headA = a_nodes[0]
+    headB = shared
+    if skipB > 0:
+        b_nodes = [ListNode(v) for v in listB_vals[:skipB]]
+        for i in range(len(b_nodes) - 1):
+            b_nodes[i].next = b_nodes[i + 1]
+        b_nodes[-1].next = shared
+        headB = b_nodes[0]
+    result = get_intersection_node(headA, headB)
+    return result.val if result else None
+`,
+        testCases: [
+            { input: [[[4, 1, 8, 4, 5], [5, 6, 1, 8, 4, 5], 2, 3]], expected: 8 },
+            { input: [[[1, 9, 1, 2, 4], [3, 2, 4], 3, 1]], expected: 2 },
+            { input: [[[2, 6, 4], [1, 5], 3, 2]], expected: null },
+        ],
+        compareFunc: 'equal',
+        solutionUrl: 'https://leetcode.cn/problems/intersection-of-two-linked-lists/solutions/',
+    },
 ];
 
 // ---------- 本地缓存 ----------
@@ -821,6 +2022,13 @@ function compareResults(actual, expected, mode) {
     if (mode === 'sorted') {
         if (!Array.isArray(actual) || !Array.isArray(expected)) return false;
         return JSON.stringify([...actual].sort()) === JSON.stringify([...expected].sort());
+    }
+    if (mode === 'sorted_nested') {
+        if (!Array.isArray(actual) || !Array.isArray(expected)) return false;
+        const normalize = arr => arr
+            .map(x => Array.isArray(x) ? [...x].sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))) : x)
+            .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+        return JSON.stringify(normalize(actual)) === JSON.stringify(normalize(expected));
     }
     // 'equal' default
     return JSON.stringify(actual) === JSON.stringify(expected);
