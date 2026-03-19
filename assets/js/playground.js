@@ -119,6 +119,7 @@ const PROBLEMS = [
         ],
         compareFunc: 'sorted',
         solutionUrl: 'https://leetcode.cn/problems/two-sum/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19718436',
     },
     {
         id: 70,
@@ -157,6 +158,7 @@ const PROBLEMS = [
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/climbing-stairs/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19718527',
     },
     {
         id: 206,
@@ -205,6 +207,7 @@ def reverse_list(head):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/reverse-linked-list/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19722217',
     },
     {
         id: 20,
@@ -250,6 +253,7 @@ def reverse_list(head):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/valid-parentheses/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19722592',
     },
     {
         id: 21,
@@ -300,6 +304,7 @@ def merge_two_lists(list1, list2):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/merge-two-sorted-lists/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19741176',
     },
     {
         id: 35,
@@ -341,6 +346,7 @@ def merge_two_lists(list1, list2):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/search-insert-position/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19740616',
     },
     {
         id: 118,
@@ -376,6 +382,7 @@ def merge_two_lists(list1, list2):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/pascals-triangle/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19727095',
     },
     {
         id: 121,
@@ -416,6 +423,7 @@ def merge_two_lists(list1, list2):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19727110',
     },
     {
         id: 136,
@@ -456,6 +464,7 @@ def merge_two_lists(list1, list2):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/single-number/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19731715',
     },
     {
         id: 169,
@@ -495,6 +504,7 @@ def merge_two_lists(list1, list2):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/majority-element/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19736326',
     },
     {
         id: 283,
@@ -533,6 +543,7 @@ def merge_two_lists(list1, list2):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/move-zeroes/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19736398',
     },
     // ========== 二叉树 ==========
     {
@@ -582,6 +593,7 @@ def inorder_traversal(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/binary-tree-inorder-traversal/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19741295',
     },
     {
         id: 104,
@@ -629,6 +641,7 @@ def max_depth(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/maximum-depth-of-binary-tree/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19741351',
     },
     {
         id: 226,
@@ -1847,8 +1860,12 @@ function loadProblem(problem) {
     const footer = document.getElementById('problem-footer');
     if (problem.solutionUrl) {
         const lcUrl = problem.solutionUrl.replace(/solutions\/$/, '');
-        footer.innerHTML = `<a href="${problem.solutionUrl}" target="_blank" rel="noopener" class="solution-btn">查看题解 ↗</a>`
+        let btns = `<a href="${problem.solutionUrl}" target="_blank" rel="noopener" class="solution-btn">查看题解 ↗</a>`
             + `<a href="${lcUrl}" target="_blank" rel="noopener" class="solution-btn leetcode-btn">LeetCode 提交 ↗</a>`;
+        if (problem.blogUrl) {
+            btns += `<a href="${problem.blogUrl}" target="_blank" rel="noopener" class="solution-btn blog-btn">查看博客 ↗</a>`;
+        }
+        footer.innerHTML = btns;
         footer.style.display = '';
     } else {
         footer.innerHTML = '';

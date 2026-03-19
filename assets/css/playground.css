@@ -300,6 +300,11 @@
     margin-left: var(--spacing-sm);
 }
 
+.blog-btn {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    margin-left: var(--spacing-sm);
+}
+
 /* ---------- CodeMirror 覆盖 ---------- */
 .editor-body {
     padding: 0 !important;
