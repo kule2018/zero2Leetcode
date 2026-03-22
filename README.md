@@ -6,9 +6,10 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![LeetCode](https://img.shields.io/badge/LeetCode-Hot%20100-orange.svg)](https://leetcode.cn/studyplan/top-100-liked/)
+[![AI Coach](https://img.shields.io/badge/AI-刷题助手-blueviolet.svg)](#-ai-刷题助手)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习](https://leetcode.cn/)
+[开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [AI 助手](#-ai-刷题助手)
 
 </div>
 
@@ -17,6 +18,13 @@
 ## 📖 项目简介
 
 本项目专为**计算机专业求职者**设计，帮助你从 Python 零基础到能够独立解决 LeetCode 中等难度题目，顺利通过企业笔试机试第一关。
+
+### ✨ 核心亮点
+
+- 📚 **系统学习路线** — 4 阶段从 Python 基础到 LeetCode 实战
+- 🖥️ **在线练习场** — 内置 36 道 Hot 100 题目，浏览器直接运行 Python
+- 🤖 **AI 刷题助手** — 内置 AI 教练，自动读取题目和代码，给出诊断和提示
+- 📝 **完整题解** — LeetCode Hot 100 全部题解
 
 ### 🎯 目标用户
 
@@ -27,6 +35,44 @@
 ### ⏱️ 学习周期
 
 建议 **8-12 周**，每天投入 2-3 小时
+
+---
+
+## 🤖 AI 刷题助手
+
+> **全栈内置，免费使用，无需配置** — 点击练习场右下角 🤖 按钮即可体验
+
+AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当前正在做的题目和编写的代码**，然后以教学式方式帮你诊断问题、给出提示，而不是直接给答案。
+
+### 功能预览
+
+<div align="center">
+
+| 练习场 & AI 按钮 | AI 面板 & 快捷操作 | AI 上下文诊断 |
+|:---:|:---:|:---:|
+| ![练习场](assets/images/screenshots/ai-fab-button.png) | ![AI面板](assets/images/screenshots/ai-panel-open.png) | ![AI诊断](assets/images/screenshots/ai-context-response.png) |
+| 右下角 🤖 浮动按钮 | 5 种快捷操作一键触发 | 精准识别「两数之和」并给出思路 |
+
+</div>
+
+### 快捷操作
+
+| 按钮 | 功能 |
+|------|------|
+| 🔍 帮我看看代码 | 诊断代码错误，指出问题根源 |
+| 💡 给个提示 | 不给答案，只给思路方向 |
+| 📖 解释题目 | 用通俗语言重新解释题意 |
+| 🐛 分析报错 | 根据报错信息定位原因 |
+| ✨ 优化代码 | 提供更优解法和改进建议 |
+
+### 使用方式
+
+1. 打开 [在线练习场](playground.html)，选择一道题目
+2. 点击右下角 🤖 按钮，AI 面板从右侧滑出
+3. 点击快捷按钮或输入自定义问题
+4. AI 自动注入当前题目 + 你的代码作为上下文，给出针对性回答
+
+> 💡 **默认免费可用**，内置 OpenRouter 免费 API。如需使用自己的 API，点击齿轮图标 ⚙️ 即可配置。
 
 ---
 
@@ -253,29 +299,36 @@
 zero2Leetcode/
 ├── README.md                    # 项目说明
 ├── index.html                   # 🌐 前端学习平台入口
+├── playground.html              # 🖥️ 在线练习场（含 AI 助手）
 ├── requirements.txt             # Python 依赖
+│
+├── assets/
+│   ├── css/
+│   │   ├── style.css            # 全站设计系统
+│   │   └── playground.css       # 练习场 + AI 助手样式
+│   ├── js/
+│   │   ├── playground.js        # 练习场核心逻辑
+│   │   └── ai-assistant.js      # 🤖 AI 刷题助手模块
+│   └── images/                  # 静态资源
 │
 ├── 00_python_basics/            # Python 基础
 ├── 01_data_structures/          # 数据结构
 ├── 02_algorithms/               # 核心算法
-├── 03_leetcode_practice/        # LeetCode 实战
-│   ├── hash/                    # 哈希表
-│   ├── two_pointers/            # 双指针
-│   ├── sliding_window/          # 滑动窗口
-│   ├── stack/                   # 栈
-│   ├── linked_list/             # 链表
-│   ├── tree/                    # 树
-│   ├── graph/                   # 图
-│   ├── backtrack/               # 回溯
-│   ├── binary_search/           # 二分查找
-│   ├── dp/                      # 动态规划
-│   ├── greedy/                  # 贪心
-│   ├── heap/                    # 堆
-│   ├── matrix/                  # 矩阵
-│   └── other/                   # 其他技巧
-│
-├── docs/                        # 学习文档
-└── assets/                      # 前端静态资源
+└── 03_leetcode_practice/        # LeetCode 实战
+    ├── hash/                    # 哈希表
+    ├── two_pointers/            # 双指针
+    ├── sliding_window/          # 滑动窗口
+    ├── stack/                   # 栈
+    ├── linked_list/             # 链表
+    ├── tree/                    # 树
+    ├── graph/                   # 图
+    ├── backtrack/               # 回溯
+    ├── binary_search/           # 二分查找
+    ├── dp/                      # 动态规划
+    ├── greedy/                  # 贪心
+    ├── heap/                    # 堆
+    ├── matrix/                  # 矩阵
+    └── other/                   # 其他技巧
 ```
 
 ---
@@ -286,11 +339,12 @@ zero2Leetcode/
 
 ```bash
 # 克隆项目
-git clone https://github.com/yourname/zero2Leetcode.git
+git clone https://github.com/ranxi2001/zero2Leetcode.git
 cd zero2Leetcode
 
-# 打开前端学习平台
-# 直接双击 index.html 或使用 Live Server
+# 启动本地服务器，打开练习场
+python3 -m http.server 8080
+# 浏览器访问 http://localhost:8080/playground.html
 
 # 运行 Python 示例
 python 00_python_basics/01_variables_types/concepts.py
@@ -308,9 +362,10 @@ python 00_python_basics/01_variables_types/concepts.py
 
 1. **循序渐进**: 按阶段学习，不要跳跃
 2. **动手为先**: 每道题先自己尝试 15-30 分钟
-3. **理解模板**: 掌握每类题型的解题模板
-4. **重复练习**: 做错的题目隔 3-5 天重做
-5. **总结归纳**: 建立自己的错题本和模板库
+3. **善用 AI**: 卡住时点 🤖 助手获取提示，而不是直接看答案
+4. **理解模板**: 掌握每类题型的解题模板
+5. **重复练习**: 做错的题目隔 3-5 天重做
+6. **总结归纳**: 建立自己的错题本和模板库
 
 ---
 

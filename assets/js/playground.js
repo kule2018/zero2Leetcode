@@ -1072,7 +1072,7 @@ def level_order(root):
         functionName: 'group_anagrams',
         testCases: [
             { input: [['eat', 'tea', 'tan', 'ate', 'nat', 'bat']], expected: [['bat'], ['nat', 'tan'], ['ate', 'eat', 'tea']] },
-            { input: [['']],  expected: [['']] },
+            { input: [['']], expected: [['']] },
             { input: [['a']], expected: [['a']] },
         ],
         compareFunc: 'sorted_nested',
@@ -1820,6 +1820,7 @@ function initEditor() {
             'Ctrl-Space': (cm) => cm.showHint({ hint: pythonHint }),
         },
     });
+    window.editor = editor; // expose for AI assistant
 
     // 输入时自动弹出补全
     editor.on('inputRead', (cm, change) => {
@@ -1856,6 +1857,7 @@ function initProblemSelect() {
 
 function loadProblem(problem) {
     currentProblem = problem;
+    window.currentProblem = problem; // expose for AI assistant
     document.getElementById('problem-description').innerHTML = problem.description;
     const footer = document.getElementById('problem-footer');
     if (problem.solutionUrl) {
