@@ -248,6 +248,7 @@ class AIAssistant {
             this.panel.classList.add('open');
             this.overlay.classList.add('visible');
             this.fab.classList.add('active');
+            document.body.classList.add('ai-open');
             this.openConfig();
             return;
         }
@@ -255,6 +256,7 @@ class AIAssistant {
         this.panel.classList.add('open');
         this.overlay.classList.add('visible');
         this.fab.classList.add('active');
+        document.body.classList.add('ai-open');
         this.inputEl.focus();
     }
 
@@ -263,6 +265,7 @@ class AIAssistant {
         this.panel.classList.remove('open');
         this.overlay.classList.remove('visible');
         this.fab.classList.remove('active');
+        document.body.classList.remove('ai-open');
     }
 
     openConfig() {
@@ -304,7 +307,7 @@ class AIAssistant {
         const welcome = document.createElement('div');
         welcome.className = 'ai-welcome';
         welcome.innerHTML = `
-            <div class="ai-welcome-icon">🤖</div>
+            <div class="ai-welcome-icon"><svg width="72" height="40" viewBox="0 0 72 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20 4C20.9 12.3 27.7 19.1 36 20C27.7 20.9 20.9 27.7 20 36C19.1 27.7 12.3 20.9 4 20C12.3 19.1 19.1 12.3 20 4Z" /><text x="42" y="28" font-family="system-ui,-apple-system,sans-serif" font-size="22" font-weight="700">AI</text></svg></div>
             <h3>AI 刷题助手</h3>
             <p>我会读取你当前的题目和代码，帮你诊断问题、给出提示。</p>
             <p class="ai-welcome-hint">点击下方快捷按钮或直接输入问题开始</p>
@@ -394,7 +397,7 @@ class AIAssistant {
         const msg = document.createElement('div');
         msg.className = `ai-msg ai-msg-${role}`;
         msg.innerHTML = `
-            <div class="ai-msg-avatar">${role === 'user' ? '👤' : '🤖'}</div>
+            <div class="ai-msg-avatar">${role === 'user' ? '👤' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C12.6 7.4 16.6 11.4 22 12C16.6 12.6 12.6 16.6 12 22C11.4 16.6 7.4 12.6 2 12C7.4 11.4 11.4 7.4 12 2Z" /></svg>'}</div>
             <div class="ai-msg-bubble">
                 <div class="ai-msg-content">${role === 'user' ? this.escapeHtml(content) : this.renderMarkdown(content)}</div>
             </div>
