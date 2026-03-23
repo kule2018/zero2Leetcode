@@ -167,4 +167,4 @@ print(sol.climbStairs(10))  # 89
 
 ---
 
-[← 上一章：核心算法](/02_algorithms/) | [返回首页](/)
+[← 上一章：核心算法]({{ '/02_algorithms/' | relative_url }}) | [返回首页]({{ '/' | relative_url }})

@@ -158,4 +158,4 @@ def bfs(start):
 
 ---
 
-[← 上一章：数据结构](/01_data_structures/) | [下一章：LeetCode 实战 →](/03_leetcode_practice/)
+[← 上一章：数据结构]({{ '/01_data_structures/' | relative_url }}) | [下一章：LeetCode 实战 →]({{ '/03_leetcode_practice/' | relative_url }})

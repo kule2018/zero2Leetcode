@@ -259,4 +259,4 @@ for c in s:
 
 ---
 
-[← 返回首页](/) | [下一章：数据结构 →](/01_data_structures/)
+[← 返回首页]({{ '/' | relative_url }}) | [下一章：数据结构 →]({{ '/01_data_structures/' | relative_url }})

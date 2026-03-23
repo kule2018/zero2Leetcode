@@ -144,4 +144,4 @@ heapq.heappush(max_heap, -3)
 
 ---
 
-[← 上一章：Python 基础](/00_python_basics/) | [下一章：核心算法 →](/02_algorithms/)
+[← 上一章：Python 基础]({{ '/00_python_basics/' | relative_url }}) | [下一章：核心算法 →]({{ '/02_algorithms/' | relative_url }})

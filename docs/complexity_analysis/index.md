@@ -81,4 +81,4 @@ for i in range(n):
 
 ---
 
-[← 返回首页](/)
+[← 返回首页]({{ '/' | relative_url }})

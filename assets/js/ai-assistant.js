@@ -51,6 +51,30 @@ function _dk() {
     try { return atob(_k.join('')); } catch (e) { return ''; }
 }
 
+const AI_ICON_SVG = `
+<svg class="ai-brand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M12 3v3" />
+    <path d="M9 3h6" />
+    <rect x="4" y="7" width="16" height="11" rx="4" />
+    <path d="M9 11h.01" />
+    <path d="M15 11h.01" />
+    <path d="M8.5 15h7" />
+    <path d="M7 21v-3" />
+    <path d="M17 21v-3" />
+</svg>`;
+
+const AI_WELCOME_ICON_SVG = `
+<svg class="ai-brand-icon ai-brand-icon-large" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M12 3v3" />
+    <path d="M9 3h6" />
+    <rect x="4" y="7" width="16" height="11" rx="4" />
+    <path d="M9 11h.01" />
+    <path d="M15 11h.01" />
+    <path d="M8.5 15h7" />
+    <path d="M7 21v-3" />
+    <path d="M17 21v-3" />
+</svg>`;
+
 // ---------- 配置管理 ----------
 function loadAIConfig() {
     try {
@@ -307,7 +331,7 @@ class AIAssistant {
         const welcome = document.createElement('div');
         welcome.className = 'ai-welcome';
         welcome.innerHTML = `
-            <div class="ai-welcome-icon"><svg width="72" height="40" viewBox="0 0 72 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20 4C20.9 12.3 27.7 19.1 36 20C27.7 20.9 20.9 27.7 20 36C19.1 27.7 12.3 20.9 4 20C12.3 19.1 19.1 12.3 20 4Z" /><text x="42" y="28" font-family="system-ui,-apple-system,sans-serif" font-size="22" font-weight="700">AI</text></svg></div>
+            <div class="ai-welcome-icon">${AI_WELCOME_ICON_SVG}</div>
             <h3>AI 刷题助手</h3>
             <p>我会读取你当前的题目和代码，帮你诊断问题、给出提示。</p>
             <p class="ai-welcome-hint">点击下方快捷按钮或直接输入问题开始</p>
@@ -397,7 +421,7 @@ class AIAssistant {
         const msg = document.createElement('div');
         msg.className = `ai-msg ai-msg-${role}`;
         msg.innerHTML = `
-            <div class="ai-msg-avatar">${role === 'user' ? '👤' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C12.6 7.4 16.6 11.4 22 12C16.6 12.6 12.6 16.6 12 22C11.4 16.6 7.4 12.6 2 12C7.4 11.4 11.4 7.4 12 2Z" /></svg>'}</div>
+            <div class="ai-msg-avatar">${role === 'user' ? '👤' : AI_ICON_SVG}</div>
             <div class="ai-msg-bubble">
                 <div class="ai-msg-content">${role === 'user' ? this.escapeHtml(content) : this.renderMarkdown(content)}</div>
             </div>
