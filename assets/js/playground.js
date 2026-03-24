@@ -691,6 +691,7 @@ def invert_tree(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/invert-binary-tree/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766910',
     },
     {
         id: 101,
@@ -737,6 +738,7 @@ def is_symmetric(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/symmetric-tree/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766911',
     },
     {
         id: 543,
@@ -786,6 +788,7 @@ def diameter_of_binary_tree(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/diameter-of-binary-tree/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766912',
     },
     {
         id: 102,
@@ -1567,6 +1570,7 @@ def _validate_balanced_bst(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766901',
     },
     // ========== 链表 ==========
     {
