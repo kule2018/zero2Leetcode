@@ -34,10 +34,10 @@ const PROBLEMS_DATA = [
     { id: 84, title: "柱状图中最大的矩形", difficulty: "hard", category: "stack", url: "https://leetcode.cn/problems/largest-rectangle-in-histogram/" },
 
     // 链表
-    { id: 160, title: "相交链表", difficulty: "easy", category: "linked-list", url: "https://leetcode.cn/problems/intersection-of-two-linked-lists/" },
+    { id: 160, title: "相交链表", difficulty: "easy", category: "linked-list", url: "https://leetcode.cn/problems/intersection-of-two-linked-lists/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19754972" },
     { id: 206, title: "反转链表", difficulty: "easy", category: "linked-list", url: "https://leetcode.cn/problems/reverse-linked-list/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19722217" },
-    { id: 234, title: "回文链表", difficulty: "easy", category: "linked-list", url: "https://leetcode.cn/problems/palindrome-linked-list/" },
-    { id: 141, title: "环形链表", difficulty: "easy", category: "linked-list", url: "https://leetcode.cn/problems/linked-list-cycle/" },
+    { id: 234, title: "回文链表", difficulty: "easy", category: "linked-list", url: "https://leetcode.cn/problems/palindrome-linked-list/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19741527" },
+    { id: 141, title: "环形链表", difficulty: "easy", category: "linked-list", url: "https://leetcode.cn/problems/linked-list-cycle/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19755041" },
     { id: 142, title: "环形链表 II", difficulty: "medium", category: "linked-list", url: "https://leetcode.cn/problems/linked-list-cycle-ii/" },
     { id: 21, title: "合并两个有序链表", difficulty: "easy", category: "linked-list", url: "https://leetcode.cn/problems/merge-two-sorted-lists/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19741176" },
     { id: 2, title: "两数相加", difficulty: "medium", category: "linked-list", url: "https://leetcode.cn/problems/add-two-numbers/" },

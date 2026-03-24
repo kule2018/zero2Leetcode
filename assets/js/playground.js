@@ -1411,6 +1411,7 @@ def is_palindrome(head):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/palindrome-linked-list/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19741527',
     },
     // ========== 动态规划 ==========
     {
@@ -1628,6 +1629,7 @@ def _to_cyclic_list(args):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/linked-list-cycle/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19755041',
     },
     {
         id: 160,
@@ -1701,6 +1703,7 @@ def _test_intersection(params):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/intersection-of-two-linked-lists/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19754972',
     },
 ];
 
