@@ -79,7 +79,7 @@ def _tree_to_array(root):
 `;
 
 // ---------- 题目数据 ----------
-const PROBLEMS = [
+const DETAILED_PROBLEMS = [
     {
         id: 1,
         title: 'LC 1 - 两数之和',
@@ -1716,6 +1716,109 @@ def _test_intersection(params):
     },
 ];
 
+const FALLBACK_CATEGORY_NAMES = {
+    "hash": "哈希表",
+    "two-pointers": "双指针",
+    "sliding-window": "滑动窗口",
+    "subarray": "子串/子数组",
+    "stack": "栈",
+    "linked-list": "链表",
+    "tree": "二叉树",
+    "graph": "图论",
+    "backtrack": "回溯",
+    "binary-search": "二分查找",
+    "dp": "动态规划",
+    "greedy": "贪心",
+    "heap": "堆",
+    "matrix": "矩阵",
+    "other": "其他",
+};
+
+const FALLBACK_DIFFICULTY_NAMES = {
+    "easy": "简单",
+    "medium": "中等",
+    "hard": "困难",
+};
+
+function getCategoryName(category) {
+    if (typeof window !== 'undefined' && window.CATEGORY_NAMES?.[category]) {
+        return window.CATEGORY_NAMES[category];
+    }
+    return FALLBACK_CATEGORY_NAMES[category] || category;
+}
+
+function getDifficultyName(difficulty) {
+    if (typeof window !== 'undefined' && window.DIFFICULTY_NAMES?.[difficulty]) {
+        return window.DIFFICULTY_NAMES[difficulty];
+    }
+    return FALLBACK_DIFFICULTY_NAMES[difficulty] || difficulty;
+}
+
+function normalizeDifficulty(difficulty) {
+    return {
+        easy: 'Easy',
+        medium: 'Medium',
+        hard: 'Hard',
+    }[difficulty] || difficulty;
+}
+
+function buildFallbackProblem(meta) {
+    const title = `LC ${meta.id} - ${meta.title}`;
+    const difficultyText = getDifficultyName(meta.difficulty);
+    const categoryText = getCategoryName(meta.category);
+    const solutionUrl = meta.url.replace(/\/$/, '') + '/solutions/';
+    const blogTip = meta.blogUrl
+        ? '<p>这道题已经有博客详解，可以直接查看解法，再去 LeetCode 提交验证。</p>'
+        : '<p>这道题还没有博客详解，可以先跳到 LeetCode 练习。</p>';
+
+    return {
+        id: meta.id,
+        title,
+        difficulty: normalizeDifficulty(meta.difficulty),
+        tags: [categoryText],
+        description: `
+<h3>${meta.id}. ${escapeHtml(meta.title)} <span class="difficulty-tag ${meta.difficulty}">${escapeHtml(difficultyText)}</span></h3>
+<p>该题已经加入 Zero2Leetcode 题单，但当前页面还没有接入本地测试用例和专用模板。</p>
+${blogTip}
+<ul>
+<li>分类：${escapeHtml(categoryText)}</li>
+<li>难度：${escapeHtml(difficultyText)}</li>
+</ul>
+<p>如果是从外部链接直接打开 <code>?id=${meta.id}</code> 进入这里，说明题号识别已经生效；当前缺的只是这道题的本地 OJ 配置。</p>`,
+        template: `def solve(*args):
+    """
+    LeetCode ${meta.id}. ${meta.title}
+    当前题目暂未接入本地测试用例，请使用下方按钮跳转 LeetCode 练习。
+    """
+    pass
+`,
+        functionName: 'solve',
+        testCases: [],
+        compareFunc: 'equal',
+        solutionUrl,
+        blogUrl: meta.blogUrl || null,
+        isFallback: true,
+    };
+}
+
+function buildPlaygroundProblems() {
+    const detailedById = new Map(DETAILED_PROBLEMS.map(problem => [problem.id, problem]));
+    const allProblems = (typeof window !== 'undefined' && Array.isArray(window.PROBLEMS_DATA) && window.PROBLEMS_DATA.length)
+        ? window.PROBLEMS_DATA
+        : DETAILED_PROBLEMS.map(problem => ({
+            id: problem.id,
+            title: problem.title.replace(/^LC\s+\d+\s*-\s*/, ''),
+            difficulty: (problem.difficulty || '').toLowerCase(),
+            category: '',
+            url: problem.solutionUrl ? problem.solutionUrl.replace(/\/solutions\/$/, '/') : '',
+            blogUrl: problem.blogUrl || null,
+        }));
+
+    return allProblems.map(meta => detailedById.get(meta.id) || buildFallbackProblem(meta));
+}
+
+const PROBLEMS = buildPlaygroundProblems();
+
 // ---------- 本地缓存 ----------
 const STORAGE_KEY = 'z2l_playground_';
 
@@ -1945,12 +2048,27 @@ async function runCode() {
 
     const userCode = editor.getValue();
     const problem = currentProblem;
+    const testCases = Array.isArray(problem.testCases) ? problem.testCases : [];
+
+    if (!testCases.length) {
+        summary.textContent = '当前题目暂未接入本地测试';
+        summary.className = 'result-summary';
+        outputArea.innerHTML = `
+<div class="output-placeholder">
+    该题已支持按题号跳转，但当前页面还没有配置本地测试用例。<br>
+    请使用下方按钮前往 LeetCode 提交，或查看博客详解。
+</div>`;
+        runBtn.disabled = false;
+        runBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2l10 6-10 6V2z"/></svg> 运行代码`;
+        return;
+    }
+
     let passed = 0;
-    const total = problem.testCases.length;
+    const total = testCases.length;
     const totalStart = performance.now();
 
     for (let i = 0; i < total; i++) {
-        const tc = problem.testCases[i];
+        const tc = testCases[i];
         const result = await runTestCase(userCode, problem, tc, i + 1);
         outputArea.appendChild(result.element);
         if (result.passed) passed++;
