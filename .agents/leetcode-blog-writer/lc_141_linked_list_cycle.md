@@ -1,5 +1,9 @@
 # LeetCode-141：环形链表，快慢指针能检测到环的关键不是"两个指针"，而是"它们怎么出发"
 
+> **本题在线练习**：[LeetCode 141. 环形链表 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=141)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个链表的头节点 `head`，判断这条链表中是否存在环。

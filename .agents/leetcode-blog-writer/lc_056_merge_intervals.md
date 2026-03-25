@@ -1,5 +1,9 @@
 # LeetCode-056：合并区间，排序之后逐个合并，重叠就延伸，不重叠就新开
 
+> **本题在线练习**：[LeetCode 56. 合并区间 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=56)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个区间的集合 `intervals`，其中 `intervals[i] = [start_i, end_i]`，请合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需要恰好覆盖输入中的所有区间。

@@ -1,5 +1,9 @@
 # LeetCode-049：字母异位词分组，排序后长一样的字符串，本质上就是同一组
 
+> **本题在线练习**：[LeetCode 49. 字母异位词分组 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=49)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个字符串数组 `strs`，要求把所有**字母异位词**归到同一组中，以任意顺序返回分组结果。

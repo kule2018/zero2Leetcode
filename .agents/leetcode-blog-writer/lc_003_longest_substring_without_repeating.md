@@ -1,5 +1,9 @@
 # LeetCode-003：无重复字符的最长子串，滑动窗口的第一课——用两个指针"圈"出一段合法区间
 
+> **本题在线练习**：[LeetCode 3. 无重复字符的最长子串 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=3)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个字符串 `s`，请你找出其中**不含有重复字符的最长子串**的长度。

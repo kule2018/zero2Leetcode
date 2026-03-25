@@ -1,5 +1,7 @@
 # LeetCode-142：环形链表 II，快慢指针相遇之后再走一遍，为什么就能找到环的入口
 
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个链表的头节点 `head`，如果链表中存在环，返回环的入口节点。如果链表无环，返回 `null`。

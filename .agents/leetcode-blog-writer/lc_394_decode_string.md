@@ -1,5 +1,7 @@
 # LeetCode-394：字符串解码，遇到嵌套括号别慌，用栈把"之前的状态"存起来就行
 
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个经过编码的字符串，返回它解码后的字符串。

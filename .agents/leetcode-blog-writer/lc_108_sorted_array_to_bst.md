@@ -1,5 +1,9 @@
 # LeetCode-108：将有序数组转换为二叉搜索树，关键是每次取中间当根
 
+> **本题在线练习**：[LeetCode 108. 将有序数组转换为二叉搜索树 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=108)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 题目概述
 
 给你一个**严格递增**的整数数组 `nums`，要求将它转换成一棵**平衡二叉搜索树（BST）**。

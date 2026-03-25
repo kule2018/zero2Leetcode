@@ -1,5 +1,9 @@
 # LeetCode-053：最大子数组和，走到每一步都在做同一个决定——是接着走，还是重新开始
 
+> **本题在线练习**：[LeetCode 53. 最大子数组和 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=53)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个整数数组 `nums`，找到一个**连续子数组**（至少包含一个元素），使其元素之和最大，返回这个最大和。

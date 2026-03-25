@@ -1,5 +1,9 @@
 # LeetCode-739：每日温度，单调栈不是"背模板"，而是"让栈里只留还没找到答案的人"
 
+> **本题在线练习**：[LeetCode 739. 每日温度 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=739)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个整数数组 `temperatures`，其中 `temperatures[i]` 表示第 `i` 天的气温。返回一个数组 `answer`，其中 `answer[i]` 表示：从第 `i` 天起，需要等几天才能等到一个更高的温度。如果之后没有更高的温度，则 `answer[i] = 0`。

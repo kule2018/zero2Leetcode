@@ -1,5 +1,7 @@
 # LeetCode-128：最长连续序列，O(n) 的关键不是"怎么找连续"，而是"从哪里开始找"
 
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个未排序的整数数组 `nums`，找出其中**最长的连续元素序列**的长度。

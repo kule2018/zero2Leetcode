@@ -1,5 +1,7 @@
 # LeetCode-146：LRU 缓存，哈希表 + 双向链表，让查找和淘汰都是 O(1)
 
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 题目概述
 
 设计一个满足 **LRU（最近最少使用）** 缓存约束的数据结构，支持以下操作：

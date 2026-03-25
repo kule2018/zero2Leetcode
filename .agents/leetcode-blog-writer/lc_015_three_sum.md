@@ -1,5 +1,7 @@
 # LeetCode-015：三数之和，排序之后用双指针，难的不是找答案，而是跳过重复
 
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个整数数组 `nums`，找出所有满足以下条件的三元组 `[nums[i], nums[j], nums[k]]`：

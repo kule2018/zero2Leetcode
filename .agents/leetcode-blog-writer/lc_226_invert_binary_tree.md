@@ -1,5 +1,9 @@
 # LeetCode-226：翻转二叉树，递归的本质就是"把同一件事交给每个节点去做"
 
+> **本题在线练习**：[LeetCode 226. 翻转二叉树 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=226)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 题目概述
 
 给你一棵二叉树的根节点 `root`，把整棵树**左右翻转**（镜像），然后返回翻转后的根节点。

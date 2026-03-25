@@ -1,5 +1,9 @@
 # LeetCode-543：二叉树的直径，求深度的同时顺手记录最长路径
 
+> **本题在线练习**：[LeetCode 543. 二叉树的直径 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=543)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 题目概述
 
 给你一棵二叉树的根节点 `root`，请你返回这棵树的**直径**。

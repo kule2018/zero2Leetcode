@@ -1,5 +1,9 @@
 # LeetCode-011：盛最多水的容器，移动矮的那根线不是贪心，而是"移动高的那根一定不会更好"
 
+> **本题在线练习**：[LeetCode 11. 盛最多水的容器 — 在线练习（免费 · 无需登录 · AI 辅助）](https://onefly.top/zero2Leetcode/playground.html?id=11)
+>
+> 配套刷题网站 [Zero2Leetcode](https://onefly.top/zero2Leetcode/) —— 内置本地 OJ + AI 教练，零门槛开刷 Hot 100。
+
 ## 一、题目概述
 
 给定一个整数数组 `height`，其中 `height[i]` 表示第 `i` 条竖线的高度。找出两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
