@@ -160,18 +160,83 @@ python3 .agents/cnblogs-publisher/publish.py --get <postid>
 
 ---
 
-## 已知限制：合集（collections）只能手动添加
+## 合集管理
 
-博客园合集是独立于 MetaWeblog API 的功能，`getCategories` 返回列表中没有任何合集条目，`categories` 字段对合集无效，网页上也不会通过 API 写入合集信息。
+### 核心知识点
 
-**不要尝试通过 API 设置合集，无论任何写法都不会生效。**
+1. **博客园合集无法通过 MetaWeblog API 设置。** `categories` 字段中写 `"LeetCode"` 只影响个人分类，不会加入合集。
+2. **使用 `editPost` 更新文章会导致合集关联丢失！** 这是博客园平台行为，更新后必须重新添加合集。
+3. 合集操作只能通过博客园 Web UI 完成——编辑页右侧有合集面板，其中每个合集是一个 checkbox，checkbox 的 HTML `id` 就是合集 ID（如 `id="38522"`）。
+4. 博客园编辑页保存时 POST 到 `https://i.cnblogs.com/api/posts`，请求体中 `collectionIds` 字段（数组）控制文章所属合集。但此 API 需要完整的 post body（标题、正文等），不能单独更新合集字段。
 
-发布完成后，告知用户手动操作：
+### 为什么不能用 Chrome CDP 直接调试
 
-1. 打开编辑页：`https://i.cnblogs.com/posts/edit/id/<postid>`
-2. 右侧找到「合集」
-3. 选择对应合集
-4. 保存修改
+- Chrome 的 `--remote-debugging-port` 要求 `--user-data-dir` 指向**非默认**目录
+- 如果指定默认 profile 路径（`%LOCALAPPDATA%\Google\Chrome\User Data`），Chrome 会报错拒绝启动
+- 使用新目录则没有登录 session
+- Chrome v127+ 的 cookie 使用 `v20` 格式（App Bound Encryption），无法通过 DPAPI + AES-GCM 简单解密
+
+**结论：用 Playwright 的 persistent context 是最可靠的方案。** Playwright 自己管理一个独立的浏览器 profile 目录，首次手动登录后 session 持久保存，后续自动复用。
+
+### 自动添加合集脚本
+
+项目自带 Playwright 自动化脚本：`.agents/cnblogs-publisher/add_to_collection.py`
+
+原理：
+1. 用 Playwright 启动 Chromium，加载持久化 profile（含已登录的 cnblogs session）
+2. 逐篇导航到编辑页 `https://i.cnblogs.com/posts/edit;postId=<postid>`
+3. 检查合集 checkbox（`document.getElementById('38522')`）是否已勾选
+4. 未勾选则 `.click()` 勾选，然后找到"保存修改"按钮点击保存
+5. 已勾选则跳过
+
+```bash
+# 首次使用：在弹出的浏览器中登录博客园（session 会持久保存）
+python .agents/cnblogs-publisher/add_to_collection.py --login
+
+# 批量添加所有 LeetCode 文章到合集（通过 MetaWeblog API 获取文章列表）
+python .agents/cnblogs-publisher/add_to_collection.py
+
+# 指定文章
+python .agents/cnblogs-publisher/add_to_collection.py --postids 19766917 19766918
+
+# 只看不操作
+python .agents/cnblogs-publisher/add_to_collection.py --dry-run
+
+# 无头模式（不显示浏览器窗口）
+python .agents/cnblogs-publisher/add_to_collection.py --headless
+```
+
+依赖：`pip install playwright && playwright install chromium`
+
+Session 保存在 `.agents/cnblogs-publisher/.browser_profile/`（已 gitignore）。
+
+### 推荐工作流：发布或更新文章后自动补合集
+
+```bash
+# 1. 发布/更新文章
+python .agents/cnblogs-publisher/publish.py path/to/blog.md
+
+# 2. 拿到 postid 后，立即添加合集（因为 editPost 会丢合集）
+python .agents/cnblogs-publisher/add_to_collection.py --postids <postid>
+```
+
+### 手动添加合集
+
+如果脚本不可用，手动操作：
+
+1. 打开编辑页：`https://i.cnblogs.com/posts/edit;postId=<postid>`
+2. 右侧找到「合集」面板（在分类、标签下方）
+3. 勾选对应合集（LeetCode 合集 ID: 38522）
+4. 点击「保存修改」
+
+### 合集相关常量
+
+| 项目 | 值 |
+|------|-----|
+| LeetCode 合集 ID | `38522` |
+| 合集页面 | `https://www.cnblogs.com/ranxi169/collections/38522` |
+| 编辑页合集 checkbox | `document.getElementById('38522')` |
+| 保存 API | `POST https://i.cnblogs.com/api/posts`（body 含 `collectionIds: [38522]`） |
 
 ---
 
@@ -180,7 +245,7 @@ python3 .agents/cnblogs-publisher/publish.py --get <postid>
 博客文件固定来自：
 
 ```
-/Users/onefly/Desktop/project/zero2Leetcode/.agents/leetcode-blog-writer/
+.agents/leetcode-blog-writer/
 ```
 
 文件命名格式：`lc_<题号>_<英文描述>.md`

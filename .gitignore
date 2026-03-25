@@ -22,3 +22,6 @@ Thumbs.db
 
 # Claude Code 本地配置
 .claude/
+
+# Playwright 浏览器 session（含登录凭证）
+.browser_profile/
