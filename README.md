@@ -9,7 +9,7 @@
 [![AI Coach](https://img.shields.io/badge/AI-刷题助手-blueviolet.svg)](#-ai-刷题助手)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [AI 助手](#-ai-刷题助手)
+[视频介绍](#-视频介绍) • [开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [AI 助手](#-ai-刷题助手)
 
 </div>
 
@@ -35,6 +35,24 @@
 ### ⏱️ 学习周期
 
 建议 **8-12 周**，每天投入 2-3 小时
+
+---
+
+## 🎬 视频介绍
+
+> 想先看演示再开刷，可以直接看这条 B 站视频。
+
+**零门槛刷力扣 Hot100！免费在线 OJ + AI 教练，不用登录直接开刷**  
+视频地址：[https://www.bilibili.com/video/BV129QmBGE3Q/](https://www.bilibili.com/video/BV129QmBGE3Q/)
+
+这条视频会快速带你了解项目的核心使用方式：
+
+- 浏览器内直接刷 LeetCode Hot 100，不用本地搭环境
+- 内置免费在线 OJ，打开页面就能写代码、运行和调试
+- AI 教练自动读取当前题目和代码，给出提示、诊断和讲解
+- 不用登录，打开即用，适合零基础和面试前集中训练
+
+如果你想先看完整演示，再按仓库里的学习路线系统刷题，建议先看视频，再进入下方的 AI 助手和题单部分。
 
 ---
 
