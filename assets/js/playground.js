@@ -1801,8 +1801,19 @@ ${blogTip}
     };
 }
 
+function getExtraDetailedProblems() {
+    if (typeof window === 'undefined' || !Array.isArray(window.PLAYGROUND_EXTRA_PROBLEMS)) {
+        return [];
+    }
+    return window.PLAYGROUND_EXTRA_PROBLEMS;
+}
+
+function getAllDetailedProblems() {
+    return [...DETAILED_PROBLEMS, ...getExtraDetailedProblems()];
+}
+
 function buildPlaygroundProblems() {
-    const detailedById = new Map(DETAILED_PROBLEMS.map(problem => [problem.id, problem]));
+    const detailedById = new Map(getAllDetailedProblems().map(problem => [problem.id, problem]));
     const allProblems = (typeof window !== 'undefined' && Array.isArray(window.PROBLEMS_DATA) && window.PROBLEMS_DATA.length)
         ? window.PROBLEMS_DATA
         : DETAILED_PROBLEMS.map(problem => ({
@@ -1817,7 +1828,15 @@ function buildPlaygroundProblems() {
     return allProblems.map(meta => detailedById.get(meta.id) || buildFallbackProblem(meta));
 }
 
-const PROBLEMS = buildPlaygroundProblems();
+let PROBLEMS = [];
+
+function refreshProblems() {
+    PROBLEMS = buildPlaygroundProblems();
+    if (typeof window !== 'undefined') {
+        window.PROBLEMS = PROBLEMS;
+    }
+    return PROBLEMS;
+}
 
 // ---------- 本地缓存 ----------
 const STORAGE_KEY = 'z2l_playground_';
@@ -1894,10 +1913,12 @@ function pythonHint(cm) {
 // ---------- 全局状态 ----------
 let pyodide = null;
 let editor = null;
-let currentProblem = PROBLEMS[0];
+let currentProblem = null;
 
 // ---------- 初始化 ----------
 document.addEventListener('DOMContentLoaded', () => {
+    refreshProblems();
+    currentProblem = PROBLEMS[0] || null;
     initEditor();
     initProblemSelect();
 
@@ -1962,6 +1983,7 @@ function initEditor() {
 
 function initProblemSelect() {
     const select = document.getElementById('problem-select');
+    select.innerHTML = '';
     PROBLEMS.forEach((p, i) => {
         const opt = document.createElement('option');
         opt.value = i;
