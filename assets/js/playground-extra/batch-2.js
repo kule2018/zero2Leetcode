@@ -442,3 +442,7 @@ def build_tree(preorder, inorder):
     blogUrl: 'https://www.cnblogs.com/ranxi169/p/19772928.html',
   },
 ]);
+
+if (typeof window.syncPlaygroundProblems === 'function' && document.readyState !== 'loading') {
+  window.syncPlaygroundProblems();
+}

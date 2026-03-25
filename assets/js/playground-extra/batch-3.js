@@ -443,3 +443,6 @@ def _boards_to_strings(boards):
   },
 ]);
 
+if (typeof window.syncPlaygroundProblems === 'function' && document.readyState !== 'loading') {
+  window.syncPlaygroundProblems();
+}

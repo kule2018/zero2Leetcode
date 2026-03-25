@@ -492,3 +492,6 @@ def add_two_numbers(l1, l2):
   },
 ]);
 
+if (typeof window.syncPlaygroundProblems === 'function' && document.readyState !== 'loading') {
+  window.syncPlaygroundProblems();
+}

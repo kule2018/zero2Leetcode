@@ -409,3 +409,6 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
   },
 ]);
 
+if (typeof window.syncPlaygroundProblems === 'function' && document.readyState !== 'loading') {
+  window.syncPlaygroundProblems();
+}

@@ -1838,6 +1838,44 @@ function refreshProblems() {
     return PROBLEMS;
 }
 
+function getRequestedProblemId() {
+    const urlId = new URLSearchParams(window.location.search).get('id');
+    const parsedId = parseInt(urlId, 10);
+    return Number.isNaN(parsedId) ? null : parsedId;
+}
+
+function syncProblemRegistry() {
+    const previousProblemId = currentProblem?.id ?? null;
+    refreshProblems();
+
+    const select = document.getElementById('problem-select');
+    if (!select) return;
+
+    initProblemSelect();
+
+    const requestedProblemId = getRequestedProblemId();
+    const targetProblemId = requestedProblemId ?? previousProblemId ?? PROBLEMS[0]?.id ?? null;
+    const nextIndex = PROBLEMS.findIndex(problem => problem.id === targetProblemId);
+
+    if (nextIndex !== -1) {
+        currentProblem = PROBLEMS[nextIndex];
+        select.value = String(nextIndex);
+    } else {
+        currentProblem = PROBLEMS[0] || null;
+        if (currentProblem) {
+            select.value = '0';
+        }
+    }
+
+    if (editor && currentProblem) {
+        loadProblem(currentProblem);
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.syncPlaygroundProblems = syncProblemRegistry;
+}
+
 // ---------- 本地缓存 ----------
 const STORAGE_KEY = 'z2l_playground_';
 
@@ -1917,24 +1955,16 @@ let currentProblem = null;
 
 // ---------- 初始化 ----------
 document.addEventListener('DOMContentLoaded', () => {
-    refreshProblems();
-    currentProblem = PROBLEMS[0] || null;
     initEditor();
-    initProblemSelect();
-
-    // 支持 URL 参数 ?id=70 直接跳转到指定题目
-    const urlId = new URLSearchParams(window.location.search).get('id');
-    if (urlId) {
-        const idx = PROBLEMS.findIndex(p => p.id === parseInt(urlId));
-        if (idx !== -1) {
-            currentProblem = PROBLEMS[idx];
-            document.getElementById('problem-select').value = idx;
-        }
-    }
-
-    loadProblem(currentProblem);
+    syncProblemRegistry();
     initPyodide();
     bindEvents();
+});
+
+// Some deploy platforms may delay or reorder non-critical scripts.
+// Re-sync once the full page has loaded so late extra batches are still picked up.
+window.addEventListener('load', () => {
+    syncProblemRegistry();
 });
 
 function initEditor() {
