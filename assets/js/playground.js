@@ -837,6 +837,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/binary-tree-level-order-traversal/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19772923.html',
     },
     // ========== 滑动窗口 ==========
     {
@@ -962,6 +963,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19772980.html',
     },
     // ========== 回溯 ==========
     {
@@ -1001,6 +1003,7 @@ def level_order(root):
         ],
         compareFunc: 'sorted_nested',
         solutionUrl: 'https://leetcode.cn/problems/permutations/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19772936.html',
     },
     // ========== 矩阵 ==========
     {
@@ -1236,6 +1239,7 @@ def level_order(root):
         ],
         compareFunc: 'sorted_nested',
         solutionUrl: 'https://leetcode.cn/problems/subsets/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19772937.html',
     },
     // ========== 动态规划 ==========
     {
@@ -1327,6 +1331,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/number-of-islands/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19772932.html',
     },
     // ========== 堆 ==========
     {

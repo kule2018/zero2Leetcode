@@ -21,6 +21,7 @@ import xmlrpc.client
 from pathlib import Path
 
 try:
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
     from playwright.sync_api import sync_playwright
 except ImportError:
     print("Need: pip install playwright && playwright install chromium")
@@ -28,6 +29,8 @@ except ImportError:
 
 COLLECTION_ID = 38522
 PROFILE_DIR = Path(__file__).resolve().parent / ".browser_profile"
+NAV_TIMEOUT_MS = 60000
+NAV_RETRIES = 3
 
 
 def load_env():
@@ -90,10 +93,32 @@ def do_login():
     print(f"Session saved to {PROFILE_DIR}")
 
 
+def open_edit_page(page, edit_url):
+    """Open edit page with retries; cnblogs edit page can be slow/intermittent."""
+    last_error = None
+    for attempt in range(1, NAV_RETRIES + 1):
+        try:
+            page.goto(edit_url, wait_until="domcontentloaded", timeout=NAV_TIMEOUT_MS)
+            try:
+                page.wait_for_load_state("networkidle", timeout=5000)
+            except PlaywrightTimeoutError:
+                pass
+            return
+        except PlaywrightTimeoutError as exc:
+            last_error = exc
+            print(f"  ! goto timeout (attempt {attempt}/{NAV_RETRIES})")
+            try:
+                page.goto("about:blank", wait_until="load", timeout=10000)
+            except Exception:
+                pass
+            time.sleep(2 * attempt)
+    raise last_error
+
+
 def add_to_collection(page, postid, collection_id):
     """Navigate to edit page, check collection checkbox, save."""
     edit_url = f"https://i.cnblogs.com/posts/edit;postId={postid}"
-    page.goto(edit_url, wait_until="networkidle", timeout=20000)
+    open_edit_page(page, edit_url)
     time.sleep(2)
 
     # Check if collection checkbox exists and its state
@@ -177,7 +202,11 @@ def main():
     fail = 0
     for i, p in enumerate(posts):
         print(f"[{i+1}/{len(posts)}] {p['title']}")
-        result = add_to_collection(page, p["postid"], collection_id)
+        try:
+            result = add_to_collection(page, p["postid"], collection_id)
+        except Exception as exc:
+            print(f"  ! exception: {exc}")
+            result = "exception"
         if result == "saved":
             print(f"  + Added to collection")
             success += 1
