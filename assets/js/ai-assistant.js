@@ -392,24 +392,33 @@ class AIAssistant {
         this.sendBtn.disabled = true;
         this.sendBtn.innerHTML = '<span class="ai-spinner"></span>';
 
-        const aiMsgEl = this.addMessage('assistant', '');
+        const aiMsgEl = this.addMessage('assistant', '', { loading: true });
         const contentEl = aiMsgEl.querySelector('.ai-msg-content');
         let fullContent = '';
+        let hasRenderedChunk = false;
 
         try {
             for await (const chunk of streamChatCompletion(apiMessages, config)) {
                 fullContent += chunk;
+                if (!hasRenderedChunk) {
+                    aiMsgEl.classList.remove('ai-msg-loading');
+                    hasRenderedChunk = true;
+                }
                 contentEl.innerHTML = this.renderMarkdown(fullContent);
                 this.scrollToBottom();
             }
             chatHistory.push({ role: 'assistant', content: fullContent });
         } catch (err) {
+            aiMsgEl.classList.remove('ai-msg-loading');
             if (fullContent) {
                 chatHistory.push({ role: 'assistant', content: fullContent });
+            } else {
+                contentEl.innerHTML = '';
             }
             const errHTML = `<div class="ai-error">⚠️ ${this.escapeHtml(err.message)}</div>`;
             contentEl.innerHTML += errHTML;
         } finally {
+            aiMsgEl.classList.remove('ai-msg-loading');
             this.isStreaming = false;
             this.sendBtn.disabled = false;
             this.sendBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>`;
@@ -417,13 +426,14 @@ class AIAssistant {
         }
     }
 
-    addMessage(role, content) {
+    addMessage(role, content, options = {}) {
+        const isLoading = role === 'assistant' && options.loading === true;
         const msg = document.createElement('div');
-        msg.className = `ai-msg ai-msg-${role}`;
+        msg.className = `ai-msg ai-msg-${role}${isLoading ? ' ai-msg-loading' : ''}`;
         msg.innerHTML = `
             <div class="ai-msg-avatar">${role === 'user' ? '👤' : AI_ICON_SVG}</div>
             <div class="ai-msg-bubble">
-                <div class="ai-msg-content">${role === 'user' ? this.escapeHtml(content) : this.renderMarkdown(content)}</div>
+                <div class="ai-msg-content">${isLoading ? this.renderLoadingIndicator() : (role === 'user' ? this.escapeHtml(content) : this.renderMarkdown(content))}</div>
             </div>
         `;
         this.messagesEl.appendChild(msg);
@@ -449,6 +459,16 @@ class AIAssistant {
             }
         }
         return this.escapeHtml(text).replace(/\n/g, '<br>');
+    }
+
+    renderLoadingIndicator() {
+        return [
+            '<div class="ai-typing" aria-hidden="true">',
+            '<span class="ai-typing-dot"></span>',
+            '<span class="ai-typing-dot"></span>',
+            '<span class="ai-typing-dot"></span>',
+            '</div>',
+        ].join('');
     }
 
     escapeHtml(str) {

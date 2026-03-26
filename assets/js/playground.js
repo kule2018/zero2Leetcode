@@ -1043,6 +1043,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/rotate-image/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778847.html',
     },
     // ========== 哈希表 ==========
     {
@@ -1162,6 +1163,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/jump-game/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778837.html',
     },
     {
         id: 56,
@@ -1280,6 +1282,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/house-robber/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778824.html',
     },
     // ========== 图论 ==========
     {
@@ -1372,6 +1375,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/kth-largest-element-in-an-array/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778840.html',
     },
     // ========== 链表 ==========
     {
@@ -1464,6 +1468,7 @@ def is_palindrome(head):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/coin-change/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778826.html',
     },
     // ========== 栈 ==========
     {
