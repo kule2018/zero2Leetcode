@@ -211,6 +211,10 @@ img {
     width: 100%;
 }
 
+.nav-friend-link {
+    color: var(--accent) !important;
+}
+
 .nav-link-external {
     padding: var(--spacing-sm) var(--spacing-md);
     background: linear-gradient(135deg, var(--primary), var(--accent));
