@@ -297,11 +297,122 @@ npx serve .
 - [ ] localStorage 的 key 使用有意义的前缀避免冲突
 - [ ] 导航栏链接在所有页面间保持一致
 
+## 踩坑经验（来自 zero2Agent 姊妹项目）
+
+### CSS 缓存问题
+
+GitHub Pages 会强缓存 CSS/JS，修改样式后部署不生效是常见问题。**所有 CSS/JS 引用必须带版本号**：
+
+```html
+<link rel="stylesheet" href="assets/css/style.css?v=2">
+<script src="assets/js/app.js?v=9"></script>
+```
+
+每次修改后递增版本号，否则用户看到的是旧样式。
+
+### Hero 装饰代码块定位
+
+浮动代码块（如首页右侧的代码装饰）正确写法：
+
+```css
+.hero { position: relative; overflow: hidden; }           /* 父容器 */
+.hero-inner { position: relative; z-index: 1; }           /* 内容层，必须高于装饰 */
+.hero-decoration {                                         /* 装饰层 */
+    position: absolute;
+    right: -60px; top: 50%;
+    transform: translateY(-50%) rotate(-5deg);
+    opacity: 0.55;
+    pointer-events: none;
+}
+```
+
+**常见错误**：
+- 忘记给父容器加 `position: relative` → 装饰块定位到 viewport
+- 忘记给父容器加 `overflow: hidden` → 装饰块溢出产生横向滚动条
+- 忘记给内容层加 `z-index` → 装饰块遮挡文字/按钮的点击
+
+### SVG Logo 设计
+
+两个项目使用同一套 `{0}` logo，通过渐变色区分：
+- **zero2Leetcode**：紫→青 `#818cf8 → #14b8a6`
+- **zero2Agent**：绿→橙 `#10b981 → #f59e0b`
+
+SVG logo 要点：
+- 使用 `linearGradient` + `stroke="url(#logoGradient)"` 实现渐变描边
+- 保持 `viewBox="0 0 48 48"` 统一尺寸
+- 不要尝试用 SVG arc path 画复杂形状（弧线参数极易算错），优先用 `<ellipse>`、`<circle>`、`<path>` 的简单曲线
+
+### 友情链接跨项目配色
+
+友情链接应使用**对方项目的品牌色**，而非本项目色：
+
+```css
+/* zero2Agent 站内的 zero2Leetcode 链接 → 用紫青色 */
+.nav-friend-link { color: #818cf8; border-color: rgba(129,140,248,0.3); }
+.nav-friend-link:hover { color: #14b8a6; }
+
+/* zero2Leetcode 站内的 Zero2Agent 链接 → 用绿橙色 */
+.nav-friend-link { color: #10b981; border-color: rgba(16,185,129,0.3); }
+.nav-friend-link:hover { color: #f59e0b; }
+```
+
+### 不蒜子访客计数
+
+免费静态站计数器，零后端，CDN 加载：
+
+```html
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- 容器初始 display:none，busuanzi 加载完自动显示 -->
+<span id="busuanzi_container_site_uv" style="display:none">
+    你是第 <span id="busuanzi_value_site_uv"></span> 位读者
+</span>
+<span id="busuanzi_container_page_pv" style="display:none">
+    本文 <span id="busuanzi_value_page_pv"></span> 次阅读
+</span>
+```
+
+### 上一篇/下一篇导航 + Prefetch
+
+通过 JS 在页面底部生成 prev/next 按钮，并注入 `<link rel="prefetch">` 实现秒开：
+
+```javascript
+var lnk = document.createElement('link');
+lnk.rel = 'prefetch';
+lnk.href = nextPageUrl;
+document.head.appendChild(lnk);
+```
+
+导航数据从模板引擎（Jekyll Liquid）注入 `window.Z2A_NAV` 全局数组，JS 匹配当前 URL 找到前后文章。
+
+### 回到顶部按钮
+
+用 `scroll` 事件 + `{ passive: true }` 监听，超过 320px 显示，用 CSS `opacity + transform` 过渡：
+
+```css
+.back-to-top {
+    position: fixed; right: 28px; bottom: 72px;
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.25s, transform 0.25s;
+}
+.back-to-top.is-visible { opacity: 1; transform: translateY(0); }
+```
+
+### Mermaid 图表兼容性（9.4.3）
+
+- **不要**在 edge label 里用 Unicode 特殊字符
+- **不要**在 Note 里用 `<br/>`
+- **不要**在 stateDiagram label 里用 `\n`
+- 使用 `flowchart TD/LR`、`stateDiagram-v2`、`sequenceDiagram`
+- 配置 `startOnLoad: false`，手动调用 `mermaid.init(undefined, els)`
+
 ## 执行策略
 
 - 修改前先阅读相关文件，理解现有结构
 - 优先使用 CSS 变量保持视觉一致性
 - 新增交互时遵循项目现有的 JS 模式（函数式、无框架、全局变量通信）
 - 修改 HTML 结构后检查响应式表现
+- 修改 CSS/JS 后**必须递增版本号**（`?v=N`），否则部署后缓存不刷新
 - 若发现已有未提交改动，理解并兼容，不要回滚用户的修改
 - 不要引入新的构建工具或框架依赖（保持纯静态站点的简洁性）
+- 装饰性元素用 `position: absolute` + `pointer-events: none`，内容层用 `z-index` 保持可交互
