@@ -8,7 +8,9 @@ include:
   - 01_data_structures
   - 02_algorithms
   - 03_leetcode_practice
+  - 04_real_interviews
   - docs
+  - _data
 
 exclude:
   - README.md

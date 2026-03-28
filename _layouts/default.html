@@ -4,47 +4,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | Zero2Leetcode</title>
-    <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/logo.svg' | relative_url }}">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <script>
+        /* file: protocol — for local _site preview */
+        (function () {
+            if (window.location.protocol !== "file:") return;
+            var path = window.location.pathname.replace(/\\/g, "/");
+            var marker = "/_site/";
+            var idx = path.lastIndexOf(marker);
+            if (idx < 0) return;
+            var relDir = path.slice(idx + marker.length).replace(/[^/]*$/, "");
+            var depth = relDir.split("/").filter(Boolean).length;
+            document.write('<base href="' + ("../".repeat(depth) || "./") + '">');
+        })();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="{{ site.baseurl }}/assets/images/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="{{ '/assets/css/docs.css' | relative_url }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/docs.css?v=2">
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 </head>
 
 <body>
-    <nav class="doc-nav">
-        <div class="nav-inner">
-            <a href="{{ '/' | relative_url }}" class="nav-brand">
-                <img src="{{ '/assets/images/logo.svg' | relative_url }}" alt="Logo" class="nav-logo">
-                <span>Zero2Leetcode</span>
-            </a>
-            <div class="nav-links">
-                <a href="{{ '/' | relative_url }}">首页</a>
-                <a href="{{ '/00_python_basics/' | relative_url }}">Python基础</a>
-                <a href="{{ '/01_data_structures/' | relative_url }}">数据结构</a>
-                <a href="{{ '/02_algorithms/' | relative_url }}">核心算法</a>
-                <a href="{{ '/03_leetcode_practice/' | relative_url }}">LeetCode</a>
-                <a href="{{ '/playground.html' | relative_url }}">在线练习</a>
+    <div class="site-shell">
+        <header class="doc-header">
+            <div class="doc-header-inner">
+                <a href="{{ site.baseurl }}/" class="brand">
+                    <img src="{{ site.baseurl }}/assets/images/logo.svg" alt="Logo" class="brand-logo">
+                    <span class="brand-text">Zero2Leetcode</span>
+                </a>
+                <nav class="doc-nav">
+                    {% for module in site.data.nav.modules %}
+                    <a href="{{ site.baseurl }}/{{ module.slug }}/index.html"
+                       {% if page.url contains module.slug %}class="is-active"{% endif %}>
+                        {{ module.title }}
+                    </a>
+                    {% endfor %}
+                    <a href="{{ site.baseurl }}/playground.html">在线练习</a>
+                    <a href="https://onefly.top/zero2Agent/" target="_blank" rel="noopener" class="nav-friend-link">zero2Agent ↗</a>
+                </nav>
             </div>
-        </div>
-    </nav>
+        </header>
 
-    <main class="doc-main">
-        <article class="doc-article">
-            {{ content }}
-        </article>
-    </main>
+        <main class="doc-main">
+            <!-- Left: hierarchical navigation -->
+            <aside class="doc-sidebar">
+                <p class="sidebar-label">Learning Map</p>
+                {% for module in site.data.nav.modules %}
+                {% assign is_open = page.url | contains: module.slug %}
+                <div class="nav-module{% if is_open %} is-open{% endif %}">
+                    <div class="nav-module-row">
+                        {% if module.articles.size > 0 %}
+                        <button class="nav-toggle-btn" type="button" aria-label="展开">
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                                <path d="M2 1.5l3 2.5-3 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        {% else %}
+                        <span class="nav-toggle-gap"></span>
+                        {% endif %}
+                        <a href="{{ site.baseurl }}/{{ module.slug }}/index.html"
+                           class="nav-module-link{% if is_open %} is-active{% endif %}">
+                            {{ module.title }}
+                        </a>
+                    </div>
+                    {% if module.articles.size > 0 %}
+                    <div class="nav-articles">
+                        {% for article in module.articles %}
+                        {% assign article_path = module.slug | append: '/' | append: article.slug %}
+                        <a href="{{ site.baseurl }}/{{ article_path }}/index.html"
+                           class="nav-article{% if page.url contains article.slug %} is-current{% endif %}">
+                            {{ article.title }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </aside>
 
-    <footer class="doc-footer">
-        <p>© 2026 Zero2Leetcode. Made with ❤️ for coders.</p>
-        <p><a href="https://leetcode.cn/studyplan/top-100-liked/" target="_blank">去 LeetCode 练习 →</a></p>
-    </footer>
+            <!-- Center: article content -->
+            <article class="doc-article">
+                {% if page.eyebrow %}
+                <p class="doc-eyebrow">{{ page.eyebrow }}</p>
+                {% endif %}
+                {{ content }}
+                <!-- Prev / Next pager -->
+                <nav class="doc-pager" aria-label="章节导航">
+                    <a class="pager-btn pager-prev" id="pager-prev" href="#">
+                        <span class="pager-label">← 上一篇</span>
+                        <span class="pager-title" id="pager-prev-title"></span>
+                    </a>
+                    <a class="pager-btn pager-next" id="pager-next" href="#">
+                        <span class="pager-label">下一篇 →</span>
+                        <span class="pager-title" id="pager-next-title"></span>
+                    </a>
+                </nav>
+            </article>
+
+            <!-- Right: TOC -->
+            <nav class="doc-toc" id="doc-toc">
+                <p class="toc-label">本页目录</p>
+                <div id="toc-list"></div>
+            </nav>
+        </main>
+
+        <footer class="doc-footer">
+            <div class="doc-footer-inner">
+                <span class="footer-desc">Zero2Leetcode · 从零基础到 LeetCode Medium · Built for coders.</span>
+                <span id="busuanzi_container_site_uv" class="footer-counter" style="display:none">
+                    👤 第 <span id="busuanzi_value_site_uv" class="cv"></span> 位读者
+                </span>
+                <span id="busuanzi_container_page_pv" class="footer-counter" style="display:none">
+                    📖 本文 <span id="busuanzi_value_page_pv" class="cv"></span> 次阅读
+                </span>
+                <div class="footer-links">
+                    <a href="{{ site.baseurl }}/" class="footer-link">🏠 首页</a>
+                    <a href="https://github.com/ranxi2001/zero2Leetcode" target="_blank" rel="noopener" class="footer-link">
+                        GitHub
+                    </a>
+                    <a href="https://leetcode.cn/studyplan/top-100-liked/" target="_blank" rel="noopener" class="footer-link">
+                        LeetCode 练习 →
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Back to top button -->
+    <button class="back-to-top" id="back-to-top" aria-label="回到顶部" title="回到顶部">🚀</button>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
+    <!-- Flat nav list for prev/next pager -->
+    <script>
+        window.Z2L_BASE = "{{ site.baseurl }}";
+        window.Z2L_NAV = [{% for module in site.data.nav.modules %}{% for article in module.articles %}{"path":"{{ module.slug }}/{{ article.slug }}","title":"{{ article.title | replace: '"', '\"' }}"},{% endfor %}{% endfor %}];
+    </script>
+    <script src="{{ site.baseurl }}/assets/js/docs.js?v=2"></script>
 </body>
 
 </html>
