@@ -95,5 +95,7 @@ modules:
             slug: "ctrip/dev-20260329"
       - name: "备考技巧"
         articles:
+          - title: "笔试必知必会"
+            slug: "tips/exam-essentials"
           - title: "算法岗必考ML编程题"
             slug: "tips/ml-coding-trend"
