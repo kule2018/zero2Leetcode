@@ -37,7 +37,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/longest-palindromic-substring/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778834.html',
   },
   {
     id: 1143,
@@ -76,7 +76,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/longest-common-subsequence/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778835.html',
   },
   {
     id: 72,
@@ -119,7 +119,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/edit-distance/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778836.html',
   },
   {
     id: 45,
@@ -157,7 +157,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/jump-game-ii/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778838.html',
   },
   {
     id: 763,
@@ -194,7 +194,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/partition-labels/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778839.html',
   },
   {
     id: 347,
@@ -233,7 +233,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'sorted',
     solutionUrl: 'https://leetcode.cn/problems/top-k-frequent-elements/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778841.html',
   },
   {
     id: 295,
@@ -273,7 +273,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     testCases: [],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/find-median-from-data-stream/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778842.html',
   },
   {
     id: 73,
@@ -305,7 +305,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/set-matrix-zeroes/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778843.html',
   },
   {
     id: 54,
@@ -336,7 +336,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/spiral-matrix/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778846.html',
   },
   {
     id: 240,
@@ -389,7 +389,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/search-a-2d-matrix-ii/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778848.html',
   },
   {
     id: 75,
@@ -420,7 +420,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/sort-colors/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778849.html',
   },
   {
     id: 31,
@@ -455,7 +455,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/next-permutation/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778850.html',
   },
   {
     id: 287,
@@ -488,7 +488,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/find-the-duplicate-number/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778852.html',
   },
   {
     id: 41,
@@ -522,7 +522,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/first-missing-positive/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778854.html',
   },
 ]);
 

@@ -139,7 +139,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     testCases: [],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/median-of-two-sorted-arrays/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778823.html',
   },
 
   // ========== DP ==========
@@ -177,7 +177,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/perfect-squares/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778825.html',
   },
   {
     id: 139,
@@ -211,7 +211,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/word-break/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778827.html',
   },
   {
     id: 300,
@@ -242,7 +242,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/longest-increasing-subsequence/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778828.html',
   },
   {
     id: 152,
@@ -274,7 +274,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/maximum-product-subarray/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778829.html',
   },
   {
     id: 416,
@@ -306,7 +306,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/partition-equal-subset-sum/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778830.html',
   },
   {
     id: 32,
@@ -339,7 +339,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/longest-valid-parentheses/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778831.html',
   },
   {
     id: 62,
@@ -374,7 +374,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/unique-paths/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778832.html',
   },
   {
     id: 64,
@@ -405,7 +405,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/minimum-path-sum/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778833.html',
   },
 ]);
 
