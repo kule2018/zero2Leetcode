@@ -62,3 +62,38 @@ modules:
   - title: "大厂真题"
     slug: "04_real_interviews"
     articles: []
+    groups:
+      - name: "阿里巴巴"
+        articles:
+          - title: "研发岗 3.25"
+            slug: "alibaba/dev-20260325"
+          - title: "算法岗 3.25"
+            slug: "alibaba/algo-20260325"
+          - title: "研发岗 3.28"
+            slug: "alibaba/dev-20260328"
+          - title: "算法岗 3.28"
+            slug: "alibaba/algo-20260328"
+          - title: "后端开发岗 3.28"
+            slug: "alibaba/backend-20260328"
+      - name: "蚂蚁"
+        articles:
+          - title: "研发岗 3.26"
+            slug: "ant/dev-20260326"
+          - title: "研发岗 3.29"
+            slug: "ant/dev-20260329"
+          - title: "AI Coding 3.29"
+            slug: "ant/ai-coding-20260329"
+      - name: "美团"
+        articles:
+          - title: "研发岗 3.28"
+            slug: "meituan/dev-20260328"
+          - title: "算法岗 3.28"
+            slug: "meituan/algo-20260328"
+      - name: "携程"
+        articles:
+          - title: "研发岗 3.29"
+            slug: "ctrip/dev-20260329"
+      - name: "备考技巧"
+        articles:
+          - title: "算法岗必考ML编程题"
+            slug: "tips/ml-coding-trend"

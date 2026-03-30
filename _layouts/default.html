@@ -38,11 +38,15 @@
                 </a>
                 <nav class="doc-nav">
                     {% for module in site.data.nav.modules %}
+                    {% unless module.slug == '04_real_interviews' %}
                     <a href="{{ site.baseurl }}/{{ module.slug }}/index.html"
                        {% if page.url contains module.slug %}class="is-active"{% endif %}>
                         {{ module.title }}
                     </a>
+                    {% endunless %}
                     {% endfor %}
+                    <a href="{{ site.baseurl }}/04_real_interviews/index.html"
+                       {% if page.url contains '04_real_interviews' %}class="is-active"{% endif %}>真题知识</a>
                     <a href="{{ site.baseurl }}/playground.html">在线练习</a>
                     <a href="https://onefly.top/zero2Agent/" target="_blank" rel="noopener" class="nav-friend-link">zero2Agent ↗</a>
                 </nav>
@@ -54,10 +58,14 @@
             <aside class="doc-sidebar">
                 <p class="sidebar-label">Learning Map</p>
                 {% for module in site.data.nav.modules %}
-                {% assign is_open = page.url | contains: module.slug %}
+                {% assign is_open = false %}
+                {% if page.url contains module.slug %}{% assign is_open = true %}{% endif %}
                 <div class="nav-module{% if is_open %} is-open{% endif %}">
                     <div class="nav-module-row">
-                        {% if module.articles.size > 0 %}
+                        {% assign has_content = false %}
+                        {% if module.articles.size > 0 %}{% assign has_content = true %}{% endif %}
+                        {% if module.groups.size > 0 %}{% assign has_content = true %}{% endif %}
+                        {% if has_content %}
                         <button class="nav-toggle-btn" type="button" aria-label="展开">
                             <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
                                 <path d="M2 1.5l3 2.5-3 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -79,6 +87,33 @@
                            class="nav-article{% if page.url contains article.slug %} is-current{% endif %}">
                             {{ article.title }}
                         </a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if module.groups.size > 0 %}
+                    <div class="nav-articles">
+                        {% for group in module.groups %}
+                        {% assign group_open = false %}
+                        {% for article in group.articles %}
+                          {% if page.url contains article.slug %}{% assign group_open = true %}{% endif %}
+                        {% endfor %}
+                        <div class="nav-group{% if group_open %} is-open{% endif %}">
+                            <button class="nav-group-toggle" type="button" aria-label="展开">
+                                <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                                    <path d="M2 1.5l3 2.5-3 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="nav-group-label">{{ group.name }}</span>
+                            </button>
+                            <div class="nav-group-items">
+                                {% for article in group.articles %}
+                                {% assign article_path = module.slug | append: '/' | append: article.slug %}
+                                <a href="{{ site.baseurl }}/{{ article_path }}/index.html"
+                                   class="nav-article{% if page.url contains article.slug %} is-current{% endif %}">
+                                    {{ article.title }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
                         {% endfor %}
                     </div>
                     {% endif %}
@@ -142,7 +177,7 @@
     <!-- Flat nav list for prev/next pager -->
     <script>
         window.Z2L_BASE = "{{ site.baseurl }}";
-        window.Z2L_NAV = [{% for module in site.data.nav.modules %}{% for article in module.articles %}{"path":"{{ module.slug }}/{{ article.slug }}","title":"{{ article.title | replace: '"', '\"' }}"},{% endfor %}{% endfor %}];
+        window.Z2L_NAV = [{% for module in site.data.nav.modules %}{% for article in module.articles %}{"path":"{{ module.slug }}/{{ article.slug }}","title":"{{ article.title | replace: '"', '\"' }}"},{% endfor %}{% if module.groups %}{% for group in module.groups %}{% for article in group.articles %}{"path":"{{ module.slug }}/{{ article.slug }}","title":"{{ article.title | replace: '"', '\"' }}"},{% endfor %}{% endfor %}{% endif %}{% endfor %}];
     </script>
     <script src="{{ site.baseurl }}/assets/js/docs.js?v=2"></script>
 </body>

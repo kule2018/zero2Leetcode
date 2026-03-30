@@ -6,6 +6,14 @@ document.querySelectorAll(".nav-toggle-btn").forEach(function (btn) {
     });
 });
 
+/* ===== Company group accordion ===== */
+document.querySelectorAll(".nav-group-toggle").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        var group = btn.closest(".nav-group");
+        if (group) group.classList.toggle("is-open");
+    });
+});
+
 
 /* ===== TOC generation ===== */
 (function () {

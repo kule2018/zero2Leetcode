@@ -212,6 +212,34 @@ code, pre { font-family: var(--font-mono); }
 
 .nav-module.is-open .nav-articles { display: block; }
 
+.nav-group-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 6px 8px 4px 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+}
+.nav-group-toggle:hover { color: var(--text); }
+.nav-group-toggle svg {
+    flex-shrink: 0;
+    transition: transform 0.15s;
+}
+.nav-group.is-open > .nav-group-toggle svg { transform: rotate(90deg); }
+
+.nav-group-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.nav-group-items { display: none; }
+.nav-group.is-open > .nav-group-items { display: block; }
+
 .nav-article {
     display: block;
     padding: 5px 8px 5px 12px;
