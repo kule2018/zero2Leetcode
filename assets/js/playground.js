@@ -880,6 +880,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/longest-substring-without-repeating-characters/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766922',
     },
     // ========== 双指针 ==========
     {
@@ -920,6 +921,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/container-with-most-water/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766919',
     },
     // ========== 二分查找 ==========
     {
@@ -1084,6 +1086,7 @@ def level_order(root):
         ],
         compareFunc: 'sorted_nested',
         solutionUrl: 'https://leetcode.cn/problems/group-anagrams/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766917',
     },
     // ========== 子串/子数组 ==========
     {
@@ -1124,6 +1127,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/maximum-subarray/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766929',
     },
     {
         id: 55,
@@ -1203,6 +1207,7 @@ def level_order(root):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/merge-intervals/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766930',
     },
     // ========== 回溯 ==========
     {
@@ -1508,6 +1513,7 @@ def is_palindrome(head):
         ],
         compareFunc: 'equal',
         solutionUrl: 'https://leetcode.cn/problems/daily-temperatures/solutions/',
+        blogUrl: 'https://www.cnblogs.com/ranxi169/p/19766932',
     },
     // ========== 二叉树 ==========
     {

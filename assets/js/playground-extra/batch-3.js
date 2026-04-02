@@ -143,7 +143,16 @@ def max_path_sum(root):
   <li><code>1</code> 新鲜橘子</li>
   <li><code>2</code> 腐烂橘子</li>
 </ul>
-<p>每分钟，腐烂橘子会使上下左右相邻的新鲜橘子腐烂。返回所有橘子腐烂所需的最小分钟数；若不可能则返回 <code>-1</code>。</p>`,
+<p>每分钟，腐烂橘子会使上下左右相邻的新鲜橘子腐烂。返回所有橘子腐烂所需的最小分钟数；若不可能则返回 <code>-1</code>。</p>
+<h4>示例</h4>
+<pre><code>输入：grid = [[2,1,1],[1,1,0],[0,1,1]]
+输出：4
+
+输入：grid = [[2,1,1],[0,1,1],[1,0,1]]
+输出：-1
+
+输入：grid = [[0,2]]
+输出：0</code></pre>`,
     template: `def oranges_rotting(grid):
     """
     :type grid: List[List[int]]
