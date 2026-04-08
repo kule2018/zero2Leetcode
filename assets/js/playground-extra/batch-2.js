@@ -7,7 +7,12 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     description: `
 <h3>19. 删除链表的倒数第 N 个结点 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给你一个链表，删除链表的倒数第 <code>n</code> 个结点，并返回链表头结点。</p>
-<p>本地练习已内置 <code>ListNode</code>，输入会自动转换成链表，返回值也会自动转回数组。</p>`,
+<p>本地练习已内置 <code>ListNode</code>，输入会自动转换成链表，返回值也会自动转回数组。</p>
+<h4>示例</h4>
+<pre>输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]</pre>
+<pre>输入：head = [1], n = 1
+输出：[]</pre>`,
     template: `# Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -44,7 +49,12 @@ def remove_nth_from_end(head, n):
     description: `
 <h3>24. 两两交换链表中的节点 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给你一个链表，两两交换其中相邻的节点，并返回交换后的链表。</p>
-<p>不能只修改节点值，必须真正调整节点指针。</p>`,
+<p>不能只修改节点值，必须真正调整节点指针。</p>
+<h4>示例</h4>
+<pre>输入：head = [1,2,3,4]
+输出：[2,1,4,3]</pre>
+<pre>输入：head = [1]
+输出：[1]</pre>`,
     template: `# Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -80,7 +90,12 @@ def swap_pairs(head):
     description: `
 <h3>25. K 个一组翻转链表 <span class="difficulty-tag hard">Hard</span></h3>
 <p>给你链表头结点 <code>head</code> 和整数 <code>k</code>，每 <code>k</code> 个节点一组进行翻转，返回修改后的链表。</p>
-<p>如果节点总数不是 <code>k</code> 的整数倍，最后剩余节点保持原有顺序。</p>`,
+<p>如果节点总数不是 <code>k</code> 的整数倍，最后剩余节点保持原有顺序。</p>
+<h4>示例</h4>
+<pre>输入：head = [1,2,3,4,5], k = 2
+输出：[2,1,4,3,5]</pre>
+<pre>输入：head = [1,2,3,4,5], k = 3
+输出：[3,2,1,4,5]</pre>`,
     template: `# Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -117,7 +132,10 @@ def reverse_k_group(head, k):
     description: `
 <h3>138. 随机链表的复制 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给你一个由 <code>next</code> 和 <code>random</code> 指针组成的链表，请你返回这个链表的深拷贝。</p>
-<p>当前页面暂未接入该题的本地测试，但保留了模板与跳转入口。</p>`,
+<p>当前页面暂未接入该题的本地测试，但保留了模板与跳转入口。</p>
+<h4>示例</h4>
+<pre>输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]</pre>`,
     template: `# Definition for a Node.
 # class Node:
 #     def __init__(self, x, next=None, random=None):
@@ -146,7 +164,12 @@ def copy_random_list(head):
     description: `
 <h3>148. 排序链表 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给你链表的头结点 <code>head</code>，请将其按升序排列并返回排序后的链表。</p>
-<p>本地练习会自动把数组输入转为链表，并把返回结果转回数组。</p>`,
+<p>本地练习会自动把数组输入转为链表，并把返回结果转回数组。</p>
+<h4>示例</h4>
+<pre>输入：head = [4,2,1,3]
+输出：[1,2,3,4]</pre>
+<pre>输入：head = [-1,5,3,4,0]
+输出：[-1,0,3,4,5]</pre>`,
     template: `# Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -182,7 +205,10 @@ def sort_list(head):
     description: `
 <h3>23. 合并 K 个升序链表 <span class="difficulty-tag hard">Hard</span></h3>
 <p>给你一个链表数组，每个链表都已经按升序排列，请将所有链表合并到一个升序链表中。</p>
-<p>本地练习输入为二维数组，系统会自动转成链表数组。</p>`,
+<p>本地练习输入为二维数组，系统会自动转成链表数组。</p>
+<h4>示例</h4>
+<pre>输入：lists = [[1,4,5],[1,3,4],[2,6]]
+输出：[1,1,2,3,4,4,5,6]</pre>`,
     template: `# Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -221,7 +247,14 @@ def _to_linked_lists(arrs):
     description: `
 <h3>146. LRU 缓存 <span class="difficulty-tag medium">Medium</span></h3>
 <p>请你设计并实现一个满足 LRU 规则的数据结构，支持 <code>get</code> 和 <code>put</code>，并都要在平均 <code>O(1)</code> 时间完成。</p>
-<p>当前页面暂未接入这类设计题的本地测试，但保留模板与跳转入口。</p>`,
+<p>当前页面暂未接入这类设计题的本地测试，但保留模板与跳转入口。</p>
+<h4>示例</h4>
+<pre>LRUCache cache = new LRUCache(2);
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // 返回 1
+cache.put(3, 3);    // 淘汰 key 2
+cache.get(2);       // 返回 -1（未找到）</pre>`,
     template: `class LRUCache:
     def __init__(self, capacity):
         """
@@ -258,7 +291,12 @@ def _to_linked_lists(arrs):
     description: `
 <h3>98. 验证二叉搜索树 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给你一个二叉树的根节点 <code>root</code>，判断其是否为有效的二叉搜索树。</p>
-<p>输入按层序数组给出，<code>null</code> 表示空节点。</p>`,
+<p>输入按层序数组给出，<code>null</code> 表示空节点。</p>
+<h4>示例</h4>
+<pre>输入：root = [2,1,3]
+输出：true</pre>
+<pre>输入：root = [5,1,4,null,null,3,6]
+输出：false</pre>`,
     template: `# Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -293,7 +331,12 @@ def is_valid_bst(root):
     tags: ['二叉树', '二叉搜索树'],
     description: `
 <h3>230. 二叉搜索树中第 K 小的元素 <span class="difficulty-tag medium">Medium</span></h3>
-<p>给定一个二叉搜索树的根节点 <code>root</code> 和一个整数 <code>k</code>，返回其中第 <code>k</code> 小的元素值。</p>`,
+<p>给定一个二叉搜索树的根节点 <code>root</code> 和一个整数 <code>k</code>，返回其中第 <code>k</code> 小的元素值。</p>
+<h4>示例</h4>
+<pre>输入：root = [3,1,4,null,2], k = 1
+输出：1</pre>
+<pre>输入：root = [5,3,6,2,4,null,null,1], k = 3
+输出：3</pre>`,
     template: `# Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -328,7 +371,12 @@ def kth_smallest(root, k):
     tags: ['二叉树'],
     description: `
 <h3>199. 二叉树的右视图 <span class="difficulty-tag medium">Medium</span></h3>
-<p>给定一个二叉树的根节点 <code>root</code>，返回从右侧看到的节点值。</p>`,
+<p>给定一个二叉树的根节点 <code>root</code>，返回从右侧看到的节点值。</p>
+<h4>示例</h4>
+<pre>输入：root = [1,2,3,null,5,null,4]
+输出：[1,3,4]</pre>
+<pre>输入：root = [1,null,3]
+输出：[1,3]</pre>`,
     template: `# Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -364,7 +412,10 @@ def right_side_view(root):
     description: `
 <h3>114. 二叉树展开为链表 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给你二叉树的根节点 <code>root</code>，请你将它展开为一个单链表，展开后的顺序应与先序遍历一致。</p>
-<p>本地练习会校验右指针链的节点顺序，并检查所有左指针都被清空。</p>`,
+<p>本地练习会校验右指针链的节点顺序，并检查所有左指针都被清空。</p>
+<h4>示例</h4>
+<pre>输入：root = [1,2,5,3,4,null,6]
+输出：[1,null,2,null,3,null,4,null,5,null,6]</pre>`,
     template: `# Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -413,7 +464,10 @@ def _test_flatten(root):
     description: `
 <h3>105. 从前序与中序遍历序列构造二叉树 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给定一棵树的前序遍历 <code>preorder</code> 和中序遍历 <code>inorder</code>，请构造并返回这棵二叉树。</p>
-<p>本地练习会将你返回的树转回层序数组进行校验。</p>`,
+<p>本地练习会将你返回的树转回层序数组进行校验。</p>
+<h4>示例</h4>
+<pre>输入：preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+输出：[3,9,20,null,null,15,7]</pre>`,
     template: `# Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):

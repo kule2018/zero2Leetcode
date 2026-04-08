@@ -181,7 +181,12 @@ def max_path_sum(root):
 <h3>207. 课程表 <span class="difficulty-tag medium">Medium</span></h3>
 <p>你需要选修 <code>numCourses</code> 门课，课程编号 <code>0..numCourses-1</code>。</p>
 <p><code>prerequisites[i] = [a, b]</code> 表示学习课程 <code>a</code> 之前必须先学 <code>b</code>。</p>
-<p>如果能完成所有课程返回 <code>True</code>，否则返回 <code>False</code>。</p>`,
+<p>如果能完成所有课程返回 <code>True</code>，否则返回 <code>False</code>。</p>
+<h4>示例</h4>
+<pre>输入：numCourses = 2, prerequisites = [[1,0]]
+输出：true</pre>
+<pre>输入：numCourses = 2, prerequisites = [[1,0],[0,1]]
+输出：false（存在环）</pre>`,
     template: `def can_finish(numCourses, prerequisites):
     """
     :type numCourses: int
@@ -215,7 +220,13 @@ def max_path_sum(root):
   <li><code>search(word)</code></li>
   <li><code>starts_with(prefix)</code></li>
 </ul>
-<p>说明：该题为类设计题，本地练习允许不提供可运行测试用例。</p>`,
+<p>说明：该题为类设计题，本地练习允许不提供可运行测试用例。</p>
+<h4>示例</h4>
+<pre>trie = Trie()
+trie.insert("apple")
+trie.search("apple")    // 返回 true
+trie.search("app")      // 返回 false
+trie.starts_with("app") // 返回 true</pre>`,
     template: `class Trie:
     def __init__(self):
         # write your code here
@@ -261,7 +272,12 @@ def max_path_sum(root):
     description: `
 <h3>17. 电话号码的字母组合 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给定仅包含数字 <code>2-9</code> 的字符串 <code>digits</code>，返回它能表示的所有字母组合。</p>
-<p>数字与字母的映射与电话按键相同。返回顺序任意。</p>`,
+<p>数字与字母的映射与电话按键相同。返回顺序任意。</p>
+<h4>示例</h4>
+<pre>输入：digits = "23"
+输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]</pre>
+<pre>输入：digits = ""
+输出：[]</pre>`,
     template: `def letter_combinations(digits):
     """
     :type digits: str
@@ -297,7 +313,12 @@ def max_path_sum(root):
     description: `
 <h3>39. 组合总和 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给定无重复元素数组 <code>candidates</code> 和目标值 <code>target</code>，找出所有和为 <code>target</code> 的组合。</p>
-<p><code>candidates</code> 中的数字可以无限次选取。组合内元素顺序不重要。</p>`,
+<p><code>candidates</code> 中的数字可以无限次选取。组合内元素顺序不重要。</p>
+<h4>示例</h4>
+<pre>输入：candidates = [2,3,6,7], target = 7
+输出：[[2,2,3],[7]]</pre>
+<pre>输入：candidates = [2,3,5], target = 8
+输出：[[2,2,2,2],[2,3,3],[3,5]]</pre>`,
     template: `def combination_sum(candidates, target):
     """
     :type candidates: List[int]
@@ -325,7 +346,12 @@ def max_path_sum(root):
     tags: ['backtrack'],
     description: `
 <h3>22. 括号生成 <span class="difficulty-tag medium">Medium</span></h3>
-<p>数字 <code>n</code> 表示括号对数，返回所有有效的括号组合。</p>`,
+<p>数字 <code>n</code> 表示括号对数，返回所有有效的括号组合。</p>
+<h4>示例</h4>
+<pre>输入：n = 3
+输出：["((()))","(()())","(())()","()(())","()()()"]</pre>
+<pre>输入：n = 1
+输出：["()"]</pre>`,
     template: `def generate_parenthesis(n):
     """
     :type n: int
@@ -352,7 +378,12 @@ def max_path_sum(root):
     description: `
 <h3>79. 单词搜索 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给定 <code>m x n</code> 字符网格 <code>board</code> 和字符串 <code>word</code>，判断是否存在一条路径使得路径上的字符依次拼成 <code>word</code>。</p>
-<p>每个格子最多使用一次，路径只能上下左右移动。</p>`,
+<p>每个格子最多使用一次，路径只能上下左右移动。</p>
+<h4>示例</h4>
+<pre>输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+输出：true</pre>
+<pre>输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
+输出：false</pre>`,
     template: `def exist(board, word):
     """
     :type board: List[List[str]]
@@ -381,7 +412,12 @@ def max_path_sum(root):
     description: `
 <h3>131. 分割回文串 <span class="difficulty-tag medium">Medium</span></h3>
 <p>给定字符串 <code>s</code>，将其分割成若干子串，使得每个子串都是回文串。返回所有可能的分割方案。</p>
-<p>返回顺序任意。</p>`,
+<p>返回顺序任意。</p>
+<h4>示例</h4>
+<pre>输入：s = "aab"
+输出：[["a","a","b"],["aa","b"]]</pre>
+<pre>输入：s = "a"
+输出：[["a"]]</pre>`,
     template: `def partition(s):
     """
     :type s: str
@@ -416,7 +452,10 @@ def _parts_to_strings(parts):
     description: `
 <h3>51. N 皇后 <span class="difficulty-tag hard">Hard</span></h3>
 <p>在 <code>n x n</code> 的棋盘上放置 <code>n</code> 个皇后，使得任意两个皇后都不在同一行、同一列、同一对角线上。</p>
-<p>返回所有不同的解，每个解是棋盘的字符串表示。</p>`,
+<p>返回所有不同的解，每个解是棋盘的字符串表示。</p>
+<h4>示例</h4>
+<pre>输入：n = 4
+输出：[[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]</pre>`,
     template: `def solve_n_queens(n):
     """
     :type n: int
