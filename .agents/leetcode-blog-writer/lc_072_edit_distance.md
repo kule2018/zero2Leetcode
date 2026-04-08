@@ -14,6 +14,12 @@
 
 求把 `word1` 变成 `word2` 的最少操作数，这就是经典的编辑距离（Levenshtein distance）。
 
+例如：
+
+- 输入：`word1 = "horse"`，`word2 = "ros"`
+- 输出：`3`（horse → rorse → rose → ros）
+
+
 ## 核心思路：dp[i][j] 表示把前缀变成前缀的最小代价
 
 设 `dp[i][j]` 表示把 `word1[:i]` 变成 `word2[:j]` 的最小编辑距离。

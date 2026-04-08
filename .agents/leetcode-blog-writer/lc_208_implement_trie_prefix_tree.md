@@ -14,6 +14,17 @@
 
 关键区别：`startsWith("app")` 只要求“走得到 app 这条路径”，不要求 app 是一个完整单词；而 `search("app")` 要求 app 对应节点被标记为“单词结尾”。
 
+例如：
+
+```
+trie = Trie()
+trie.insert("apple")
+trie.search("apple")    # 返回 True
+trie.search("app")      # 返回 False
+trie.startsWith("app")  # 返回 True
+```
+
+
 ## 核心思路：树不是按“长度”分层，而是按“字符”分叉
 
 Trie（前缀树）的直觉是：
