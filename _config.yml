@@ -1,7 +1,11 @@
 title: Zero2Leetcode
 description: 从零基础Python到LeetCode中等难度的系统性学习平台
+url: https://onefly.top
 markdown: kramdown
 baseurl: /zero2Leetcode
+
+plugins:
+  - jekyll-sitemap
 
 include:
   - 00_python_basics

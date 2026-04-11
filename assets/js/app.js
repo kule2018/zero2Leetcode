@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // 初始化所有模块
     initNavbar();
+    initThemeToggle();
     initProblemsTable();
     initFilters();
     initSearch();
@@ -38,12 +39,39 @@ function initNavbar() {
         const currentScroll = window.pageYOffset;
 
         if (currentScroll > 100) {
-            navbar.style.background = 'rgba(10, 10, 15, 0.95)';
+            navbar.style.backdropFilter = 'blur(20px)';
+            navbar.style.opacity = '';
         } else {
-            navbar.style.background = 'rgba(10, 10, 15, 0.85)';
+            navbar.style.backdropFilter = '';
+            navbar.style.opacity = '';
         }
 
         lastScroll = currentScroll;
+    });
+}
+
+/**
+ * 主题切换
+ */
+function initThemeToggle() {
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+
+    function currentTheme() {
+        return document.documentElement.getAttribute('data-theme') || 'dark';
+    }
+
+    btn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('z2l-theme', next);
+    });
+
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function (e) {
+        if (!localStorage.getItem('z2l-theme')) {
+            var theme = e.matches ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        }
     });
 }
 

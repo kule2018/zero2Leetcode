@@ -105,6 +105,40 @@ document.querySelectorAll(".nav-group-toggle").forEach(function (btn) {
 })();
 
 
+/* ===== Theme toggle ===== */
+(function () {
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+
+    function currentTheme() {
+        return document.documentElement.getAttribute('data-theme') || 'dark';
+    }
+
+    btn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('z2l-theme', next);
+        swapHljsTheme(next);
+    });
+
+    function swapHljsTheme(theme) {
+        var link = document.getElementById('hljs-theme');
+        if (!link) return;
+        link.href = theme === 'light'
+            ? 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css'
+            : 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css';
+    }
+
+    /* Respect system preference changes */
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function (e) {
+        if (!localStorage.getItem('z2l-theme')) {
+            var theme = e.matches ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            swapHljsTheme(theme);
+        }
+    });
+})();
+
 /* ===== Back to top ===== */
 (function () {
     var btn = document.getElementById('back-to-top');
