@@ -1143,10 +1143,14 @@ html[data-theme="light"] .hero-bg {
         radial-gradient(ellipse 60% 40% at 80% 60%, hsla(var(--accent-hue), 100%, 50%, 0.06), transparent);
 }
 
-/* Code block in hero */
+/* Hero code block */
 html[data-theme="light"] .code-block {
+    background: var(--bg-card);
     border-color: rgba(0, 0, 0, 0.12);
 }
+html[data-theme="light"] .code-content .keyword { color: #d73a49; }
+html[data-theme="light"] .code-content .function { color: #6f42c1; }
+html[data-theme="light"] .code-content .comment { color: #6a737d; }
 
 /* Roadmap icon glow — softer */
 html[data-theme="light"] .roadmap-icon {
