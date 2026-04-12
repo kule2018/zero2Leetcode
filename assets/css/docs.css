@@ -791,7 +791,7 @@ html[data-theme="light"] a:hover { color: #6366f1; }
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    margin-top: 8px;
+    margin-bottom: 8px;
     padding: 6px 16px;
     background: linear-gradient(135deg, #00b8a3, #00d4aa);
     color: #000 !important;

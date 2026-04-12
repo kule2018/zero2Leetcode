@@ -43,8 +43,8 @@
             if (data.expected) params.push('expected=' + encodeB64(data.expected));
             btn.href = base + '/acm-playground.html?' + params.join('&');
 
-            // 插入到代码块后面
-            pre.parentNode.insertBefore(btn, pre.nextSibling);
+            // 插入到代码块前面
+            pre.parentNode.insertBefore(btn, pre);
         });
     }
 
