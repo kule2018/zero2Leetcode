@@ -108,6 +108,15 @@
      * Base64 编码（支持 Unicode / 中文）
      */
     function encodeB64(str) {
-        return btoa(unescape(encodeURIComponent(str)));
+        try {
+            var bytes = new TextEncoder().encode(str);
+            var binary = '';
+            for (var i = 0; i < bytes.length; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+        } catch (e) {
+            return btoa(unescape(encodeURIComponent(str)));
+        }
     }
 })();

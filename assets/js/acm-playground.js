@@ -655,7 +655,14 @@ function bindEvents() {
 
 // Base64 解码（支持 Unicode / 中文）
 function decodeB64(str) {
-    return decodeURIComponent(escape(atob(str)));
+    try {
+        var bytes = Uint8Array.from(atob(str), function(c) { return c.charCodeAt(0); });
+        return new TextDecoder('utf-8').decode(bytes);
+    } catch (e) {
+        // fallback for very old browsers
+        try { return decodeURIComponent(escape(atob(str))); } catch (_) {}
+        return atob(str);
+    }
 }
 
 // ---------- 启动 ----------
