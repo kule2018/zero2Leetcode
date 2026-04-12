@@ -245,6 +245,11 @@ async function executePython(code, stdinText) {
         }
     });
 
+    // 自动检测并加载第三方包（numpy, scipy 等）
+    try {
+        await pyodide.loadPackagesFromImports(code);
+    } catch (_) {}
+
     // 捕获 stdout 和 stderr
     const captureCode = `
 import sys, io
@@ -343,6 +348,11 @@ async function runDebug() {
             return undefined;
         }
     });
+
+    // 自动检测并加载第三方包
+    try {
+        await pyodide.loadPackagesFromImports(userCode);
+    } catch (_) {}
 
     // 计算用户代码行偏移 (trace 包装会在前面插入行)
     const traceSetupLines = buildTraceSetup().split('\n').length;
