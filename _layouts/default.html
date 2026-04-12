@@ -194,6 +194,7 @@
         window.Z2L_NAV = [{% for module in site.data.nav.modules %}{% for article in module.articles %}{"path":"{{ module.slug }}/{{ article.slug }}","title":"{{ article.title | replace: '"', '\"' }}"},{% endfor %}{% if module.groups %}{% for group in module.groups %}{% for article in group.articles %}{"path":"{{ module.slug }}/{{ article.slug }}","title":"{{ article.title | replace: '"', '\"' }}"},{% endfor %}{% endfor %}{% endif %}{% endfor %}];
     </script>
     <script src="{{ site.baseurl }}/assets/js/docs.js?v=3"></script>
+    <script src="{{ site.baseurl }}/assets/js/acm-bridge.js"></script>
 </body>
 
 </html>

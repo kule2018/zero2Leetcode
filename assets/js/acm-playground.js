@@ -624,20 +624,28 @@ function bindEvents() {
         });
     }
 
-    // URL 参数：?code=...&input=...（从真题文章跳转）
+    // URL 参数：?code=...&input=...&expected=...（从真题文章跳转）
     const params = new URLSearchParams(window.location.search);
     if (params.has('code')) {
         try {
-            const code = atob(params.get('code'));
-            window.acmEditor.setValue(code);
+            window.acmEditor.setValue(decodeB64(params.get('code')));
         } catch (_) {}
     }
     if (params.has('input')) {
         try {
-            const input = atob(params.get('input'));
-            document.getElementById('stdin-area').value = input;
+            document.getElementById('stdin-area').value = decodeB64(params.get('input'));
         } catch (_) {}
     }
+    if (params.has('expected')) {
+        try {
+            document.getElementById('expected-area').value = decodeB64(params.get('expected'));
+        } catch (_) {}
+    }
+}
+
+// Base64 解码（支持 Unicode / 中文）
+function decodeB64(str) {
+    return decodeURIComponent(escape(atob(str)));
 }
 
 // ---------- 启动 ----------

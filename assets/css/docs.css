@@ -785,3 +785,27 @@ html[data-theme="light"] .hljs-deletion { color: #b31d28; }
 
 /* a:hover in light mode */
 html[data-theme="light"] a:hover { color: #6366f1; }
+
+/* ===== ACM Bridge Button ===== */
+.acm-run-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #00b8a3, #00d4aa);
+    color: #000 !important;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    border-radius: 8px;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.acm-run-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 184, 163, 0.4);
+    color: #000 !important;
+}
