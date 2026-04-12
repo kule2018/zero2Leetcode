@@ -16,17 +16,21 @@
         if (!article) return;
 
         // 找到所有 Python 代码块
+        // kramdown 渲染结构: div.highlighter-rouge > div.highlight > pre > code
         var codeBlocks = article.querySelectorAll('pre > code');
         var pythonBlocks = [];
         for (var i = 0; i < codeBlocks.length; i++) {
             var cls = codeBlocks[i].className || '';
-            if (cls.indexOf('python') !== -1) {
-                pythonBlocks.push(codeBlocks[i].parentElement); // <pre>
+            var parentCls = (codeBlocks[i].closest('.highlighter-rouge') || {}).className || '';
+            if (cls.indexOf('python') !== -1 || parentCls.indexOf('language-python') !== -1) {
+                pythonBlocks.push(codeBlocks[i]);
             }
         }
 
-        pythonBlocks.forEach(function (pre) {
-            var data = findSampleData(pre);
+        pythonBlocks.forEach(function (codeEl) {
+            // 找到最外层容器（div.highlighter-rouge），或直接用 <pre>
+            var wrapper = codeEl.closest('.highlighter-rouge') || codeEl.parentElement;
+            var data = findSampleData(wrapper);
             if (!data) return;
 
             var btn = document.createElement('a');
@@ -43,55 +47,63 @@
             if (data.expected) params.push('expected=' + encodeURIComponent(encodeB64(data.expected)));
             btn.href = base + '/acm-playground.html?' + params.join('&');
 
-            // 插入到代码块前面
-            pre.parentNode.insertBefore(btn, pre);
+            // 插入到代码块包装器前面
+            wrapper.parentNode.insertBefore(btn, wrapper);
         });
     }
 
     /**
-     * 从一个 Python <pre> 块向上查找同一道题的 样例输入/输出
+     * 从一个 Python 代码块的外层容器向上查找同一道题的 样例输入/输出
+     * wrapper 可以是 div.highlighter-rouge 或 <pre>
      * 返回 { code, input, expected } 或 null
      */
-    function findSampleData(pythonPre) {
-        var code = pythonPre.textContent || '';
+    function findSampleData(wrapper) {
+        var code = wrapper.textContent || '';
         if (!code.trim()) return null;
 
         // 向上遍历同级兄弟节点，寻找输入/输出 code blocks
         var input = null;
         var expected = null;
 
-        // 收集从当前 <pre> 往上直到 <h2> 之间的所有元素
+        // 收集从当前容器往上直到 <h2> 之间的所有元素
         var siblings = [];
-        var el = pythonPre.previousElementSibling;
+        var el = wrapper.previousElementSibling;
         while (el) {
             if (el.tagName === 'H2') break; // 题目边界
             siblings.unshift(el);
             el = el.previousElementSibling;
         }
 
-        // 在 siblings 中寻找 **输入** 和 **输出** 后的 <pre> 块
+        // 在 siblings 中寻找 **输入** 和 **输出** 后的代码块
+        // kramdown 生成: <p><strong>输入</strong></p> → <div.highlighter-rouge>
         for (var i = 0; i < siblings.length; i++) {
             var node = siblings[i];
-            var text = node.textContent || '';
+            var next = siblings[i + 1];
 
-            // 检查是否包含 **输入** 标记
-            if (isLabel(node, '输入') && siblings[i + 1] && siblings[i + 1].tagName === 'PRE') {
-                input = siblings[i + 1].textContent || '';
+            // 检查是否包含 **输入** 标记，下一个兄弟是代码块
+            if (isLabel(node, '输入') && next && isCodeBlock(next)) {
+                input = next.textContent || '';
             }
             // 检查是否包含 **输出** 标记
-            if (isLabel(node, '输出') && siblings[i + 1] && siblings[i + 1].tagName === 'PRE') {
-                expected = siblings[i + 1].textContent || '';
+            if (isLabel(node, '输出') && next && isCodeBlock(next)) {
+                expected = next.textContent || '';
             }
         }
-
-        // 至少要有代码才返回
-        if (!code.trim()) return null;
 
         return {
             code: code.trim(),
             input: (input || '').trim(),
             expected: (expected || '').trim()
         };
+    }
+
+    /**
+     * 判断元素是否为代码块（<pre> 或 div.highlighter-rouge）
+     */
+    function isCodeBlock(el) {
+        if (el.tagName === 'PRE') return true;
+        if (el.classList && el.classList.contains('highlighter-rouge')) return true;
+        return false;
     }
 
     /**
