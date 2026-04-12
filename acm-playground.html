@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zero2Leetcode ACM 模拟 IDE - 模拟大厂笔试 ACM 模式，支持 stdin/stdout、断点调试">
+    <title>ACM 模拟 IDE | Zero2Leetcode</title>
+    <script>
+        (function(){var s=localStorage.getItem('z2l-theme');var t=s||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t);})();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css?v=2">
+    <link rel="stylesheet" href="assets/css/acm-playground.css">
+    <!-- CodeMirror 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/material-darker.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/eclipse.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/hint/show-hint.min.css">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="./" class="nav-logo">
+                <img src="assets/images/logo.svg" alt="Logo" class="logo-icon">
+                <span class="logo-text">Zero2Leetcode</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="https://onefly.top/zero2Agent/" target="_blank" class="nav-link nav-friend-link">Zero2Agent</a></li>
+                <li><a href="./#roadmap" class="nav-link">学习路线</a></li>
+                <li><a href="./#modules" class="nav-link">知识模块</a></li>
+                <li><a href="./#problems" class="nav-link">题目清单</a></li>
+                <li><a href="playground.html" class="nav-link">在线练习</a></li>
+                <li><a href="acm-playground.html" class="nav-link nav-link-active">ACM 模拟</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换主题" title="切换主题">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                </button>
+                <button class="nav-toggle" aria-label="打开菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="acm-main">
+        <!-- 顶部工具栏 -->
+        <div class="acm-toolbar">
+            <div class="toolbar-left">
+                <select id="template-select" class="template-select">
+                    <option value="">选择输入模板...</option>
+                    <option value="single">单个整数</option>
+                    <option value="two">两个整数</option>
+                    <option value="array">读取数组</option>
+                    <option value="matrix">读取矩阵</option>
+                    <option value="multi">多组测试用例</option>
+                    <option value="string">读取字符串</option>
+                    <option value="graph">读取图（邻接表）</option>
+                </select>
+                <span class="toolbar-divider"></span>
+                <span id="pyodide-status" class="pyodide-status loading">Pyodide 加载中...</span>
+            </div>
+            <div class="toolbar-right">
+                <button id="run-btn" class="btn btn-run" disabled>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M4 2l10 6-10 6V2z" />
+                    </svg>
+                    运行 (Ctrl+Enter)
+                </button>
+                <button id="debug-btn" class="btn btn-debug" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a4 4 0 00-4 4v2H6a2 2 0 00-2 2v1a6 6 0 003 5.2V20a2 2 0 002 2h6a2 2 0 002-2v-3.8A6 6 0 0020 11v-1a2 2 0 00-2-2h-2V6a4 4 0 00-4-4z"/>
+                        <path d="M9 11h.01"/><path d="M15 11h.01"/>
+                    </svg>
+                    调试
+                </button>
+                <button id="reset-btn" class="btn btn-reset">重置</button>
+            </div>
+        </div>
+
+        <!-- 两栏布局：编辑器 | 输入输出+调试 -->
+        <div class="acm-layout">
+            <!-- 左侧：代码编辑器 -->
+            <div class="acm-panel acm-panel-editor">
+                <div class="panel-header">
+                    <span class="panel-title">代码编辑器</span>
+                    <span class="panel-hint">Python 3 · ACM 模式</span>
+                </div>
+                <div class="panel-body editor-body">
+                    <textarea id="code-editor"></textarea>
+                </div>
+            </div>
+
+            <!-- 右侧：输入输出 + 调试 -->
+            <div class="acm-panel-right">
+                <!-- 输入区 -->
+                <div class="acm-panel acm-panel-input">
+                    <div class="panel-header">
+                        <span class="panel-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            输入 (stdin)
+                        </span>
+                        <button id="clear-input-btn" class="panel-action-btn" title="清空输入">清空</button>
+                    </div>
+                    <div class="panel-body io-body">
+                        <textarea id="stdin-area" class="io-textarea" placeholder="在这里粘贴测试输入...&#10;例如：&#10;5&#10;1 3 2 5 4" spellcheck="false"></textarea>
+                    </div>
+                </div>
+
+                <!-- 输出区 -->
+                <div class="acm-panel acm-panel-output">
+                    <div class="panel-header">
+                        <span class="panel-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            输出 (stdout)
+                        </span>
+                        <span id="run-status" class="run-status"></span>
+                    </div>
+                    <div class="panel-body io-body">
+                        <pre id="stdout-area" class="io-output">点击「运行」或按 Ctrl+Enter 执行代码</pre>
+                    </div>
+                </div>
+
+                <!-- 期望输出区 -->
+                <div class="acm-panel acm-panel-expected">
+                    <div class="panel-header">
+                        <span class="panel-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            期望输出（可选，用于对比）
+                        </span>
+                        <span id="diff-result" class="diff-result"></span>
+                    </div>
+                    <div class="panel-body io-body">
+                        <textarea id="expected-area" class="io-textarea" placeholder="粘贴期望输出，自动与实际输出对比..." spellcheck="false"></textarea>
+                    </div>
+                </div>
+
+                <!-- 调试面板（默认隐藏） -->
+                <div id="debug-panel" class="acm-panel acm-panel-debug" style="display:none;">
+                    <div class="panel-header">
+                        <span class="panel-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a4 4 0 00-4 4v2H6a2 2 0 00-2 2v1a6 6 0 003 5.2V20a2 2 0 002 2h6a2 2 0 002-2v-3.8A6 6 0 0020 11v-1a2 2 0 00-2-2h-2V6a4 4 0 00-4-4z"/>
+                            </svg>
+                            调试回放
+                        </span>
+                        <button id="debug-close-btn" class="panel-action-btn" title="关闭调试">关闭</button>
+                    </div>
+                    <div class="debug-controls">
+                        <button id="debug-prev" class="debug-step-btn" title="上一步">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                        </button>
+                        <span id="debug-step-info" class="debug-step-info">Step 0/0</span>
+                        <button id="debug-next" class="debug-step-btn" title="下一步">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                        </button>
+                        <span class="debug-controls-sep"></span>
+                        <button id="debug-prev-bp" class="debug-step-btn" title="上一个断点">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6z"/><path d="M6 6h2v12H6z"/></svg>
+                        </button>
+                        <button id="debug-next-bp" class="debug-step-btn" title="下一个断点">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6z"/><path d="M16 6h2v12h-2z"/></svg>
+                        </button>
+                    </div>
+                    <div class="debug-body">
+                        <div class="debug-vars-header">变量状态</div>
+                        <div id="debug-vars" class="debug-vars">
+                            <div class="debug-placeholder">点击「调试」开始录制执行过程</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部状态栏 -->
+        <div class="acm-statusbar">
+            <span id="status-info">就绪</span>
+            <span class="statusbar-sep">|</span>
+            <span id="status-time"></span>
+            <span class="statusbar-right">
+                <span class="statusbar-tip">Ctrl+Enter 运行</span>
+                <span class="statusbar-sep">|</span>
+                <span class="statusbar-tip">点击行号设置断点</span>
+            </span>
+        </div>
+    </main>
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/selection/active-line.min.js"></script>
+    <!-- Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+    <!-- ACM Playground Logic -->
+    <script src="assets/js/acm-playground.js"></script>
+    <!-- Theme toggle -->
+    <script>
+    (function () {
+        var btn = document.getElementById('theme-toggle');
+        if (!btn) return;
+        function currentTheme() {
+            return document.documentElement.getAttribute('data-theme') || 'dark';
+        }
+        function syncEditorTheme(theme) {
+            if (window.acmEditor && window.acmEditor.setOption) {
+                window.acmEditor.setOption('theme', theme === 'light' ? 'eclipse' : 'material-darker');
+            }
+        }
+        btn.addEventListener('click', function () {
+            var next = currentTheme() === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('z2l-theme', next);
+            syncEditorTheme(next);
+        });
+        var initCheck = setInterval(function () {
+            if (window.acmEditor) { syncEditorTheme(currentTheme()); clearInterval(initCheck); }
+        }, 200);
+        setTimeout(function () { clearInterval(initCheck); }, 10000);
+    })();
+    </script>
+</body>
+
+</html>

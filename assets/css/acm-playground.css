@@ -1,0 +1,574 @@
+/* =============================================
+   ACM Playground - ACM 模拟 IDE 样式
+   复用 style.css 的 CSS 变量
+   ============================================= */
+
+/* 当前页面导航高亮 */
+.nav-link-active {
+    color: var(--primary) !important;
+}
+
+.nav-link-active::after {
+    width: 100% !important;
+}
+
+/* ---------- 主布局 ---------- */
+.acm-main {
+    margin-top: 60px;
+    height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ---------- 工具栏 ---------- */
+.acm-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    gap: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+.toolbar-left,
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.toolbar-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border-color);
+    margin: 0 var(--spacing-xs);
+}
+
+.template-select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    min-width: 180px;
+    cursor: pointer;
+}
+
+.template-select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* Pyodide 状态 */
+.pyodide-status {
+    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+.pyodide-status.loading {
+    color: var(--medium);
+    background: rgba(255, 192, 30, 0.12);
+}
+
+.pyodide-status.ready {
+    color: var(--easy);
+    background: rgba(0, 184, 163, 0.12);
+}
+
+.pyodide-status.error {
+    color: var(--hard);
+    background: rgba(255, 55, 95, 0.12);
+}
+
+/* 按钮 */
+.btn-run {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: linear-gradient(135deg, var(--easy), #00d4aa);
+    color: #000;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-run:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 184, 163, 0.4);
+}
+
+.btn-run:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-debug {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: linear-gradient(135deg, #ffa116, #ff6b00);
+    color: #000;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-debug:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(255, 161, 22, 0.4);
+}
+
+.btn-debug:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-reset {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-reset:hover {
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+}
+
+/* ---------- 两栏布局 ---------- */
+.acm-layout {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.acm-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.acm-panel-editor {
+    width: 55%;
+    min-width: 400px;
+    border-right: 1px solid var(--border-color);
+}
+
+.acm-panel-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.acm-panel-input {
+    flex: 1;
+    min-height: 80px;
+}
+
+.acm-panel-output {
+    flex: 1;
+    min-height: 80px;
+    border-top: 1px solid var(--border-color);
+}
+
+.acm-panel-expected {
+    flex: 0.7;
+    min-height: 60px;
+    border-top: 1px solid var(--border-color);
+}
+
+.acm-panel-debug {
+    flex: 1.5;
+    min-height: 100px;
+    border-top: 2px solid var(--medium);
+}
+
+/* 面板头 */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 36px;
+    box-sizing: border-box;
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.panel-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.panel-hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.panel-action-btn {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.panel-action-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+}
+
+/* 面板内容 */
+.panel-body {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--bg-primary);
+}
+
+/* ---------- CodeMirror 覆盖 ---------- */
+.editor-body {
+    padding: 0 !important;
+}
+
+.editor-body .CodeMirror {
+    height: 100%;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 断点 gutter */
+.CodeMirror-linenumber {
+    cursor: pointer;
+}
+
+.acm-breakpoint {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--hard);
+    display: inline-block;
+    margin: 3px 0 0 2px;
+    box-shadow: 0 0 6px rgba(255, 55, 95, 0.6);
+}
+
+/* 调试当前行高亮 */
+.debug-current-line {
+    background: rgba(255, 192, 30, 0.15) !important;
+}
+
+/* CodeMirror 自动补全 */
+.CodeMirror-hints {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    z-index: 1100;
+}
+
+.CodeMirror-hint {
+    color: var(--text-primary) !important;
+    padding: 4px 8px !important;
+    border-radius: 3px;
+}
+
+.CodeMirror-hint-active {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+/* ---------- 输入输出区域 ---------- */
+.io-body {
+    padding: 0 !important;
+}
+
+.io-textarea {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: none;
+    outline: none;
+    resize: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    box-sizing: border-box;
+}
+
+.io-textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.io-output {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.io-output.has-error {
+    color: var(--hard);
+}
+
+.io-output.placeholder-text {
+    color: var(--text-muted);
+}
+
+/* 运行状态 */
+.run-status {
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-family: var(--font-mono);
+}
+
+.run-status.success {
+    color: var(--easy);
+    background: rgba(0, 184, 163, 0.12);
+}
+
+.run-status.error {
+    color: var(--hard);
+    background: rgba(255, 55, 95, 0.12);
+}
+
+.run-status.running {
+    color: var(--medium);
+    background: rgba(255, 192, 30, 0.12);
+}
+
+/* 输出对比结果 */
+.diff-result {
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.diff-result.match {
+    color: var(--easy);
+    background: rgba(0, 184, 163, 0.12);
+}
+
+.diff-result.mismatch {
+    color: var(--hard);
+    background: rgba(255, 55, 95, 0.12);
+}
+
+/* ---------- 调试面板 ---------- */
+.debug-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.debug-step-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.debug-step-btn:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+    border-color: var(--primary);
+}
+
+.debug-step-info {
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    min-width: 80px;
+    text-align: center;
+}
+
+.debug-controls-sep {
+    width: 1px;
+    height: 20px;
+    background: var(--border-color);
+}
+
+.debug-body {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--bg-primary);
+}
+
+.debug-vars-header {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.debug-vars {
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.debug-placeholder {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.debug-var-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+    padding: 3px 0;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.debug-var-row:last-child {
+    border-bottom: none;
+}
+
+.debug-var-name {
+    color: var(--primary-light);
+    font-weight: 600;
+    min-width: 60px;
+    flex-shrink: 0;
+}
+
+.debug-var-eq {
+    color: var(--text-muted);
+}
+
+.debug-var-value {
+    color: var(--text-primary);
+    word-break: break-all;
+}
+
+.debug-var-changed {
+    background: rgba(255, 192, 30, 0.15);
+    border-radius: 3px;
+    padding: 0 4px;
+}
+
+/* ---------- 底部状态栏 ---------- */
+.acm-statusbar {
+    display: flex;
+    align-items: center;
+    padding: 3px var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+    gap: var(--spacing-sm);
+}
+
+.statusbar-sep {
+    color: var(--border-color);
+}
+
+.statusbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.statusbar-tip {
+    color: var(--text-muted);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 768px) {
+    .acm-layout {
+        flex-direction: column;
+    }
+
+    .acm-panel-editor {
+        width: 100%;
+        min-width: unset;
+        height: 45%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .acm-panel-right {
+        height: 55%;
+    }
+
+    .acm-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+        width: 100%;
+    }
+
+    .template-select {
+        flex: 1;
+        min-width: unset;
+    }
+
+    .statusbar-right {
+        display: none;
+    }
+}
