@@ -38,9 +38,9 @@
             // 构建 URL
             var base = (window.Z2L_BASE || '').replace(/\/$/, '');
             var params = [];
-            params.push('code=' + encodeB64(data.code));
-            if (data.input) params.push('input=' + encodeB64(data.input));
-            if (data.expected) params.push('expected=' + encodeB64(data.expected));
+            params.push('code=' + encodeURIComponent(encodeB64(data.code)));
+            if (data.input) params.push('input=' + encodeURIComponent(encodeB64(data.input)));
+            if (data.expected) params.push('expected=' + encodeURIComponent(encodeB64(data.expected)));
             btn.href = base + '/acm-playground.html?' + params.join('&');
 
             // 插入到代码块前面
