@@ -214,7 +214,7 @@ async function runCode() {
             if (!result.stdout) stdoutArea.classList.add('placeholder-text');
             runStatus.textContent = `${elapsed} ms`;
             runStatus.className = 'run-status success';
-            statusInfo.textContent = '运行完成';
+            statusInfo.textContent = result.warning ? '运行完成（有警告）' : '运行完成';
         }
         statusTime.textContent = `耗时 ${elapsed} ms`;
 
@@ -279,7 +279,7 @@ __err = __stderr_capture.getvalue()
         await pyodide.runPythonAsync(restoreCode);
         const stdout = pyodide.globals.get('__out') || '';
         const stderr = pyodide.globals.get('__err') || '';
-        return { stdout, error: stderr || null };
+        return { stdout, warning: stderr || null, error: null };
     } catch (e) {
         // 最终兜底：恢复 stdout
         try { await pyodide.runPythonAsync(`import sys; sys.stdout = sys.__stdout__; sys.stderr = sys.__stderr__`); } catch (_) {}
