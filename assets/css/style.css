@@ -1170,9 +1170,11 @@ html[data-theme="light"] .problems-table tbody tr:hover {
     background: var(--bg-card-hover);
 }
 
-/* Mobile menu */
-html[data-theme="light"] .nav-menu {
-    background: var(--bg-secondary);
+/* Mobile menu — only apply background on small screens */
+@media (max-width: 768px) {
+    html[data-theme="light"] .nav-menu {
+        background: var(--bg-secondary);
+    }
 }
 
 /* Nav toggle bars */
