@@ -9,7 +9,7 @@
 [![AI Coach](https://img.shields.io/badge/AI-刷题助手-blueviolet.svg)](#-ai-刷题助手)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[视频介绍](#-视频介绍) • [开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [AI 助手](#-ai-刷题助手)
+[视频介绍](#-视频介绍) • [开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [ACM 模拟](acm-playground.html) • [AI 助手](#-ai-刷题助手)
 
 </div>
 
@@ -23,6 +23,7 @@
 
 - 📚 **系统学习路线** — 4 阶段从 Python 基础到 LeetCode 实战
 - 🖥️ **在线练习场** — 内置 98 道 Hot 100 题目，浏览器直接运行 Python
+- 🎯 **ACM 模拟 IDE** — 模拟大厂笔试 ACM 模式，支持 stdin/stdout 和断点调试
 - 🤖 **AI 刷题助手** — 内置 AI 教练，自动读取题目和代码，给出诊断和提示
 - 📝 **完整题解** — LeetCode Hot 100 全部题解
 
@@ -91,6 +92,32 @@ AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当
 4. AI 自动注入当前题目 + 你的代码作为上下文，给出针对性回答
 
 > 💡 **默认免费可用**，内置 OpenRouter 免费 API。如需使用自己的 API，点击齿轮图标 ⚙️ 即可配置。
+
+---
+
+## 🎯 ACM 模拟 IDE
+
+> **模拟大厂笔试真实环境** — 直接粘贴真题代码，输入测试数据，一键运行
+
+大厂笔试（阿里、美团、华为等）普遍使用 **ACM 模式**：通过 `input()` 读取输入、`print()` 输出结果，和 LeetCode 的函数式调用完全不同。ACM 模拟 IDE 专为此场景设计。
+
+### 核心功能
+
+| 功能 | 说明 |
+|------|------|
+| 📥 **stdin/stdout** | 完整支持 `input()` / `print()`，粘贴测试数据即可运行 |
+| 📝 **输入模板** | 7 种常用模板（单整数、数组、矩阵、多组用例、图等） |
+| ✅ **输出对比** | 填入期望输出，自动判定 ACCEPTED / WRONG ANSWER |
+| 🐛 **断点调试** | 点击行号设置断点，逐行回放执行过程，实时查看变量变化 |
+| 💾 **自动保存** | 代码和输入自动保存到浏览器，刷新不丢失 |
+
+### 使用方式
+
+1. 打开 [ACM 模拟 IDE](acm-playground.html)
+2. 在左侧编辑器编写代码（或从真题文章粘贴）
+3. 在右侧「输入」区粘贴测试数据
+4. 点击「运行」或按 `Ctrl+Enter` 执行
+5. 点击「调试」进入逐行回放模式，查看每步变量状态
 
 ---
 
@@ -318,14 +345,17 @@ zero2Leetcode/
 ├── README.md                    # 项目说明
 ├── index.html                   # 🌐 前端学习平台入口
 ├── playground.html              # 🖥️ 在线练习场（含 AI 助手）
+├── acm-playground.html          # 🎯 ACM 模拟 IDE（stdin/stdout + 调试）
 ├── requirements.txt             # Python 依赖
 │
 ├── assets/
 │   ├── css/
 │   │   ├── style.css            # 全站设计系统
-│   │   └── playground.css       # 练习场 + AI 助手样式
+│   │   ├── playground.css       # 练习场 + AI 助手样式
+│   │   └── acm-playground.css   # ACM 模拟 IDE 样式
 │   ├── js/
 │   │   ├── playground.js        # 练习场核心逻辑
+│   │   ├── acm-playground.js    # ACM 模拟 IDE 逻辑
 │   │   └── ai-assistant.js      # 🤖 AI 刷题助手模块
 │   └── images/                  # 静态资源
 │
@@ -360,9 +390,10 @@ zero2Leetcode/
 git clone https://github.com/ranxi2001/zero2Leetcode.git
 cd zero2Leetcode
 
-# 启动本地服务器，打开练习场
+# 启动本地服务器
 python3 -m http.server 8080
-# 浏览器访问 http://localhost:8080/playground.html
+# 在线练习场: http://localhost:8080/playground.html
+# ACM 模拟 IDE: http://localhost:8080/acm-playground.html
 
 # 运行 Python 示例
 python 00_python_basics/01_variables_types/concepts.py
