@@ -211,8 +211,76 @@ img {
     width: 100%;
 }
 
-.nav-friend-link {
-    color: var(--accent) !important;
+/* ===== Nav Dropdown (Zero 系列) ===== */
+.nav-dropdown {
+    position: relative;
+    list-style: none;
+}
+
+.nav-dropdown-trigger {
+    all: unset;
+    cursor: pointer;
+    color: #818cf8;
+    font-size: 0.9rem;
+    font-family: inherit;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid rgba(129, 140, 248, 0.3);
+    border-radius: var(--radius-md);
+    transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.nav-dropdown-trigger:hover {
+    color: var(--text);
+    background: rgba(129, 140, 248, 0.08);
+    border-color: rgba(129, 140, 248, 0.5);
+}
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 200px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.18s, visibility 0.18s, transform 0.18s;
+    z-index: 200;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-menu a {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: var(--text) !important;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: background 0.12s;
+}
+
+.nav-dropdown-menu a:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: #818cf8 !important;
+}
+
+.nav-dropdown-menu a span {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-left: auto;
 }
 
 .nav-link-external {
@@ -1130,6 +1198,12 @@ html[data-theme="light"] {
 /* Navbar */
 html[data-theme="light"] .navbar {
     background: rgba(255, 255, 255, 0.92);
+}
+
+/* Dropdown */
+html[data-theme="light"] .nav-dropdown-menu {
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
 html[data-theme="light"] .theme-toggle:hover {
