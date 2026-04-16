@@ -85,6 +85,8 @@ modules:
             slug: "alibaba/ai-20260411"
           - title: "算法岗 4.11"
             slug: "alibaba/algo-20260411"
+          - title: "AI算法岗 4.15"
+            slug: "alibaba/ai-20260415"
       - name: "蚂蚁"
         articles:
           - title: "研发岗 3.26"
@@ -113,6 +115,10 @@ modules:
             slug: "huawei/dev-20260408"
           - title: "AI岗 4.8"
             slug: "huawei/ai-20260408"
+          - title: "研发岗 4.15"
+            slug: "huawei/dev-20260415"
+          - title: "AI岗 4.15"
+            slug: "huawei/ai-20260415"
       - name: "网易"
         articles:
           - title: "雷火研发岗 4.2"
