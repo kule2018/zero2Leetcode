@@ -99,6 +99,8 @@ modules:
             slug: "ant/dev-20260402"
           - title: "算法岗 4.9"
             slug: "ant/algo-20260409"
+          - title: "研发岗 4.16"
+            slug: "ant/dev-20260416"
       - name: "美团"
         articles:
           - title: "研发岗 3.28"
