@@ -1836,7 +1836,10 @@ function buildPlaygroundProblems() {
             blogUrl: problem.blogUrl || null,
         }));
 
-    return allProblems.map(meta => detailedById.get(meta.id) || buildFallbackProblem(meta));
+    const baseProblems = allProblems.map(meta => detailedById.get(meta.id) || buildFallbackProblem(meta));
+    const baseIds = new Set(allProblems.map(p => p.id));
+    const extraOnly = getExtraDetailedProblems().filter(p => !baseIds.has(p.id));
+    return [...baseProblems, ...extraOnly];
 }
 
 let PROBLEMS = [];
