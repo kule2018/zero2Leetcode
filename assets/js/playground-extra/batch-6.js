@@ -42,6 +42,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/merge-sorted-array/solutions/',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19892041.html',
   },
   {
     id: 92,
@@ -80,6 +81,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/reverse-linked-list-ii/solutions/',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19892043.html',
   },
   {
     id: 122,
@@ -120,6 +122,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/solutions/',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19892044.html',
   },
   {
     id: 165,
@@ -167,6 +170,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/compare-version-numbers/solutions/',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19892045.html',
   },
   {
     id: 209,
@@ -208,6 +212,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/minimum-size-subarray-sum/solutions/',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19892046.html',
   },
   {
     id: 232,
@@ -263,6 +268,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     testCases: [],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/implement-queue-using-stacks/solutions/',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19892047.html',
   },
   {
     id: 415,
@@ -304,6 +310,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/add-strings/solutions/',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19892048.html',
   },
   {
     id: 912,
@@ -340,6 +347,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/sort-an-array/solutions/',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/19892049.html',
   },
 ]);
 
