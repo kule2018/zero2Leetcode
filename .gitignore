@@ -33,3 +33,4 @@ Thumbs.db
 # 本地打包暂存
 .packs/
 .pack.conf
+.agents/
