@@ -29,3 +29,7 @@ Thumbs.db
 
 # 爬虫产出（图片、HTML 等临时文件）
 .agents/crawl-wechat/output/
+
+# 本地打包暂存
+.packs/
+.pack.conf
