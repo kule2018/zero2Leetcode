@@ -46,12 +46,12 @@ permalink: /05_interview/coding/bytedance-202604/
 
 | 排名 | 题目 | 频次 |
 |------|------|------|
-| 1 | LeetCode 3 无重复字符最长子串 | 129 次 |
+| 1 | [LeetCode 3 无重复字符最长子串](playground.html?id=3) | 129 次 |
 | 2 | LeetCode 88 合并两个有序数组 | 29 次 |
-| 3 | LeetCode 15 三数之和 | 27 次 |
-| 4 | LeetCode 42 接雨水 | 25 次 |
+| 3 | [LeetCode 15 三数之和](playground.html?id=15) | 27 次 |
+| 4 | [LeetCode 42 接雨水](playground.html?id=42) | 25 次 |
 | 5 | LeetCode 209 长度最小的子数组 | 12 次 |
-| 6 | LeetCode 239 滑动窗口最大值 | 9 次 |
+| 6 | [LeetCode 239 滑动窗口最大值](playground.html?id=239) | 9 次 |
 
 - LC3 出现 129 次，是第二名的 4 倍以上，字节脸面题，必须 10 分钟内 bug-free 写完
 - 接雨水（双指针 / 单调栈）两种解法都要会
@@ -62,16 +62,16 @@ permalink: /05_interview/coding/bytedance-202604/
 
 | 排名 | 题目 | 频次 |
 |------|------|------|
-| 1 | LeetCode 5 最长回文子串 | 33 次 |
-| 2 | LeetCode 53 最大子数组和 | 30 次 |
-| 3 | LeetCode 300 最长递增子序列 | 24 次 |
-| 4 | LeetCode 121 买卖股票的最佳时机 | 23 次 |
-| 5 | LeetCode 72 编辑距离（Hard） | 20 次 |
-| 6 | LeetCode 322 零钱兑换 | 14 次 |
-| 7 | LeetCode 1143 最长公共子序列 | 12 次 |
+| 1 | [LeetCode 5 最长回文子串](playground.html?id=5) | 33 次 |
+| 2 | [LeetCode 53 最大子数组和](playground.html?id=53) | 30 次 |
+| 3 | [LeetCode 300 最长递增子序列](playground.html?id=300) | 24 次 |
+| 4 | [LeetCode 121 买卖股票的最佳时机](playground.html?id=121) | 23 次 |
+| 5 | [LeetCode 72 编辑距离（Hard）](playground.html?id=72) | 20 次 |
+| 6 | [LeetCode 322 零钱兑换](playground.html?id=322) | 14 次 |
+| 7 | [LeetCode 1143 最长公共子序列](playground.html?id=1143) | 12 次 |
 | 8 | LeetCode 122 买卖股票 II | 12 次 |
-| 9 | LeetCode 198 打家劫舍 | 8 次 |
-| 10 | LeetCode 70 爬楼梯 | 7 次 |
+| 9 | [LeetCode 198 打家劫舍](playground.html?id=198) | 8 次 |
+| 10 | [LeetCode 70 爬楼梯](playground.html?id=70) | 7 次 |
 
 - 子串 / 子序列类 DP（LC5 / 300 / 1143）是重点
 - 编辑距离 Hard 题出了 20 次，字节面试官最爱
@@ -83,15 +83,15 @@ permalink: /05_interview/coding/bytedance-202604/
 
 | 排名 | 题目 | 频次 |
 |------|------|------|
-| 1 | LeetCode 206 翻转链表 | 40 次 |
-| 2 | LeetCode 25 K 个一组翻转链表 | 38 次 |
-| 3 | LeetCode 19 删除倒数第 N 个节点 | 27 次 |
-| 4 | LeetCode 23 合并 K 个升序链表 | 20 次 |
-| 5 | LeetCode 21 合并两个有序链表 | 14 次 |
-| 6 | LeetCode 141 环形链表 | 14 次 |
-| 7 | LeetCode 148 排序链表 | 13 次 |
+| 1 | [LeetCode 206 翻转链表](playground.html?id=206) | 40 次 |
+| 2 | [LeetCode 25 K 个一组翻转链表](playground.html?id=25) | 38 次 |
+| 3 | [LeetCode 19 删除倒数第 N 个节点](playground.html?id=19) | 27 次 |
+| 4 | [LeetCode 23 合并 K 个升序链表](playground.html?id=23) | 20 次 |
+| 5 | [LeetCode 21 合并两个有序链表](playground.html?id=21) | 14 次 |
+| 6 | [LeetCode 141 环形链表](playground.html?id=141) | 14 次 |
+| 7 | [LeetCode 148 排序链表](playground.html?id=148) | 13 次 |
 | 8 | LeetCode 92 反转链表 II | 12 次 |
-| 9 | LeetCode 2 两数相加 | 11 次 |
+| 9 | [LeetCode 2 两数相加](playground.html?id=2) | 11 次 |
 
 - 反转链表系列（206 / 25 / 92）三道合计 90 次，字节最爱考
 - 难度从入门到 Hard 都有，建议从简到难刷
@@ -103,14 +103,14 @@ permalink: /05_interview/coding/bytedance-202604/
 
 | 排名 | 题目 | 频次 |
 |------|------|------|
-| 1 | LeetCode 146 LRU 缓存 | 55 次 |
-| 2 | LeetCode 20 有效的括号 | 27 次 |
-| 3 | LeetCode 1 两数之和 | 17 次 |
-| 4 | LeetCode 46 全排列 | 16 次 |
+| 1 | [LeetCode 146 LRU 缓存](playground.html?id=146) | 55 次 |
+| 2 | [LeetCode 20 有效的括号](playground.html?id=20) | 27 次 |
+| 3 | [LeetCode 1 两数之和](playground.html?id=1) | 17 次 |
+| 4 | [LeetCode 46 全排列](playground.html?id=46) | 16 次 |
 | 5 | LeetCode 165 比较版本号 | 16 次 |
 | 6 | LeetCode 232 用栈实现队列 | 14 次 |
 | 7 | LeetCode 415 字符串相加 | 13 次 |
-| 8 | LeetCode 22 括号生成 | 7 次 |
+| 8 | [LeetCode 22 括号生成](playground.html?id=22) | 7 次 |
 
 - LRU 缓存：38 次暴涨到 55 次，全榜第 2
 - 面试官要求手写双向链表 + 哈希表，禁用 LinkedHashMap / OrderedDict
@@ -122,14 +122,14 @@ permalink: /05_interview/coding/bytedance-202604/
 
 | 排名 | 题目 | 频次 |
 |------|------|------|
-| 1 | LeetCode 215 数组中的第K大元素 | 39 次 |
-| 2 | LeetCode 200 岛屿数量 | 32 次 |
-| 3 | LeetCode 56 合并区间 | 18 次 |
-| 4 | LeetCode 33 搜索旋转排序数组 | 15 次 |
-| 5 | LeetCode 34 排序数组中查找首尾位置 | 12 次 |
+| 1 | [LeetCode 215 数组中的第K大元素](playground.html?id=215) | 39 次 |
+| 2 | [LeetCode 200 岛屿数量](playground.html?id=200) | 32 次 |
+| 3 | [LeetCode 56 合并区间](playground.html?id=56) | 18 次 |
+| 4 | [LeetCode 33 搜索旋转排序数组](playground.html?id=33) | 15 次 |
+| 5 | [LeetCode 34 排序数组中查找首尾位置](playground.html?id=34) | 12 次 |
 | 6 | LeetCode 912 排序数组 | 11 次 |
-| 7 | LeetCode 4 寻找两个正序数组的中位数 | 10 次 |
-| 8 | LeetCode 75 颜色分类 | 8 次 |
+| 7 | [LeetCode 4 寻找两个正序数组的中位数](playground.html?id=4) | 10 次 |
+| 8 | [LeetCode 75 颜色分类](playground.html?id=75) | 8 次 |
 
 - LC215 快速选择算法是重点，面试常要求手写 partition
 - 二分查找变体（旋转数组、首尾位置）是经典考点
@@ -140,13 +140,13 @@ permalink: /05_interview/coding/bytedance-202604/
 
 | 排名 | 题目 | 频次 |
 |------|------|------|
-| 1 | LeetCode 102 二叉树的层序遍历 | 28 次 |
-| 2 | LeetCode 236 二叉树的最近公共祖先 | 25 次 |
-| 3 | LeetCode 104 二叉树的最大深度 | 22 次 |
-| 4 | LeetCode 94 二叉树的中序遍历 | 18 次 |
-| 5 | LeetCode 124 二叉树中的最大路径和 | 15 次 |
-| 6 | LeetCode 199 二叉树的右视图 | 12 次 |
-| 7 | LeetCode 226 翻转二叉树 | 10 次 |
+| 1 | [LeetCode 102 二叉树的层序遍历](playground.html?id=102) | 28 次 |
+| 2 | [LeetCode 236 二叉树的最近公共祖先](playground.html?id=236) | 25 次 |
+| 3 | [LeetCode 104 二叉树的最大深度](playground.html?id=104) | 22 次 |
+| 4 | [LeetCode 94 二叉树的中序遍历](playground.html?id=94) | 18 次 |
+| 5 | [LeetCode 124 二叉树中的最大路径和](playground.html?id=124) | 15 次 |
+| 6 | [LeetCode 199 二叉树的右视图](playground.html?id=199) | 12 次 |
+| 7 | [LeetCode 226 翻转二叉树](playground.html?id=226) | 10 次 |
 
 - 层序遍历和 LCA 是面试最爱考的二叉树题
 - LC124 最大路径和是 Hard 题，出现 15 次，需要熟练掌握后序遍历思路
@@ -180,16 +180,16 @@ permalink: /05_interview/coding/bytedance-202604/
 
 | 优先级 | 题目 | 频次 |
 |--------|------|------|
-| 1 | LeetCode 3 无重复字符最长子串 | 129 次 |
-| 2 | LeetCode 146 LRU 缓存 | 55 次 |
-| 3 | LeetCode 206 翻转链表 | 40 次 |
-| 4 | LeetCode 215 数组中的第K大元素 | 39 次 |
-| 5 | LeetCode 25 K个一组翻转链表 | 38 次 |
-| 6 | LeetCode 5 最长回文子串 | 33 次 |
-| 7 | LeetCode 200 岛屿数量 | 32 次 |
-| 8 | LeetCode 53 最大子数组和 | 30 次 |
+| 1 | [LeetCode 3 无重复字符最长子串](playground.html?id=3) | 129 次 |
+| 2 | [LeetCode 146 LRU 缓存](playground.html?id=146) | 55 次 |
+| 3 | [LeetCode 206 翻转链表](playground.html?id=206) | 40 次 |
+| 4 | [LeetCode 215 数组中的第K大元素](playground.html?id=215) | 39 次 |
+| 5 | [LeetCode 25 K个一组翻转链表](playground.html?id=25) | 38 次 |
+| 6 | [LeetCode 5 最长回文子串](playground.html?id=5) | 33 次 |
+| 7 | [LeetCode 200 岛屿数量](playground.html?id=200) | 32 次 |
+| 8 | [LeetCode 53 最大子数组和](playground.html?id=53) | 30 次 |
 | 9 | LeetCode 88 合并两个有序数组 | 29 次 |
-| 10 | LeetCode 19 删除倒数第N个节点 | 27 次 |
+| 10 | [LeetCode 19 删除倒数第N个节点](playground.html?id=19) | 27 次 |
 
 ---
 
