@@ -163,6 +163,10 @@ modules:
         articles:
           - title: "暑期实习 4.19"
             slug: "mihoyo/general-20260419"
+      - name: "蔚来"
+        articles:
+          - title: "通用 4.19"
+            slug: "nio/general-20260419"
       - name: "备考技巧"
         articles:
           - title: "笔试必知必会"
