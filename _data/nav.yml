@@ -173,3 +173,14 @@ modules:
             slug: "tips/exam-essentials"
           - title: "算法岗必考ML编程题"
             slug: "tips/ml-coding-trend"
+
+  - title: "面试备战"
+    slug: "05_interview"
+    articles: []
+    groups:
+      - name: "手撕代码"
+        articles:
+          - title: "字节跳动高频手撕 2026.4"
+            slug: "coding/bytedance-202604"
+      - name: "八股文"
+        articles: []
