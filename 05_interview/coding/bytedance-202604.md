@@ -47,10 +47,10 @@ permalink: /05_interview/coding/bytedance-202604/
 | 排名 | 题目 | 频次 |
 |------|------|------|
 | 1 | [LeetCode 3 无重复字符最长子串](https://onefly.top/zero2Leetcode/playground.html?id=3) | 129 次 |
-| 2 | LeetCode 88 合并两个有序数组 | 29 次 |
+| 2 | [LeetCode 88 合并两个有序数组](https://onefly.top/zero2Leetcode/playground.html?id=88) | 29 次 |
 | 3 | [LeetCode 15 三数之和](https://onefly.top/zero2Leetcode/playground.html?id=15) | 27 次 |
 | 4 | [LeetCode 42 接雨水](https://onefly.top/zero2Leetcode/playground.html?id=42) | 25 次 |
-| 5 | LeetCode 209 长度最小的子数组 | 12 次 |
+| 5 | [LeetCode 209 长度最小的子数组](https://onefly.top/zero2Leetcode/playground.html?id=209) | 12 次 |
 | 6 | [LeetCode 239 滑动窗口最大值](https://onefly.top/zero2Leetcode/playground.html?id=239) | 9 次 |
 
 - LC3 出现 129 次，是第二名的 4 倍以上，字节脸面题，必须 10 分钟内 bug-free 写完
@@ -69,7 +69,7 @@ permalink: /05_interview/coding/bytedance-202604/
 | 5 | [LeetCode 72 编辑距离（Hard）](https://onefly.top/zero2Leetcode/playground.html?id=72) | 20 次 |
 | 6 | [LeetCode 322 零钱兑换](https://onefly.top/zero2Leetcode/playground.html?id=322) | 14 次 |
 | 7 | [LeetCode 1143 最长公共子序列](https://onefly.top/zero2Leetcode/playground.html?id=1143) | 12 次 |
-| 8 | LeetCode 122 买卖股票 II | 12 次 |
+| 8 | [LeetCode 122 买卖股票 II](https://onefly.top/zero2Leetcode/playground.html?id=122) | 12 次 |
 | 9 | [LeetCode 198 打家劫舍](https://onefly.top/zero2Leetcode/playground.html?id=198) | 8 次 |
 | 10 | [LeetCode 70 爬楼梯](https://onefly.top/zero2Leetcode/playground.html?id=70) | 7 次 |
 
@@ -90,7 +90,7 @@ permalink: /05_interview/coding/bytedance-202604/
 | 5 | [LeetCode 21 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) | 14 次 |
 | 6 | [LeetCode 141 环形链表](https://onefly.top/zero2Leetcode/playground.html?id=141) | 14 次 |
 | 7 | [LeetCode 148 排序链表](https://onefly.top/zero2Leetcode/playground.html?id=148) | 13 次 |
-| 8 | LeetCode 92 反转链表 II | 12 次 |
+| 8 | [LeetCode 92 反转链表 II](https://onefly.top/zero2Leetcode/playground.html?id=92) | 12 次 |
 | 9 | [LeetCode 2 两数相加](https://onefly.top/zero2Leetcode/playground.html?id=2) | 11 次 |
 
 - 反转链表系列（206 / 25 / 92）三道合计 90 次，字节最爱考
@@ -107,9 +107,9 @@ permalink: /05_interview/coding/bytedance-202604/
 | 2 | [LeetCode 20 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) | 27 次 |
 | 3 | [LeetCode 1 两数之和](https://onefly.top/zero2Leetcode/playground.html?id=1) | 17 次 |
 | 4 | [LeetCode 46 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) | 16 次 |
-| 5 | LeetCode 165 比较版本号 | 16 次 |
-| 6 | LeetCode 232 用栈实现队列 | 14 次 |
-| 7 | LeetCode 415 字符串相加 | 13 次 |
+| 5 | [LeetCode 165 比较版本号](https://onefly.top/zero2Leetcode/playground.html?id=165) | 16 次 |
+| 6 | [LeetCode 232 用栈实现队列](https://onefly.top/zero2Leetcode/playground.html?id=232) | 14 次 |
+| 7 | [LeetCode 415 字符串相加](https://onefly.top/zero2Leetcode/playground.html?id=415) | 13 次 |
 | 8 | [LeetCode 22 括号生成](https://onefly.top/zero2Leetcode/playground.html?id=22) | 7 次 |
 
 - LRU 缓存：38 次暴涨到 55 次，全榜第 2
@@ -127,7 +127,7 @@ permalink: /05_interview/coding/bytedance-202604/
 | 3 | [LeetCode 56 合并区间](https://onefly.top/zero2Leetcode/playground.html?id=56) | 18 次 |
 | 4 | [LeetCode 33 搜索旋转排序数组](https://onefly.top/zero2Leetcode/playground.html?id=33) | 15 次 |
 | 5 | [LeetCode 34 排序数组中查找首尾位置](https://onefly.top/zero2Leetcode/playground.html?id=34) | 12 次 |
-| 6 | LeetCode 912 排序数组 | 11 次 |
+| 6 | [LeetCode 912 排序数组](https://onefly.top/zero2Leetcode/playground.html?id=912) | 11 次 |
 | 7 | [LeetCode 4 寻找两个正序数组的中位数](https://onefly.top/zero2Leetcode/playground.html?id=4) | 10 次 |
 | 8 | [LeetCode 75 颜色分类](https://onefly.top/zero2Leetcode/playground.html?id=75) | 8 次 |
 
@@ -188,7 +188,7 @@ permalink: /05_interview/coding/bytedance-202604/
 | 6 | [LeetCode 5 最长回文子串](https://onefly.top/zero2Leetcode/playground.html?id=5) | 33 次 |
 | 7 | [LeetCode 200 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) | 32 次 |
 | 8 | [LeetCode 53 最大子数组和](https://onefly.top/zero2Leetcode/playground.html?id=53) | 30 次 |
-| 9 | LeetCode 88 合并两个有序数组 | 29 次 |
+| 9 | [LeetCode 88 合并两个有序数组](https://onefly.top/zero2Leetcode/playground.html?id=88) | 29 次 |
 | 10 | [LeetCode 19 删除倒数第N个节点](https://onefly.top/zero2Leetcode/playground.html?id=19) | 27 次 |
 
 ---
