@@ -103,6 +103,8 @@ modules:
             slug: "ant/algo-20260409"
           - title: "研发岗 4.16"
             slug: "ant/dev-20260416"
+          - title: "研发岗 4.19"
+            slug: "ant/dev-20260419"
       - name: "美团"
         articles:
           - title: "研发岗 3.28"
