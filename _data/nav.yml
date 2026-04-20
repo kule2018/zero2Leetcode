@@ -190,5 +190,7 @@ modules:
         articles:
           - title: "字节跳动高频手撕 2026.4"
             slug: "coding/bytedance-202604"
+          - title: "华为高频手撕与备考规划"
+            slug: "huawei-coding"
       - name: "八股文"
         articles: []
