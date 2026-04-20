@@ -3,7 +3,7 @@ layout: default
 title: 华为面试手撕高频题与备考规划
 description: 华为2026校招/暑期实习面试手撕代码高频题Top20、完整题单(25/26届)、10天备考速通规划、ACM模式模板、AI岗ML手撕专题
 eyebrow: 面试手撕 / 华为
-permalink: /05_interview/huawei-coding/
+permalink: /05_interview/coding/huawei/
 ---
 
 # 华为面试手撕高频题与备考规划

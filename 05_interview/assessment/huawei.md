@@ -3,7 +3,7 @@ layout: default
 title: 华为综合测评与面试流程攻略
 description: 华为2026暑期实习/秋招综合测评(性格测试)通关指南与面试流程详解，含测评回答导向、避坑红线、面试各轮考察重点
 eyebrow: 面试备战 / 华为
-permalink: /05_interview/huawei-assessment/
+permalink: /05_interview/assessment/huawei/
 ---
 
 # 华为综合测评与面试流程攻略
