@@ -200,3 +200,7 @@ modules:
             slug: "fundamentals/huawei-ai"
           - title: "华为八股文 - 后端方向"
             slug: "fundamentals/huawei-backend"
+          - title: "华为软件开发工程师岗面试题库"
+            slug: "fundamentals/huawei-dev"
+          - title: "程序员八股文50题"
+            slug: "fundamentals/general-backend"

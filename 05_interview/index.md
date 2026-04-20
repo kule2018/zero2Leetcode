@@ -36,6 +36,8 @@ eyebrow: Module 06
 |------|------|------|
 | [华为 - AI方向](fundamentals/huawei-ai/) | AI/算法岗 | 深度学习基础、机器学习原理、Transformer、模型优化 |
 | [华为 - 后端方向](fundamentals/huawei-backend/) | 通软/后端 | 操作系统、计算机网络、数据库、数据结构 |
+| [华为 - 软件开发工程师岗](fundamentals/huawei-dev/) | 软件开发 | 40道面试题库：专业基础16道+工程实践18道+职业素养6道 |
+| [程序员八股文50题](fundamentals/general-backend/) | 通用技术岗 | 数据结构+操作系统+网络+数据库+系统设计，50道高频题全解析 |
 
 ## 备考建议
 
