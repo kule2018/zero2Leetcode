@@ -195,4 +195,8 @@ modules:
           - title: "华为综合测评与面试流程"
             slug: "assessment/huawei"
       - name: "八股文"
-        articles: []
+        articles:
+          - title: "华为八股文 - AI方向"
+            slug: "fundamentals/huawei-ai"
+          - title: "华为八股文 - 后端方向"
+            slug: "fundamentals/huawei-backend"

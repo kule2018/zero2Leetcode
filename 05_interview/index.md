@@ -32,7 +32,10 @@ eyebrow: Module 06
 
 ## 八股文 {#fundamentals}
 
-*即将更新...*
+| 公司 | 方向 | 说明 |
+|------|------|------|
+| [华为 - AI方向](fundamentals/huawei-ai/) | AI/算法岗 | 深度学习基础、机器学习原理、Transformer、模型优化 |
+| [华为 - 后端方向](fundamentals/huawei-backend/) | 通软/后端 | 操作系统、计算机网络、数据库、数据结构 |
 
 ## 备考建议
 
