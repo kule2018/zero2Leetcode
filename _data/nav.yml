@@ -129,6 +129,8 @@ modules:
             slug: "huawei/dev-20260415"
           - title: "AI岗 4.15"
             slug: "huawei/ai-20260415"
+          - title: "机考备考指南"
+            slug: "huawei/exam-guide"
       - name: "网易"
         articles:
           - title: "雷火研发岗 4.2"
