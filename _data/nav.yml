@@ -180,6 +180,10 @@ modules:
     slug: "05_interview"
     articles: []
     groups:
+      - name: "面试流程与测评"
+        articles:
+          - title: "华为综合测评与面试流程"
+            slug: "huawei-assessment"
       - name: "手撕代码"
         articles:
           - title: "字节跳动高频手撕 2026.4"
