@@ -225,34 +225,115 @@ permalink: /05_interview/coding/huawei/
 
 ## 10 天备考速通规划
 
-### LeetCode Hot 100 刷题（AI 岗 & 非 AI 岗共用）
+> 刷题顺序按手撕高频考点从高到低排列。AI 岗与非 AI 岗共用 Day 1~9，AI 岗额外完成 Day 10。刷题注重质量，一定自己写一遍代码。刷得快可以一天多个 Day，刷得慢适当抛弃 Hard 题。
 
-| 天数 | 主题 | 重点题目 |
-|------|------|----------|
-| Day 1 | 哈希 + 数组技巧 + 矩阵 | 两数之和、字母异位词分组、矩阵旋转 |
-| Day 2 | 栈 + 双指针 | 有效的括号、每日温度、盛最多水的容器、三数之和 |
-| Day 3 | 回溯 | 全排列、组合总和、电话号码的字母组合 |
-| Day 4 | BFS + DP 基础 | 岛屿数量、腐烂的橘子、爬楼梯、零钱兑换 |
-| Day 5 | DP 进阶：背包 + 多维 | 单词拆分、最长公共子序列、最小路径和 |
-| Day 6 | 贪心 + 二叉树基础 | 买卖股票、跳跃游戏、层序遍历、最大深度 |
-| Day 7 | 二分查找 + 堆 | 在D天内送达包裹、前K个高频元素、合并K个升序链表 |
-| Day 8 | 链表 + 补充 | 合并两个有序链表、反转链表、两数相加 |
-| Day 9 | 综合复习 | 重做 Top 20 高频题，限时 20 分钟/题 |
-| Day 10 | 模拟面试 | 随机抽 2 题，ACM 模式限时完成 |
+### Day 1：哈希 + 数组技巧 + 矩阵
 
-> 刷题过程注重质量，一定自己写一遍代码。刷得快的同学可以一天多个 Day，刷得慢的适当抛弃 Hard 题。
+| 知识点 | 题解/教程 |
+|--------|----------|
+| 哈希 | [Hot 100 哈希专题](https://codefun2000.com/codenote/hot100/P0017) |
+| 普通数组 - 数组技巧 | [Hot 100 数组技巧](https://codefun2000.com/codenote/hot100/P0019) |
+| 矩阵四题 | [Hot 100 矩阵专题](https://codefun2000.com/codenote/hot100/P0021) |
 
-### AI 岗额外准备（非 AI 岗跳过）
+### Day 2：栈与双指针
 
-| 题目 | 核心知识点 |
-|------|-----------|
-| 手撕 KMeans | 聚类算法、迭代收敛 |
-| 手撕 KNN | 距离计算、TopK |
-| 手撕线性回归 | 梯度下降、矩阵运算 |
-| 手撕反向传播 | 链式法则、计算图 |
-| SoftMax 计算 | 数值稳定性、溢出处理 |
-| Self-Attention 机制 | QKV 矩阵、缩放点积 |
-| 多头注意力机制 (MHA) | 分头 + 拼接 + 线性变换 |
+| 知识点 | 题解/教程 |
+|--------|----------|
+| 栈 - 基础题 | [Hot 100 栈基础](https://codefun2000.com/codenote/hot100/P0030) |
+| 单调栈 | [Hot 100 单调栈](https://codefun2000.com/codenote/hot100/P0032) |
+| 双指针 - 快慢指针 | [Hot 100 快慢指针](https://codefun2000.com/codenote/hot100/P0015) |
+| 双指针 - 同向双指针 | [Hot 100 同向双指针](https://codefun2000.com/codenote/hot100/P0016) |
+| 双指针 - 相向双指针 | [Hot 100 相向双指针](https://codefun2000.com/codenote/hot100/P0013) |
+
+### Day 3：回溯
+
+| 知识点 | 题解/教程 |
+|--------|----------|
+| 组合型回溯 | [Hot 100 组合回溯](https://codefun2000.com/codenote/hot100/P0022) |
+| 排列型回溯 | [Hot 100 排列回溯](https://codefun2000.com/codenote/hot100/P0024#leetcode-46.-%E5%85%A8%E6%8E%92%E5%88%97) |
+
+### Day 4：BFS + 动态规划基础
+
+| 知识点 | 题解/教程 |
+|--------|----------|
+| 图论基础 | [Hot 100 图论基础](https://codefun2000.com/codenote/hot100/P0034) |
+| BFS 入门 | [Hot 100 BFS 入门](https://codefun2000.com/codenote/hot100/P0035) |
+| 动态规划入门 | [Hot 100 DP 入门](https://codefun2000.com/codenote/hot100/P0025) |
+
+### Day 5：动态规划进阶
+
+| 知识点 | 题解/教程 |
+|--------|----------|
+| 背包模型 | [Hot 100 背包模型](https://codefun2000.com/codenote/hot100/P0027) |
+| 多维动态规划 | [Hot 100 多维 DP](https://codefun2000.com/codenote/hot100/P0028) |
+
+### Day 6：贪心 + 二叉树基础
+
+| 题目 | 链接 |
+|------|------|
+| LC 121. 买卖股票的最佳时机 | [LeetCode](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/) |
+| LC 55. 跳跃游戏 | [LeetCode](https://leetcode.cn/problems/jump-game/) |
+| LC 45. 跳跃游戏 II | [LeetCode](https://leetcode.cn/problems/jump-game-ii/) |
+| LC 763. 划分字母区间 | [LeetCode](https://leetcode.cn/problems/partition-labels/) |
+| LC 94. 二叉树的中序遍历 | [LeetCode](https://leetcode.cn/problems/binary-tree-inorder-traversal/) |
+| LC 104. 二叉树的最大深度 | [LeetCode](https://leetcode.cn/problems/maximum-depth-of-binary-tree/) |
+| LC 102. 二叉树的层序遍历 | [LeetCode](https://leetcode.cn/problems/binary-tree-level-order-traversal/) |
+
+### Day 7：二分查找与堆
+
+| 题目 | 链接 |
+|------|------|
+| LC 704. 二分查找 | [LeetCode](https://leetcode.cn/problems/binary-search/) |
+| LC 35. 搜索插入位置 | [LeetCode](https://leetcode.cn/problems/search-insert-position/) |
+| LC 34. 排序数组中查找元素的首尾位置 | [LeetCode](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/) |
+| LC 33. 搜索旋转排序数组 | [LeetCode](https://leetcode.cn/problems/search-in-rotated-sorted-array/) |
+| LC 153. 旋转排序数组的最小值 | [LeetCode](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/) |
+| LC 215. 数组中的第K个最大元素 | [LeetCode](https://leetcode.cn/problems/kth-largest-element-in-an-array/) |
+| LC 347. 前K个高频元素 | [LeetCode](https://leetcode.cn/problems/top-k-frequent-elements/) |
+| LC 703. 数据流中的第K大元素 | [LeetCode](https://leetcode.cn/problems/kth-largest-element-in-a-stream/) |
+
+### Day 8：技巧 + 数学
+
+| 题目 | 链接 |
+|------|------|
+| LC 136. 只出现一次的数字 | [LeetCode](https://leetcode.cn/problems/single-number/) |
+| LC 169. 多数元素 | [LeetCode](https://leetcode.cn/problems/majority-element/) |
+| LC 287. 寻找重复数 | [LeetCode](https://leetcode.cn/problems/find-the-duplicate-number/) |
+| LC 238. 除自身以外数组的乘积 | [LeetCode](https://leetcode.cn/problems/product-of-array-except-self/) |
+| LC 75. 颜色分类 | [LeetCode](https://leetcode.cn/problems/sort-colors/) |
+
+### Day 9：链表
+
+| 题目 | 链接 |
+|------|------|
+| LC 206. 反转链表 | [LeetCode](https://leetcode.cn/problems/reverse-linked-list/) |
+| LC 141. 环形链表 | [LeetCode](https://leetcode.cn/problems/linked-list-cycle/) |
+| LC 142. 环形链表 II | [LeetCode](https://leetcode.cn/problems/linked-list-cycle-ii/) |
+| LC 21. 合并两个有序链表 | [LeetCode](https://leetcode.cn/problems/merge-two-sorted-lists/) |
+| LC 2. 两数相加 | [LeetCode](https://leetcode.cn/problems/add-two-numbers/) |
+| LC 19. 删除链表的倒数第N个结点 | [LeetCode](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/) |
+| LC 234. 回文链表 | [LeetCode](https://leetcode.cn/problems/palindrome-linked-list/) |
+| LC 160. 相交链表 | [LeetCode](https://leetcode.cn/problems/intersection-of-two-linked-lists/) |
+
+### Day 10：AI 岗专题（非 AI 岗跳过）
+
+| 方向 | 题目 | 题解 |
+|------|------|------|
+| 机器学习 | 手撕 KMeans | [题解](https://codefun2000.com/codenote/coding/P4483) |
+| 机器学习 | 手撕 KNN | [题解](https://codefun2000.com/codenote/coding/P4499) |
+| 机器学习 | 手撕线性回归 | [题解](https://codefun2000.com/codenote/coding/P4484) |
+| 深度学习 | 手撕反向传播 | [题解](https://codefun2000.com/codenote/coding/P4486) |
+| 深度学习 | SoftMax 计算 | [题解](https://codefun2000.com/codenote/coding/P4501) |
+| Transformer | Self-Attention 机制 | [题解](https://codefun2000.com/codenote/coding/P4489) |
+| Transformer | 多头注意力机制 (MHA) | [题解](https://codefun2000.com/codenote/coding/P4496) |
+
+### 必备前置知识
+
+| 主题 | 链接 |
+|------|------|
+| 华为面试基本流程 | [流程详解](https://codefun2000.com/codenote/hw_note/P4512) |
+| 面试手撕刷题方法论 | [方法论](https://codefun2000.com/codenote/hw_note/P5103) |
+| Hot 100 速通笔记（完整） | [Hot 100 笔记](https://codefun2000.com/codenote/hot100/P0026) |
 
 ---
 
