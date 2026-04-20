@@ -131,6 +131,8 @@ modules:
             slug: "huawei/ai-20260415"
           - title: "机考备考指南"
             slug: "huawei/exam-guide"
+          - title: "AI机考一周速成攻略"
+            slug: "huawei/ai-exam-guide"
       - name: "网易"
         articles:
           - title: "雷火研发岗 4.2"
