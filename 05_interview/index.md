@@ -23,6 +23,7 @@ eyebrow: Module 06
 |------|----------|----------|------|
 | [字节跳动](coding/bytedance-202604/) | 2026.4 | 5414 篇面经 | 6大分类48道LC高频题 + 算法岗ML手撕TOP8 |
 | [华为](coding/huawei/) | 2026.4 | 25/26届面经 | Top20高频题 + 完整题单 + 10天备考规划 + AI岗ML手撕 |
+| [阿里千问](coding/alibaba-qwen-vibecoding/) | 2026.4 | VibeCoding | 高性能增量数据同步 CLI 工具，含完整范式方法论 |
 
 ## 综合测评 {#assessment}
 
