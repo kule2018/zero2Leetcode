@@ -78,6 +78,8 @@ eyebrow: Module 05
 | [2026-4-15](huawei/ai-20260415/) | AI岗 | 20道选择题(线代/概率统计/K-Means/Softmax/RAG/量化/数值计算)、AdamW优化器、贪心分配(Candy) |
 | [2026-4-22](huawei/dev-20260422/) | 研发岗 | DFS三色判环+版本规整、0-1 BFS网格最少转弯、二维DP能量管理 |
 | [2026-4-22](huawei/ai-20260422/) | AI岗 | 20道选择题(RAG/分布式训练/推理优化/Transformer/多模态)、DFS前缀和+哈希表、图建模+DAG最长路DP |
+| [2026-4-23](huawei/dev-20260423/) | 留学生研发岗 | 字符串解析+自定义排序、Floyd-Warshall全源最短路、完全背包计数DP |
+| [2026-4-23](huawei/ai-20260423/) | 留学生AI岗 | 20道选择题(量化/CNN/Transformer/GQA/RoPE/KV Cache/混合精度训练/概率论)、MMR智能重排序、ID3决策树 |
 
 ### 网易笔试真题 {#netease}
 
@@ -110,6 +112,7 @@ eyebrow: Module 05
 |------|------|------|
 | [2026-3-29](ctrip/dev-20260329/) | 研发岗 | 模拟、后缀数组贪心、质数筛分段跳跃 |
 | [2026-4-12](ctrip/algo-20260412/) | 算法岗 | 构造、贪心、NumPy归一化梯度下降、数学递推+快速幂 |
+| [2026-4-23](ctrip/algo-20260423/) | 算法岗 | 奇偶性分析、数学推导、KNN元学习+LogisticRegression、并查集+倍数筛 |
 
 ### 得物笔试真题 {#dewu}
 
