@@ -153,6 +153,8 @@ modules:
             slug: "netease/dev-20260402"
           - title: "互娱 4.12"
             slug: "netease/general-20260412"
+          - title: "雷火 4.26"
+            slug: "netease/general-20260426"
       - name: "哔哩哔哩"
         articles:
           - title: "通用 4.11"
@@ -165,6 +167,8 @@ modules:
         articles:
           - title: "暑期实习 4.12"
             slug: "pinduoduo/general-20260412"
+          - title: "暑期实习 4.26"
+            slug: "pinduoduo/general-20260426"
       - name: "携程"
         articles:
           - title: "研发岗 3.29"
@@ -177,6 +181,8 @@ modules:
         articles:
           - title: "暑期实习 4.18"
             slug: "dewu/general-20260418"
+          - title: "暑期实习 4.26"
+            slug: "dewu/general-20260426"
       - name: "字节跳动"
         articles:
           - title: "通用 4.19"
