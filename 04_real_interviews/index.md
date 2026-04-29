@@ -83,6 +83,8 @@ eyebrow: Module 05
 | [2026-4-22](huawei/ai-20260422/) | AI岗 | 20道选择题(RAG/分布式训练/推理优化/Transformer/多模态)、DFS前缀和+哈希表、图建模+DAG最长路DP |
 | [2026-4-23](huawei/dev-20260423/) | 留学生研发岗 | 字符串解析+自定义排序、Floyd-Warshall全源最短路、完全背包计数DP |
 | [2026-4-23](huawei/ai-20260423/) | 留学生AI岗 | 20道选择题(量化/CNN/Transformer/GQA/RoPE/KV Cache/混合精度训练/概率论)、MMR智能重排序、ID3决策树 |
+| [2026-4-29](huawei/dev-20260429/) | 研发岗 | 哈希计数+后缀和、二叉树自底向上累加、分治最近点对 |
+| [2026-4-29](huawei/ai-20260429/) | AI岗 | 20道选择题(NMF/MobileNet/LDA/张量并行/PagedAttention/RLHF/Dead ReLU)、LSTM前向传播、大模型语料清洗 |
 
 ### 网易笔试真题 {#netease}
 
