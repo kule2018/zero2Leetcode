@@ -77,26 +77,26 @@ permalink: /05_interview/coding/huawei/
 
 | # | 题目 | 考察知识点 | 频次 |
 |---|------|-----------|------|
-| 1 | [LC 20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/) | 栈、字符串 | 5 |
-| 2 | [LC 200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/) | DFS、BFS、网格搜索 | 5 |
-| 3 | [LC 1. 两数之和](https://leetcode.cn/problems/two-sum/) | 哈希表 | 4 |
-| 4 | [LC 3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/) | 滑动窗口、哈希集合 | 3 |
-| 5 | [LC 46. 全排列](https://leetcode.cn/problems/permutations/) | 回溯、DFS | 3 |
-| 6 | [LC 994. 腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/) | BFS、网格搜索 | 3 |
-| 7 | [LC 394. 字符串解码](https://leetcode.cn/problems/decode-string/) | 栈、递归、字符串 | 2 |
-| 8 | [LC 739. 每日温度](https://leetcode.cn/problems/daily-temperatures/) | 单调栈 | 2 |
-| 9 | [LC 56. 合并区间](https://leetcode.cn/problems/merge-intervals/) | 排序、区间合并 | 2 |
-| 10 | [LC 64. 最小路径和](https://leetcode.cn/problems/minimum-path-sum/) | 动态规划 | 2 |
-| 11 | [LC 102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/) | 二叉树、BFS | 2 |
-| 12 | [LC 1423. 可获得的最大点数](https://leetcode.cn/problems/maximum-points-you-can-obtain-from-cards/) | 滑动窗口、前缀和 | 2 |
-| 13 | [LC 155. 最小栈](https://leetcode.cn/problems/min-stack/) | 栈、设计题 | 1 |
-| 14 | [LC 986. 区间列表的交集](https://leetcode.cn/problems/interval-list-intersections/) | 双指针、区间问题 | 1 |
-| 15 | [LC 456. 132 模式](https://leetcode.cn/problems/132-pattern/) | 单调栈 | 1 |
-| 16 | [LC 11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/) | 双指针、贪心 | 1 |
-| 17 | [LC 49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/) | 哈希表、字符串 | 1 |
-| 18 | [LC 71. 简化路径](https://leetcode.cn/problems/simplify-path/) | 栈、字符串模拟 | 1 |
-| 19 | [LC 217. 存在重复元素](https://leetcode.cn/problems/contains-duplicate/) | 哈希表、集合 | 1 |
-| 20 | [LC 21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/) | 链表、双指针 | 1 |
+| 1 | [LC 20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) | 栈、字符串 | 5 |
+| 2 | [LC 200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) | DFS、BFS、网格搜索 | 5 |
+| 3 | [LC 1. 两数之和](https://onefly.top/zero2Leetcode/playground.html?id=1) | 哈希表 | 4 |
+| 4 | [LC 3. 无重复字符的最长子串](https://onefly.top/zero2Leetcode/playground.html?id=3) | 滑动窗口、哈希集合 | 3 |
+| 5 | [LC 46. 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) | 回溯、DFS | 3 |
+| 6 | [LC 994. 腐烂的橘子](https://onefly.top/zero2Leetcode/playground.html?id=994) | BFS、网格搜索 | 3 |
+| 7 | [LC 394. 字符串解码](https://onefly.top/zero2Leetcode/playground.html?id=394) | 栈、递归、字符串 | 2 |
+| 8 | [LC 739. 每日温度](https://onefly.top/zero2Leetcode/playground.html?id=739) | 单调栈 | 2 |
+| 9 | [LC 56. 合并区间](https://onefly.top/zero2Leetcode/playground.html?id=56) | 排序、区间合并 | 2 |
+| 10 | [LC 64. 最小路径和](https://onefly.top/zero2Leetcode/playground.html?id=64) | 动态规划 | 2 |
+| 11 | [LC 102. 二叉树的层序遍历](https://onefly.top/zero2Leetcode/playground.html?id=102) | 二叉树、BFS | 2 |
+| 12 | [LC 1423. 可获得的最大点数](https://onefly.top/zero2Leetcode/playground.html?id=1423) | 滑动窗口、前缀和 | 2 |
+| 13 | [LC 155. 最小栈](https://onefly.top/zero2Leetcode/playground.html?id=155) | 栈、设计题 | 1 |
+| 14 | [LC 986. 区间列表的交集](https://onefly.top/zero2Leetcode/playground.html?id=986) | 双指针、区间问题 | 1 |
+| 15 | [LC 456. 132 模式](https://onefly.top/zero2Leetcode/playground.html?id=456) | 单调栈 | 1 |
+| 16 | [LC 11. 盛最多水的容器](https://onefly.top/zero2Leetcode/playground.html?id=11) | 双指针、贪心 | 1 |
+| 17 | [LC 49. 字母异位词分组](https://onefly.top/zero2Leetcode/playground.html?id=49) | 哈希表、字符串 | 1 |
+| 18 | [LC 71. 简化路径](https://onefly.top/zero2Leetcode/playground.html?id=71) | 栈、字符串模拟 | 1 |
+| 19 | [LC 217. 存在重复元素](https://onefly.top/zero2Leetcode/playground.html?id=217) | 哈希表、集合 | 1 |
+| 20 | [LC 21. 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) | 链表、双指针 | 1 |
 
 ---
 
@@ -109,17 +109,17 @@ permalink: /05_interview/coding/huawei/
 | 时间 | 面试轮次 | 题目 |
 |------|----------|------|
 | 9月底 | AI工程师一面 | [480. 滑动窗口中位数](https://leetcode.cn/problems/sliding-window-median/) |
-| 9月底 | AI相关岗位一面 | [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/) |
-| 9月底 | 海思AI工程师一面 | [986. 区间列表的交集](https://leetcode.cn/problems/interval-list-intersections/) |
-| 10月初 | AI工程师一面 | [46. 全排列](https://leetcode.cn/problems/permutations/) |
-| 10月初 | AI一面 | [46. 全排列](https://leetcode.cn/problems/permutations/) |
-| 10月初 | 计算机视觉一面 | [155. 最小栈](https://leetcode.cn/problems/min-stack/) |
+| 9月底 | AI相关岗位一面 | [20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) |
+| 9月底 | 海思AI工程师一面 | [986. 区间列表的交集](https://onefly.top/zero2Leetcode/playground.html?id=986) |
+| 10月初 | AI工程师一面 | [46. 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) |
+| 10月初 | AI一面 | [46. 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) |
+| 10月初 | 计算机视觉一面 | [155. 最小栈](https://onefly.top/zero2Leetcode/playground.html?id=155) |
 | 10月初 | AI一面 | 搜索二维矩阵 |
 | 10月初 | AI工程师一面 | 字符串前缀后缀子串提取（自定义题） |
 | 10月初 | AI计算一面 | 实现 L2 loss 梯度下降算法 |
 | 10月中 | 终端云AI一面 | PyTorch 实现 XGBoost 调用、反向传播、NN |
 | 10月中 | 媒体算法一面 | 两个矩形相交面积 |
-| 10月中 | 推荐算法一面 | [456. 132 模式](https://leetcode.cn/problems/132-pattern/) |
+| 10月中 | 推荐算法一面 | [456. 132 模式](https://onefly.top/zero2Leetcode/playground.html?id=456) |
 | 10月底 | AI工程师一面 | 字符串前缀后缀子串提取（自定义题） |
 
 #### 通软方向
@@ -127,14 +127,14 @@ permalink: /05_interview/coding/huawei/
 | 时间 | 面试轮次 | 题目 |
 |------|----------|------|
 | 9月底 | 通软一面 | 数组中对数字和字母分别排序 |
-| 9月底 | 一面 | [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/) |
-| 10月初 | 一面 | [2. 两数相加](https://leetcode.cn/problems/add-two-numbers/)（需自己写 ListNode） |
+| 9月底 | 一面 | [3. 无重复字符的最长子串](https://onefly.top/zero2Leetcode/playground.html?id=3) |
+| 10月初 | 一面 | [2. 两数相加](https://onefly.top/zero2Leetcode/playground.html?id=2)（需自己写 ListNode） |
 | 10月初 | 通软一面 | 类似爬楼梯的 DP + 求区间权值第 k 大 |
 | 10月中 | 通软一面 | 数字字符串插入使新数值最大 |
 | 10月中 | AI软件开发一面 | 按 BMI 排序结构体数组 |
-| 10月底 | 通软一面 | [1. 两数之和](https://leetcode.cn/problems/two-sum/) |
-| 10月底 | 2012通软一面 | [200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/) |
-| 10月中 | 通软一面 | [1. 两数之和](https://leetcode.cn/problems/two-sum/) + [3. 最长无重复子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/) |
+| 10月底 | 通软一面 | [1. 两数之和](https://onefly.top/zero2Leetcode/playground.html?id=1) |
+| 10月底 | 2012通软一面 | [200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) |
+| 10月中 | 通软一面 | [1. 两数之和](https://onefly.top/zero2Leetcode/playground.html?id=1) + [3. 最长无重复子串](https://onefly.top/zero2Leetcode/playground.html?id=3) |
 
 #### 其他方向
 
@@ -142,9 +142,9 @@ permalink: /05_interview/coding/huawei/
 |------|----------|------|
 | 9月底 | 智能终端一面 | 找出 8bit 数组中最大的 8 个 |
 | 9月初 | 通信算法一面 | 背包问题 |
-| 9月底 | 无线一面 | [200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/) |
-| 9月初 | 车BU一面 | [240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/) |
-| 9月初 | 终端BG一面 | [394. 字符串解码](https://leetcode.cn/problems/decode-string/) |
+| 9月底 | 无线一面 | [200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) |
+| 9月初 | 车BU一面 | [240. 搜索二维矩阵 II](https://onefly.top/zero2Leetcode/playground.html?id=240) |
+| 9月初 | 终端BG一面 | [394. 字符串解码](https://onefly.top/zero2Leetcode/playground.html?id=394) |
 
 ### 25 届秋招
 
@@ -154,60 +154,60 @@ permalink: /05_interview/coding/huawei/
 |------|----------|------|
 | 10月中 | AI算法工程师一面 | LC 位运算原题（Mid） |
 | 10月中 | AI算法工程师二面 | 排序模拟题（Easy~Mid） |
-| 11月初 | 通信算法一面 | [394. 字符串解码](https://leetcode.cn/problems/decode-string/) |
+| 11月初 | 通信算法一面 | [394. 字符串解码](https://onefly.top/zero2Leetcode/playground.html?id=394) |
 | 11月初 | 通信算法二面 | 哈希表 + 取模判断分组 |
-| 9月底 | 算法工程师二面 | [739. 每日温度](https://leetcode.cn/problems/daily-temperatures/) |
+| 9月底 | 算法工程师二面 | [739. 每日温度](https://onefly.top/zero2Leetcode/playground.html?id=739) |
 
 #### 通软方向
 
 | 时间 | 面试轮次 | 题目 |
 |------|----------|------|
-| 10月中 | 终端一面 | [104. 最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/) + [102. 层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/) + [139. 单词拆分](https://leetcode.cn/problems/word-break/) + [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/) |
-| 10月中 | 终端二面 | [200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/) |
-| 10月中 | 海思通软一面 | [11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/) |
+| 10月中 | 终端一面 | [104. 最大深度](https://onefly.top/zero2Leetcode/playground.html?id=104) + [102. 层序遍历](https://onefly.top/zero2Leetcode/playground.html?id=102) + [139. 单词拆分](https://onefly.top/zero2Leetcode/playground.html?id=139) + [20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) |
+| 10月中 | 终端二面 | [200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) |
+| 10月中 | 海思通软一面 | [11. 盛最多水的容器](https://onefly.top/zero2Leetcode/playground.html?id=11) |
 | 10月下 | 微服务一面 | [1624. 两个相同字符之间的最长子串](https://leetcode.cn/problems/largest-substring-between-two-equal-characters/) |
-| 10月下 | 微服务二面 | [71. 简化路径](https://leetcode.cn/problems/simplify-path/) |
-| 10月中 | 通软一面 | [49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/) |
+| 10月下 | 微服务二面 | [71. 简化路径](https://onefly.top/zero2Leetcode/playground.html?id=71) |
+| 10月中 | 通软一面 | [49. 字母异位词分组](https://onefly.top/zero2Leetcode/playground.html?id=49) |
 | 10月中 | 通软二面 | [LCR 020. 回文子串](https://leetcode.cn/problems/a7VOhD/) |
 | 10月中 | 通软一面 | [面试题 02.02. 倒数第k个节点](https://leetcode.cn/problems/kth-node-from-end-of-list-lcci/) |
 | 10月中 | 通软二面 | [1302. 层数最深叶子节点的和](https://leetcode.cn/problems/deepest-leaves-sum/) |
-| 9月下 | 通软一面 | [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/) |
-| 9月下 | 通软二面 | [152. 乘积最大子数组](https://leetcode.cn/problems/maximum-product-subarray/) |
+| 9月下 | 通软一面 | [20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) |
+| 9月下 | 通软二面 | [152. 乘积最大子数组](https://onefly.top/zero2Leetcode/playground.html?id=152) |
 | 9月下 | 终端通软一面 | [LCR 007. 三数之和](https://leetcode.cn/problems/1fGaJU/) |
 | 9月 | 计算产品线一面 | [1011. 在D天内送达包裹的能力](https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/) |
 | 9月 | 计算产品线二面 | [LCR 021. 删除链表的倒数第N个结点](https://leetcode.cn/problems/SLwz0R/) |
-| 9月下 | 通软一面 | [718. 最长重复子数组](https://leetcode.cn/problems/maximum-length-of-repeated-subarray/) |
-| 9月下 | 通软二面 | [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/) |
+| 9月下 | 通软一面 | [718. 最长重复子数组](https://onefly.top/zero2Leetcode/playground.html?id=718) |
+| 9月下 | 通软二面 | [20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) |
 | 9月下 | 通软一面 | [113. 路径总和 II](https://leetcode.cn/problems/path-sum-ii/) + [690. 员工的重要性](https://leetcode.cn/problems/employee-importance/) |
 | 9月下 | 通软二面 | 1到n的最小公倍数 + 英文平均单词长度 |
-| 9月下 | 终端BG二面 | [64. 最小路径和](https://leetcode.cn/problems/minimum-path-sum/) |
-| 9月下 | 光产品线一面 | [1423. 可获得的最大点数](https://leetcode.cn/problems/maximum-points-you-can-obtain-from-cards/) |
-| 9月 | 车BU座舱一面 | [56. 合并区间](https://leetcode.cn/problems/merge-intervals/) + [151. 反转字符串中的单词](https://leetcode.cn/problems/reverse-words-in-a-string/) |
+| 9月下 | 终端BG二面 | [64. 最小路径和](https://onefly.top/zero2Leetcode/playground.html?id=64) |
+| 9月下 | 光产品线一面 | [1423. 可获得的最大点数](https://onefly.top/zero2Leetcode/playground.html?id=1423) |
+| 9月 | 车BU座舱一面 | [56. 合并区间](https://onefly.top/zero2Leetcode/playground.html?id=56) + [151. 反转字符串中的单词](https://leetcode.cn/problems/reverse-words-in-a-string/) |
 | 9月 | ICT一面 | [LCR 008. 长度最小的子数组](https://leetcode.cn/problems/2VG8Kg/) |
-| 9月 | ICT二面 | [17. 电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/) |
-| 9月初 | ICT光产品线一面 | [102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/) |
-| 9月 | 通软一面 | [LCR 078. 合并K个升序链表](https://leetcode.cn/problems/vvXgSW/) + [994. 腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/) + [46. 全排列](https://leetcode.cn/problems/permutations/) + [1423. 最大点数](https://leetcode.cn/problems/maximum-points-you-can-obtain-from-cards/) + [42. 接雨水](https://leetcode.cn/problems/trapping-rain-water/) |
+| 9月 | ICT二面 | [17. 电话号码的字母组合](https://onefly.top/zero2Leetcode/playground.html?id=17) |
+| 9月初 | ICT光产品线一面 | [102. 二叉树的层序遍历](https://onefly.top/zero2Leetcode/playground.html?id=102) |
+| 9月 | 通软一面 | [LCR 078. 合并K个升序链表](https://leetcode.cn/problems/vvXgSW/) + [994. 腐烂的橘子](https://onefly.top/zero2Leetcode/playground.html?id=994) + [46. 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) + [1423. 最大点数](https://onefly.top/zero2Leetcode/playground.html?id=1423) + [42. 接雨水](https://onefly.top/zero2Leetcode/playground.html?id=42) |
 | 9月 | 通软三面 | [204. 计数质数](https://leetcode.cn/problems/count-primes/) |
 | 9月 | 通软一面 | [LCR 029. 循环有序列表的插入](https://leetcode.cn/problems/4ueAj6/) |
 | 9月 | 通软二面 | [692. 前K个高频单词](https://leetcode.cn/problems/top-k-frequent-words/) |
 | 9月底 | 服务与软件一面 | [582. 杀掉进程](https://leetcode.cn/problems/kill-process/) |
 | 9月底 | 服务与软件二面 | [735. 小行星碰撞](https://leetcode.cn/problems/asteroid-collision/) |
 | 9月底 | 服务与软件三面 | [679. 24 点游戏](https://leetcode.cn/problems/24-game/) |
-| 9月中 | 终端二面 | [739. 每日温度](https://leetcode.cn/problems/daily-temperatures/) |
+| 9月中 | 终端二面 | [739. 每日温度](https://onefly.top/zero2Leetcode/playground.html?id=739) |
 | 9月中 | 终端BG通软一面 | [LCR 078. 合并K个升序链表](https://leetcode.cn/problems/vvXgSW/) |
-| 9月中 | 终端BG通软二面 | [994. 腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/) |
-| 9月下 | 终端一面 | [134. 加油站](https://leetcode.cn/problems/gas-station/) |
-| 9月下 | 终端二面 | [5. 最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring/) |
-| 9月中 | 华为云一面 | [217. 存在重复元素](https://leetcode.cn/problems/contains-duplicate/) |
+| 9月中 | 终端BG通软二面 | [994. 腐烂的橘子](https://onefly.top/zero2Leetcode/playground.html?id=994) |
+| 9月下 | 终端一面 | [134. 加油站](https://onefly.top/zero2Leetcode/playground.html?id=134) |
+| 9月下 | 终端二面 | [5. 最长回文子串](https://onefly.top/zero2Leetcode/playground.html?id=5) |
+| 9月中 | 华为云一面 | [217. 存在重复元素](https://onefly.top/zero2Leetcode/playground.html?id=217) |
 | 9月中 | 华为云二面 | 二进制补码数组转十进制 |
 | 9月初 | 后端通软一面 | [面试题 17.24. 最大子矩阵](https://leetcode.cn/problems/max-submatrix-lcci/) |
 | 9月初 | 流程IT一面 | [14. 最长公共前缀](https://leetcode.cn/problems/longest-common-prefix/) |
-| 9月初 | 终端一面 | [56. 合并区间](https://leetcode.cn/problems/merge-intervals/) + [200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/) |
-| 9月初 | 终端通软一面 | [415. 字符串相加](https://leetcode.cn/problems/add-strings/) |
+| 9月初 | 终端一面 | [56. 合并区间](https://onefly.top/zero2Leetcode/playground.html?id=56) + [200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) |
+| 9月初 | 终端通软一面 | [415. 字符串相加](https://onefly.top/zero2Leetcode/playground.html?id=415) |
 | 9月 | 终端BG一面 | [1985. 找出数组中的第K大整数](https://leetcode.cn/problems/find-the-kth-largest-integer-in-the-array/) |
-| 9月 | 终端BG二面 | [64. 最小路径和](https://leetcode.cn/problems/minimum-path-sum/) |
+| 9月 | 终端BG二面 | [64. 最小路径和](https://onefly.top/zero2Leetcode/playground.html?id=64) |
 | 9月底 | 终端软件部二面 | [LCR 138. 有效数字](https://leetcode.cn/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/) |
-| 9月初 | ICT计算产品线 | [994. 腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/) + [91. 解码方法](https://leetcode.cn/problems/decode-ways/) + [678. 有效的括号字符串](https://leetcode.cn/problems/valid-parenthesis-string/) + [316. 去除重复字母](https://leetcode.cn/problems/remove-duplicate-letters/) |
+| 9月初 | ICT计算产品线 | [994. 腐烂的橘子](https://onefly.top/zero2Leetcode/playground.html?id=994) + [91. 解码方法](https://onefly.top/zero2Leetcode/playground.html?id=91) + [678. 有效的括号字符串](https://leetcode.cn/problems/valid-parenthesis-string/) + [316. 去除重复字母](https://leetcode.cn/problems/remove-duplicate-letters/) |
 | 9月中 | ICT光产品线二面 | 十进制小数转任意 m 进制 |
 
 #### 其他方向
@@ -216,10 +216,10 @@ permalink: /05_interview/coding/huawei/
 |------|----------|------|
 | 9月下 | 嵌入式一面 | 提取合法 MAC 地址并计数 |
 | 9月下 | 嵌入式二面 | [2094. 找出3位偶数](https://leetcode.cn/problems/finding-3-digit-even-numbers/) |
-| 10月中 | 一面 | [704. 二分查找](https://leetcode.cn/problems/binary-search/) |
-| 10月中 | 二面 | [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/) |
+| 10月中 | 一面 | [704. 二分查找](https://onefly.top/zero2Leetcode/playground.html?id=704) |
+| 10月中 | 二面 | [21. 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) |
 | 9月初 | ICT光产品线一面 | [223. 矩形面积](https://leetcode.cn/problems/rectangle-area/) |
-| 9月初 | ICT光产品线二面 | [134. 加油站](https://leetcode.cn/problems/gas-station/) |
+| 9月初 | ICT光产品线二面 | [134. 加油站](https://onefly.top/zero2Leetcode/playground.html?id=134) |
 
 ---
 
@@ -271,49 +271,49 @@ permalink: /05_interview/coding/huawei/
 
 | 题目 | 链接 |
 |------|------|
-| LC 121. 买卖股票的最佳时机 | [LeetCode](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/) |
-| LC 55. 跳跃游戏 | [LeetCode](https://leetcode.cn/problems/jump-game/) |
-| LC 45. 跳跃游戏 II | [LeetCode](https://leetcode.cn/problems/jump-game-ii/) |
-| LC 763. 划分字母区间 | [LeetCode](https://leetcode.cn/problems/partition-labels/) |
-| LC 94. 二叉树的中序遍历 | [LeetCode](https://leetcode.cn/problems/binary-tree-inorder-traversal/) |
-| LC 104. 二叉树的最大深度 | [LeetCode](https://leetcode.cn/problems/maximum-depth-of-binary-tree/) |
-| LC 102. 二叉树的层序遍历 | [LeetCode](https://leetcode.cn/problems/binary-tree-level-order-traversal/) |
+| LC 121. 买卖股票的最佳时机 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=121) |
+| LC 55. 跳跃游戏 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=55) |
+| LC 45. 跳跃游戏 II | [练习](https://onefly.top/zero2Leetcode/playground.html?id=45) |
+| LC 763. 划分字母区间 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=763) |
+| LC 94. 二叉树的中序遍历 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=94) |
+| LC 104. 二叉树的最大深度 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=104) |
+| LC 102. 二叉树的层序遍历 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=102) |
 
 ### Day 7：二分查找与堆
 
 | 题目 | 链接 |
 |------|------|
-| LC 704. 二分查找 | [LeetCode](https://leetcode.cn/problems/binary-search/) |
-| LC 35. 搜索插入位置 | [LeetCode](https://leetcode.cn/problems/search-insert-position/) |
-| LC 34. 排序数组中查找元素的首尾位置 | [LeetCode](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/) |
-| LC 33. 搜索旋转排序数组 | [LeetCode](https://leetcode.cn/problems/search-in-rotated-sorted-array/) |
-| LC 153. 旋转排序数组的最小值 | [LeetCode](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/) |
-| LC 215. 数组中的第K个最大元素 | [LeetCode](https://leetcode.cn/problems/kth-largest-element-in-an-array/) |
-| LC 347. 前K个高频元素 | [LeetCode](https://leetcode.cn/problems/top-k-frequent-elements/) |
+| LC 704. 二分查找 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=704) |
+| LC 35. 搜索插入位置 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=35) |
+| LC 34. 排序数组中查找元素的首尾位置 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=34) |
+| LC 33. 搜索旋转排序数组 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=33) |
+| LC 153. 旋转排序数组的最小值 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=153) |
+| LC 215. 数组中的第K个最大元素 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=215) |
+| LC 347. 前K个高频元素 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=347) |
 | LC 703. 数据流中的第K大元素 | [LeetCode](https://leetcode.cn/problems/kth-largest-element-in-a-stream/) |
 
 ### Day 8：技巧 + 数学
 
 | 题目 | 链接 |
 |------|------|
-| LC 136. 只出现一次的数字 | [LeetCode](https://leetcode.cn/problems/single-number/) |
-| LC 169. 多数元素 | [LeetCode](https://leetcode.cn/problems/majority-element/) |
-| LC 287. 寻找重复数 | [LeetCode](https://leetcode.cn/problems/find-the-duplicate-number/) |
+| LC 136. 只出现一次的数字 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=136) |
+| LC 169. 多数元素 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=169) |
+| LC 287. 寻找重复数 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=287) |
 | LC 238. 除自身以外数组的乘积 | [LeetCode](https://leetcode.cn/problems/product-of-array-except-self/) |
-| LC 75. 颜色分类 | [LeetCode](https://leetcode.cn/problems/sort-colors/) |
+| LC 75. 颜色分类 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=75) |
 
 ### Day 9：链表
 
 | 题目 | 链接 |
 |------|------|
-| LC 206. 反转链表 | [LeetCode](https://leetcode.cn/problems/reverse-linked-list/) |
-| LC 141. 环形链表 | [LeetCode](https://leetcode.cn/problems/linked-list-cycle/) |
-| LC 142. 环形链表 II | [LeetCode](https://leetcode.cn/problems/linked-list-cycle-ii/) |
-| LC 21. 合并两个有序链表 | [LeetCode](https://leetcode.cn/problems/merge-two-sorted-lists/) |
-| LC 2. 两数相加 | [LeetCode](https://leetcode.cn/problems/add-two-numbers/) |
-| LC 19. 删除链表的倒数第N个结点 | [LeetCode](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/) |
-| LC 234. 回文链表 | [LeetCode](https://leetcode.cn/problems/palindrome-linked-list/) |
-| LC 160. 相交链表 | [LeetCode](https://leetcode.cn/problems/intersection-of-two-linked-lists/) |
+| LC 206. 反转链表 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=206) |
+| LC 141. 环形链表 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=141) |
+| LC 142. 环形链表 II | [练习](https://onefly.top/zero2Leetcode/playground.html?id=142) |
+| LC 21. 合并两个有序链表 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=21) |
+| LC 2. 两数相加 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=2) |
+| LC 19. 删除链表的倒数第N个结点 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=19) |
+| LC 234. 回文链表 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=234) |
+| LC 160. 相交链表 | [练习](https://onefly.top/zero2Leetcode/playground.html?id=160) |
 
 ### Day 10：AI 岗专题（非 AI 岗跳过）
 

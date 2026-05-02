@@ -52,6 +52,7 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     description: `
 <h3>92. 反转链表 II <span class="difficulty-tag medium">Medium</span></h3>
 <p>给你单链表的头指针 <code>head</code> 和两个整数 <code>left</code> 和 <code>right</code>，其中 <code>left &lt;= right</code>。请你反转从位置 <code>left</code> 到位置 <code>right</code> 的链表节点，返回反转后的链表。</p>
+<p><strong>说明：</strong>已内置 <code>ListNode</code> 类（<code>val</code> + <code>next</code>），输入输出自动转换，直接操作链表即可。</p>
 <h4>示例</h4>
 <pre>输入：head = [1,2,3,4,5], left = 2, right = 4
 输出：[1,4,3,2,5]</pre>
@@ -61,19 +62,27 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
 <ul>
 <li>链表节点数为 n，1 &lt;= n &lt;= 500</li>
 <li>1 &lt;= left &lt;= right &lt;= n</li>
-</ul>
-<p><strong>说明：</strong>本地练习使用数组模拟链表，输入输出均为数组。</p>`,
-    template: `def reverse_between(head, left, right):
+</ul>`,
+    template: `# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+def reverse_between(head, left, right):
     """
-    :type head: List[int] (模拟链表)
+    :type head: ListNode
     :type left: int
     :type right: int
-    :rtype: List[int]
+    :rtype: ListNode
     """
     # 在这里写你的代码
     pass
 `,
     functionName: 'reverse_between',
+    setup: (typeof LINKED_LIST_SETUP !== 'undefined') ? LINKED_LIST_SETUP : '',
+    argWrappers: ['_to_linked_list'],
+    returnWrapper: '_to_array',
     testCases: [
       { input: [[1, 2, 3, 4, 5], 2, 4], expected: [1, 4, 3, 2, 5] },
       { input: [[5], 1, 1], expected: [5] },
