@@ -8,7 +8,7 @@ permalink: /05_interview/coding/huawei/
 
 # 华为面试手撕高频题与备考规划
 
-> 华为面试手撕 = 80% LeetCode 原题（Hot 100 为主）+ 20% 基础算法/ML手撕。每位考生通常有一次换题机会。
+> 基于 6139 篇面经统计（小红书 4867 + 牛客 1272），LC 真题 199 种、总频次 629 次。华为面试手撕 = 80% LeetCode 原题（Hot 100 为主）+ 20% 基础算法/ML 手撕。每位考生通常有一次换题机会。
 
 ---
 
@@ -62,41 +62,112 @@ permalink: /05_interview/coding/huawei/
 
 影响因素：简历项目方向 + 面试官个人偏好，随机性大。
 
-### 非 AI 岗（通软/嵌软/数据开发/测试等）
+### 软件开发岗（通软/数据开发/测试等 · 最多人投递）
 
 | 概率 | 内容 |
 |------|------|
-| 80% | LeetCode 原题 |
-| 20% | 基础算法手撕（优先队列、快排/归并排序等） |
+| 80% | LeetCode 原题（Medium 为主，少量 Hard） |
+| 20% | 基础算法手撕（手写快排、优先队列、归并排序等） |
+
+考察形式：一道主题题 + 面试官追问变体或换解法。
+
+### 嵌入式 / 数字 IC 岗
+
+| 概率 | 内容 |
+|------|------|
+| 90% | Verilog 电路手撕（同步 FIFO 控制器、异步 FIFO、状态机设计、分频电路） |
+| 10% | 基础算法（与 LeetCode 几乎无交集） |
+
+**注意**：嵌入式/IC 是完全独立的备考体系，和软件开发岗无重叠。
 
 ---
 
 ## 最新高频手撕题 Top 20
 
-> 统计于 25、26 届面经数据
+> 统计来源：小红书（4867 篇）+ 牛客网（1272 篇）共 **6139 篇**华为校招面经，LC 真题 199 种、总频次 629 次（高频≥5 共 38 种）
 
 | # | 题目 | 考察知识点 | 频次 |
 |---|------|-----------|------|
-| 1 | [LC 20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) | 栈、字符串 | 5 |
-| 2 | [LC 200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) | DFS、BFS、网格搜索 | 5 |
-| 3 | [LC 1. 两数之和](https://onefly.top/zero2Leetcode/playground.html?id=1) | 哈希表 | 4 |
-| 4 | [LC 3. 无重复字符的最长子串](https://onefly.top/zero2Leetcode/playground.html?id=3) | 滑动窗口、哈希集合 | 3 |
-| 5 | [LC 46. 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) | 回溯、DFS | 3 |
-| 6 | [LC 994. 腐烂的橘子](https://onefly.top/zero2Leetcode/playground.html?id=994) | BFS、网格搜索 | 3 |
-| 7 | [LC 394. 字符串解码](https://onefly.top/zero2Leetcode/playground.html?id=394) | 栈、递归、字符串 | 2 |
-| 8 | [LC 739. 每日温度](https://onefly.top/zero2Leetcode/playground.html?id=739) | 单调栈 | 2 |
-| 9 | [LC 56. 合并区间](https://onefly.top/zero2Leetcode/playground.html?id=56) | 排序、区间合并 | 2 |
-| 10 | [LC 64. 最小路径和](https://onefly.top/zero2Leetcode/playground.html?id=64) | 动态规划 | 2 |
-| 11 | [LC 102. 二叉树的层序遍历](https://onefly.top/zero2Leetcode/playground.html?id=102) | 二叉树、BFS | 2 |
-| 12 | [LC 1423. 可获得的最大点数](https://onefly.top/zero2Leetcode/playground.html?id=1423) | 滑动窗口、前缀和 | 2 |
-| 13 | [LC 155. 最小栈](https://onefly.top/zero2Leetcode/playground.html?id=155) | 栈、设计题 | 1 |
-| 14 | [LC 986. 区间列表的交集](https://onefly.top/zero2Leetcode/playground.html?id=986) | 双指针、区间问题 | 1 |
-| 15 | [LC 456. 132 模式](https://onefly.top/zero2Leetcode/playground.html?id=456) | 单调栈 | 1 |
-| 16 | [LC 11. 盛最多水的容器](https://onefly.top/zero2Leetcode/playground.html?id=11) | 双指针、贪心 | 1 |
-| 17 | [LC 49. 字母异位词分组](https://onefly.top/zero2Leetcode/playground.html?id=49) | 哈希表、字符串 | 1 |
-| 18 | [LC 71. 简化路径](https://onefly.top/zero2Leetcode/playground.html?id=71) | 栈、字符串模拟 | 1 |
-| 19 | [LC 217. 存在重复元素](https://onefly.top/zero2Leetcode/playground.html?id=217) | 哈希表、集合 | 1 |
-| 20 | [LC 21. 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) | 链表、双指针 | 1 |
+| 1 | [LC 3. 无重复字符的最长子串](https://onefly.top/zero2Leetcode/playground.html?id=3) | 滑动窗口、哈希集合 | 30 |
+| 2 | [LC 200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) | DFS、BFS、网格搜索 | 29 |
+| 3 | [LC 20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) | 栈、字符串 | 22 |
+| 4 | [LC 146. LRU 缓存](https://onefly.top/zero2Leetcode/playground.html?id=146) | 哈希表、双向链表、设计题 | 17 |
+| 5 | [LC 394. 字符串解码](https://onefly.top/zero2Leetcode/playground.html?id=394) | 栈、递归、字符串 | 15 |
+| 6 | [LC 56. 合并区间](https://onefly.top/zero2Leetcode/playground.html?id=56) | 排序、区间合并 | 14 |
+| 7 | [LC 206. 反转链表](https://onefly.top/zero2Leetcode/playground.html?id=206) | 链表、迭代/递归 | 12 |
+| 8 | [LC 1. 两数之和](https://onefly.top/zero2Leetcode/playground.html?id=1) | 哈希表 | 11 |
+| 9 | [LC 42. 接雨水](https://onefly.top/zero2Leetcode/playground.html?id=42) | 双指针、单调栈 | 11 |
+| 10 | [LC 102. 二叉树的层序遍历](https://onefly.top/zero2Leetcode/playground.html?id=102) | 二叉树、BFS | 10 |
+| 11 | [LC 215. 数组中的第K个最大元素](https://onefly.top/zero2Leetcode/playground.html?id=215) | 堆、快速选择 | 10 |
+| 12 | [LC 46. 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) | 回溯、DFS | 8 |
+| 13 | [LC 994. 腐烂的橘子](https://onefly.top/zero2Leetcode/playground.html?id=994) | BFS、网格搜索 | 7 |
+| 14 | [LC 739. 每日温度](https://onefly.top/zero2Leetcode/playground.html?id=739) | 单调栈 | 6 |
+| 15 | [LC 64. 最小路径和](https://onefly.top/zero2Leetcode/playground.html?id=64) | 动态规划 | 5 |
+| 16 | [LC 1423. 可获得的最大点数](https://onefly.top/zero2Leetcode/playground.html?id=1423) | 滑动窗口、前缀和 | 5 |
+| 17 | [LC 11. 盛最多水的容器](https://onefly.top/zero2Leetcode/playground.html?id=11) | 双指针、贪心 | 5 |
+| 18 | [LC 155. 最小栈](https://onefly.top/zero2Leetcode/playground.html?id=155) | 栈、设计题 | 5 |
+| 19 | [LC 49. 字母异位词分组](https://onefly.top/zero2Leetcode/playground.html?id=49) | 哈希表、字符串 | 5 |
+| 20 | [LC 21. 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) | 链表、双指针 | 5 |
+
+---
+
+## 华为特色：追问文化
+
+华为面试与字节、腾讯最大的差异在于**追问**。字节通常是一道题写完再出第二道，华为面试官喜欢在同一道题上反复追问：
+
+| 追问类型 | 示例 |
+|----------|------|
+| 换解法 | 岛屿数量写完 DFS → 要求用 BFS 重写；接雨水写完双指针 → 追问单调栈解法 |
+| 复杂度优化 | "还有没有更好的方案？空间能不能优化到 O(1)？" |
+| 边界条件 | "如果输入为空怎么处理？如果只有一个节点呢？" |
+
+**结论**：准备华为面试，每道高频题不能只会一种写法。**双解是标配，不是加分项。**
+
+---
+
+## 华为特色：原创手撕题
+
+华为有部分 LC 上找不到直接对应的原创题，频次不高但值得准备：
+
+| 题目 | 频次 | 考点 |
+|------|------|------|
+| 手写快速排序 | 5 | 完整实现 + 复杂度分析 |
+| 手写单例模式 | 4 | volatile 原理 + 设计模式 |
+| 分月饼 | 2 | 三维 DP + 滚动数组 |
+| 颜色反转（r/g 归位） | 2 | 前缀和 / 枚举分界点 |
+| 最大合法时间 | 2 | 枚举 / DFS（给 4 个数字凑 HH:MM） |
+
+---
+
+## AI 岗 ML/DL 手撕频次
+
+> 仅算法岗 / AI 方向 / 大模型岗需要准备，软件开发岗不考
+
+| 题目 | 频次 |
+|------|------|
+| Self-Attention | **18 次** |
+| MHA（Multi-Head Attention） | **15 次** |
+| K-Means | **14 次** |
+| 反向传播（Backpropagation） | 6 次 |
+| Conv2d 手写 | 6 次 |
+| Linear Layer | 4 次 |
+| LSTM | 2 次 |
+
+> 随着大模型岗位增多，Attention 机制手撕频次在快速上升。要求从零手写 PyTorch 代码，不是伪代码。
+
+---
+
+## 与腾讯、字节的对比
+
+| 维度 | 华为 | 腾讯 | 字节 |
+|------|------|------|------|
+| 面经数量 | 6139 篇 | 3784 篇 | — |
+| LC 手撕频次 | 629 次 | 1833 次 | — |
+| 第一高频题 | LC3（30次） | LRU（123次） | — |
+| 非 LC 题占比 | 约 12% | 25% | 7% |
+| 追问强度 | ★★★★★ | ★★★ | ★★ |
+| 整体难度 | Medium 为主 | Medium 为主 | Medium~Hard |
+| 特色 | 岗位分化 / 追问文化 | LRU / 场景原创题 | 原创题 / Hard |
 
 ---
 
@@ -382,8 +453,10 @@ if __name__ == "__main__":
 
 ## 小结
 
-1. **Top 3 必刷**：有效的括号、岛屿数量、两数之和 — 出现频次最高
+1. **Top 3 必刷**：无重复字符最长子串（30次）、岛屿数量（29次）、有效的括号（22次）— 断层高频
 2. **BFS/DFS 是华为最爱**：岛屿数量、腐烂的橘子、层序遍历反复出现
 3. **栈类题高频**：有效的括号、字符串解码、每日温度、简化路径
-4. **AI 岗额外准备 ML 手撕**：Self-Attention、反向传播、KMeans 是必备项
-5. **ACM 模式 + 规范命名**：面试官看重代码质量，提前练好模板
+4. **LRU 缓存必须会**：17 次排第 4，要求哈希表 + 双向链表手写
+5. **每道题准备双解**：华为追问文化要求同一题掌握多种写法
+6. **AI 岗额外准备 ML 手撕**：Self-Attention（18次）、MHA（15次）、KMeans（14次）是 Top 3
+7. **ACM 模式 + 规范命名**：面试官看重代码质量，提前练好模板
