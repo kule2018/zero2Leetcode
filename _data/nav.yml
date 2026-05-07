@@ -109,6 +109,8 @@ modules:
             slug: "ant/dev-20260416"
           - title: "研发岗 4.19"
             slug: "ant/dev-20260419"
+          - title: "开发岗 5.7"
+            slug: "ant/dev-20260507"
       - name: "美团"
         articles:
           - title: "研发岗 3.28"
@@ -205,6 +207,8 @@ modules:
         articles:
           - title: "通用 5.6"
             slug: "honor/general-20260506"
+          - title: "通用 5.7"
+            slug: "honor/general-20260507"
       - name: "备考技巧"
         articles:
           - title: "笔试必知必会"
