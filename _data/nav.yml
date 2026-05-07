@@ -201,6 +201,10 @@ modules:
         articles:
           - title: "通用 4.19"
             slug: "nio/general-20260419"
+      - name: "荣耀"
+        articles:
+          - title: "通用 5.6"
+            slug: "honor/general-20260506"
       - name: "备考技巧"
         articles:
           - title: "笔试必知必会"

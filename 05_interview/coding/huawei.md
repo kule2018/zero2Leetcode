@@ -82,32 +82,120 @@ permalink: /05_interview/coding/huawei/
 
 ---
 
-## 最新高频手撕题 Top 20
+## 高频手撕题 Top 38（分类详解）
 
-> 统计来源：小红书（4867 篇）+ 牛客网（1272 篇）共 **6139 篇**华为校招面经，LC 真题 199 种、总频次 629 次（高频≥5 共 38 种）
+> 统计来源：小红书（4867 篇）+ 牛客网（1272 篇）共 **6139 篇**华为校招面经，LC 真题 199 种、总频次 629 次（高频≥5 共 38 种）。数据版本：v12，生成于 2026-05-02，已剔除 OD 机考/笔试来源。
 
-| # | 题目 | 考察知识点 | 频次 |
-|---|------|-----------|------|
-| 1 | [LC 3. 无重复字符的最长子串](https://onefly.top/zero2Leetcode/playground.html?id=3) | 滑动窗口、哈希集合 | 30 |
-| 2 | [LC 200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200) | DFS、BFS、网格搜索 | 29 |
-| 3 | [LC 20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) | 栈、字符串 | 22 |
-| 4 | [LC 146. LRU 缓存](https://onefly.top/zero2Leetcode/playground.html?id=146) | 哈希表、双向链表、设计题 | 17 |
-| 5 | [LC 394. 字符串解码](https://onefly.top/zero2Leetcode/playground.html?id=394) | 栈、递归、字符串 | 15 |
-| 6 | [LC 56. 合并区间](https://onefly.top/zero2Leetcode/playground.html?id=56) | 排序、区间合并 | 14 |
-| 7 | [LC 206. 反转链表](https://onefly.top/zero2Leetcode/playground.html?id=206) | 链表、迭代/递归 | 12 |
-| 8 | [LC 1. 两数之和](https://onefly.top/zero2Leetcode/playground.html?id=1) | 哈希表 | 11 |
-| 9 | [LC 42. 接雨水](https://onefly.top/zero2Leetcode/playground.html?id=42) | 双指针、单调栈 | 11 |
-| 10 | [LC 102. 二叉树的层序遍历](https://onefly.top/zero2Leetcode/playground.html?id=102) | 二叉树、BFS | 10 |
-| 11 | [LC 215. 数组中的第K个最大元素](https://onefly.top/zero2Leetcode/playground.html?id=215) | 堆、快速选择 | 10 |
-| 12 | [LC 46. 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) | 回溯、DFS | 8 |
-| 13 | [LC 994. 腐烂的橘子](https://onefly.top/zero2Leetcode/playground.html?id=994) | BFS、网格搜索 | 7 |
-| 14 | [LC 739. 每日温度](https://onefly.top/zero2Leetcode/playground.html?id=739) | 单调栈 | 6 |
-| 15 | [LC 64. 最小路径和](https://onefly.top/zero2Leetcode/playground.html?id=64) | 动态规划 | 5 |
-| 16 | [LC 1423. 可获得的最大点数](https://onefly.top/zero2Leetcode/playground.html?id=1423) | 滑动窗口、前缀和 | 5 |
-| 17 | [LC 11. 盛最多水的容器](https://onefly.top/zero2Leetcode/playground.html?id=11) | 双指针、贪心 | 5 |
-| 18 | [LC 155. 最小栈](https://onefly.top/zero2Leetcode/playground.html?id=155) | 栈、设计题 | 5 |
-| 19 | [LC 49. 字母异位词分组](https://onefly.top/zero2Leetcode/playground.html?id=49) | 哈希表、字符串 | 5 |
-| 20 | [LC 21. 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) | 链表、双指针 | 5 |
+### 分类总览
+
+| 分类 | 高频题数 | 代表高频题（频次） |
+|------|---------|-------------------|
+| 双指针/滑动窗口 | 7 道 | 无重复字符最长子串（**30次**）、接雨水（11次） |
+| 图论（DFS/BFS） | 3 道 | 岛屿数量（**29次**）、课程表（6次） |
+| 栈系列 | 5 道 | 有效括号（**22次**）、字符串解码（15次） |
+| 链表 | 7 道 | LRU缓存（17次）、反转链表（12次） |
+| 二叉树 | 4 道 | 层序遍历（10次）、最长递增子序列（8次） |
+| 排序/二分 | 4 道 | 合并区间（14次）、数组第K大元素（10次） |
+| DP/回溯/哈希 | 8 道 | 全排列（9次）、最大子数组和（7次） |
+
+### 双指针/滑动窗口（7 道）
+
+| # | 题目 | 频次 |
+|---|------|------|
+| ① | [LC 3. 无重复字符的最长子串](https://onefly.top/zero2Leetcode/playground.html?id=3) | **30次** |
+| ② | [LC 42. 接雨水](https://onefly.top/zero2Leetcode/playground.html?id=42)（双指针/单调栈） | **11次** |
+| ③ | [LC 11. 盛最多水的容器](https://onefly.top/zero2Leetcode/playground.html?id=11) | 9次 |
+| ③ | [LC 15. 三数之和](https://onefly.top/zero2Leetcode/playground.html?id=15) | 9次 |
+| ④ | [LC 209. 长度最小的子数组](https://onefly.top/zero2Leetcode/playground.html?id=209) | 7次 |
+| ④ | [LC 142. 环形链表 II](https://onefly.top/zero2Leetcode/playground.html?id=142) | 7次 |
+| ⑤ | [LC 239. 滑动窗口最大值](https://onefly.top/zero2Leetcode/playground.html?id=239) | 5次 |
+
+### 图论（3 道）
+
+| # | 题目 | 频次 |
+|---|------|------|
+| ① | [LC 200. 岛屿数量](https://onefly.top/zero2Leetcode/playground.html?id=200)（DFS/BFS） | **29次** |
+| ② | [LC 207. 课程表](https://onefly.top/zero2Leetcode/playground.html?id=207)（拓扑排序） | 6次 |
+| ③ | [LC 695. 岛屿的最大面积](https://onefly.top/zero2Leetcode/playground.html?id=695) | 5次 |
+
+### 栈系列（5 道）
+
+| # | 题目 | 频次 |
+|---|------|------|
+| ① | [LC 20. 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) | **22次** |
+| ② | [LC 394. 字符串解码](https://onefly.top/zero2Leetcode/playground.html?id=394) | **15次** |
+| ③ | [LC 739. 每日温度](https://onefly.top/zero2Leetcode/playground.html?id=739) | 6次 |
+| ③ | [LC 155. 最小栈](https://onefly.top/zero2Leetcode/playground.html?id=155) | 6次 |
+| ④ | [LC 23. 合并K个升序链表](https://onefly.top/zero2Leetcode/playground.html?id=23) | 5次 |
+
+### 链表（7 道）
+
+| # | 题目 | 频次 |
+|---|------|------|
+| ① | [LC 146. LRU 缓存](https://onefly.top/zero2Leetcode/playground.html?id=146)（双向链表+哈希） | **17次** |
+| ② | [LC 206. 反转链表](https://onefly.top/zero2Leetcode/playground.html?id=206) | **12次** |
+| ③ | [LC 1. 两数之和](https://onefly.top/zero2Leetcode/playground.html?id=1)（哈希） | 11次 |
+| ④ | [LC 19. 删除链表倒数第N个节点](https://onefly.top/zero2Leetcode/playground.html?id=19) | 8次 |
+| ⑤ | [LC 2. 两数相加](https://onefly.top/zero2Leetcode/playground.html?id=2) | 6次 |
+| ⑤ | [LC 21. 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) | 6次 |
+| ⑥ | [LC 92. 反转链表 II](https://onefly.top/zero2Leetcode/playground.html?id=92) | 3次 |
+
+### 二叉树（4 道）
+
+| # | 题目 | 频次 |
+|---|------|------|
+| ① | [LC 102. 二叉树的层序遍历](https://onefly.top/zero2Leetcode/playground.html?id=102) | **10次** |
+| ② | [LC 300. 最长递增子序列](https://onefly.top/zero2Leetcode/playground.html?id=300) | 8次 |
+| ② | [LC 93. 复原 IP 地址](https://onefly.top/zero2Leetcode/playground.html?id=93) | 8次 |
+| ③ | [LC 124. 二叉树中的最大路径和](https://onefly.top/zero2Leetcode/playground.html?id=124)（Hard） | 4次 |
+
+### 排序/二分（4 道）
+
+| # | 题目 | 频次 |
+|---|------|------|
+| ① | [LC 56. 合并区间](https://onefly.top/zero2Leetcode/playground.html?id=56) | **14次** |
+| ② | [LC 215. 数组中的第K个最大元素](https://onefly.top/zero2Leetcode/playground.html?id=215) | **10次** |
+| ③ | [LC 704. 二分查找](https://onefly.top/zero2Leetcode/playground.html?id=704) | 5次 |
+| ③ | [LC 54. 螺旋矩阵](https://onefly.top/zero2Leetcode/playground.html?id=54) | 5次 |
+
+### DP/回溯/哈希（8 道）
+
+| 题目 | 频次 | 类别 |
+|------|------|------|
+| [LC 46. 全排列](https://onefly.top/zero2Leetcode/playground.html?id=46) | 9次 | 回溯 |
+| [LC 451. 根据字符出现频率排序](https://onefly.top/zero2Leetcode/playground.html?id=451) | 8次 | 哈希+排序 |
+| [LC 53. 最大子数组和](https://onefly.top/zero2Leetcode/playground.html?id=53) | 7次 | DP/贪心 |
+| [LC 55. 跳跃游戏](https://onefly.top/zero2Leetcode/playground.html?id=55) | 7次 | 贪心 |
+| [LC 64. 最小路径和](https://onefly.top/zero2Leetcode/playground.html?id=64) | 6次 | DP |
+| [LC 70. 爬楼梯](https://onefly.top/zero2Leetcode/playground.html?id=70) | 6次 | DP |
+| [LC 406. 根据身高重建队列](https://onefly.top/zero2Leetcode/playground.html?id=406) | 5次 | 排序+贪心 |
+| [LC 72. 编辑距离](https://onefly.top/zero2Leetcode/playground.html?id=72) | 5次 | DP |
+
+### Hot100 之外需额外准备的题
+
+38 道高频题里，大部分来自 Hot100，但以下几道不在 Hot100 中，需要单独准备：
+
+| 题目 | 频次 | 说明 |
+|------|------|------|
+| LC 451 根据字符出现频率排序 | 8次 | 哈希计数 + 桶排序 |
+| LC 300 最长递增子序列 | 8次 | DP / 贪心+二分 |
+| LC 93 复原 IP 地址 | 8次 | 回溯 + 剪枝 |
+| LC 406 根据身高重建队列 | 5次 | 排序 + 贪心插入 |
+| LC 92 反转链表 II | 3次 | 区间翻转 |
+
+加上非 LC 的原创题（手写快排 5 次、手写单例模式 4 次），只刷 Hot100 有明显盲区。
+
+### 备考优先级：TOP7 必刷（覆盖约 40% 考察概率）
+
+| # | 题目 | 频次 |
+|---|------|------|
+| 1 | LC 3. 无重复字符的最长子串 | **30次** |
+| 2 | LC 200. 岛屿数量 | **29次** |
+| 3 | LC 20. 有效的括号 | **22次** |
+| 4 | LC 146. LRU 缓存 | **17次** |
+| 5 | LC 394. 字符串解码 | **15次** |
+| 6 | LC 56. 合并区间 | **14次** |
+| 7 | LC 206. 反转链表 | **12次** |
 
 ---
 
@@ -454,9 +542,10 @@ if __name__ == "__main__":
 ## 小结
 
 1. **Top 3 必刷**：无重复字符最长子串（30次）、岛屿数量（29次）、有效的括号（22次）— 断层高频
-2. **BFS/DFS 是华为最爱**：岛屿数量、腐烂的橘子、层序遍历反复出现
-3. **栈类题高频**：有效的括号、字符串解码、每日温度、简化路径
-4. **LRU 缓存必须会**：17 次排第 4，要求哈希表 + 双向链表手写
-5. **每道题准备双解**：华为追问文化要求同一题掌握多种写法
-6. **AI 岗额外准备 ML 手撕**：Self-Attention（18次）、MHA（15次）、KMeans（14次）是 Top 3
-7. **ACM 模式 + 规范命名**：面试官看重代码质量，提前练好模板
+2. **每道高频题准备双解**：追问换解法是华为面试文化。岛屿数量（DFS+BFS）、接雨水（双指针+单调栈）、反转链表（递归+迭代）、数组第K大（堆+快速选择）尤其要备双解
+3. **Hot100 之外的补漏**：LC 451、LC 300、LC 93、LC 406 共 4 道题不在 Hot100，加上手写快排/单例 2 道原创题，需专门补一遍
+4. **LRU 必须手写数据结构**：17 次排第 4，面试时会明确禁用内置 LinkedHashMap/OrderedDict，双向链表+哈希表需完整手写
+5. **BFS/DFS 是华为最爱**：岛屿数量、腐烂的橘子、层序遍历、课程表反复出现
+6. **栈类题高频**：有效的括号、字符串解码、每日温度、最小栈
+7. **AI 岗额外准备 ML 手撕**：Self-Attention（18次）、MHA（15次）、KMeans（14次）是 Top 3
+8. **ACM 模式 + 规范命名**：面试官看重代码质量，提前练好模板
