@@ -93,6 +93,8 @@ modules:
             slug: "alibaba/ai-20260425"
           - title: "算法岗 4.25"
             slug: "alibaba/algo-20260425"
+          - title: "算法岗 5.9"
+            slug: "alibaba/algo-20260509"
       - name: "蚂蚁"
         articles:
           - title: "研发岗 3.26"
