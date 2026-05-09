@@ -66,6 +66,8 @@ eyebrow: Module 05
 | [2026-4-18](meituan/dev-20260418/) | 研发岗 | 排序模拟、排序+二分查找、贪心+BIT求字典序最大LCS |
 | [2026-4-18](meituan/algo-20260418/) | 算法岗 | 排序模拟、高斯过程回归GPR、分组贪心、贪心+BIT求字典序最大LCS |
 | [2026-4-25](meituan/algo-20260425/) | 算法岗 | 贪心+字符串、Decision Stump决策树桩、按位贪心、树上哈希+小到大合并 |
+| [2026-5-9](meituan/dev-20260509/) | 研发岗 | 线性扫描、构造(对称矩阵)、DP+线段树 |
+| [2026-5-9](meituan/algo-20260509/) | 算法岗 | 线性扫描、Adam+Warm-up逻辑回归、二分答案、DP+线段树 |
 
 ### 华为机试笔试真题 {#huawei}
 
@@ -86,6 +88,8 @@ eyebrow: Module 05
 | [2026-4-23](huawei/ai-20260423/) | 留学生AI岗 | 20道选择题(量化/CNN/Transformer/GQA/RoPE/KV Cache/混合精度训练/概率论)、MMR智能重排序、ID3决策树 |
 | [2026-4-29](huawei/dev-20260429/) | 研发岗 | 哈希计数+后缀和、二叉树自底向上累加、分治最近点对 |
 | [2026-4-29](huawei/ai-20260429/) | AI岗 | 20道选择题(NMF/MobileNet/LDA/张量并行/PagedAttention/RLHF/Dead ReLU)、LSTM前向传播、大模型语料清洗 |
+| [2026-5-9](huawei/dev-20260509/) | 研发岗 | 位图(Bitmap)、滑动窗口+单调队列、完全背包+方案重构 |
+| [2026-5-9](huawei/ai-20260509/) | AI岗 | 20道选择题(KV-Cache/Prefill-Decode/PPO/Prompt Tuning/量化部署)、逻辑回归BGD、多头注意力掩码计算 |
 
 ### 网易笔试真题 {#netease}
 
