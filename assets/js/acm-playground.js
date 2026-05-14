@@ -8,13 +8,15 @@ const ACM_TEMPLATES = {
         code: `n = int(input())
 print(n)
 `,
-        input: '42'
+        input: '42',
+        expected: '42'
     },
     two: {
         code: `n, m = map(int, input().split())
 print(n + m)
 `,
-        input: '3 5'
+        input: '3 5',
+        expected: '8'
     },
     array: {
         code: `n = int(input())
@@ -22,7 +24,8 @@ arr = list(map(int, input().split()))
 arr.sort()
 print(' '.join(map(str, arr)))
 `,
-        input: '5\n3 1 4 1 5'
+        input: '5\n3 1 4 1 5',
+        expected: '1 1 3 4 5'
     },
     matrix: {
         code: `n, m = map(int, input().split())
@@ -35,7 +38,8 @@ for i in range(n):
 for row in matrix:
     print(' '.join(map(str, row)))
 `,
-        input: '3 3\n1 2 3\n4 5 6\n7 8 9'
+        input: '3 3\n1 2 3\n4 5 6\n7 8 9',
+        expected: '1 2 3\n4 5 6\n7 8 9'
     },
     multi: {
         code: `T = int(input())
@@ -44,13 +48,15 @@ for _ in range(T):
     arr = list(map(int, input().split()))
     print(sum(arr))
 `,
-        input: '2\n3\n1 2 3\n4\n1 2 3 4'
+        input: '2\n3\n1 2 3\n4\n1 2 3 4',
+        expected: '6\n10'
     },
     string: {
         code: `s = input()
 print(s[::-1])
 `,
-        input: 'hello'
+        input: 'hello',
+        expected: 'olleh'
     },
     graph: {
         code: `n, m = map(int, input().split())
@@ -63,7 +69,8 @@ for _ in range(m):
 for i in range(1, n + 1):
     print(f"Node {i}: {sorted(graph[i])}")
 `,
-        input: '4 4\n1 2\n1 3\n2 4\n3 4'
+        input: '4 4\n1 2\n1 3\n2 4\n3 4',
+        expected: 'Node 1: [2, 3]\nNode 2: [1, 4]\nNode 3: [1, 4]\nNode 4: [2, 3]'
     }
 };
 
@@ -793,7 +800,12 @@ function bindEvents() {
         const tpl = ACM_TEMPLATES[key];
         window.acmEditor.setValue(tpl.code);
         document.getElementById('stdin-area').value = tpl.input;
-        e.target.value = ''; // 重置 select
+        document.getElementById('expected-area').value = tpl.expected || '';
+        document.getElementById('stdout-area').textContent = '点击「运行」或按 Ctrl+Enter 执行代码';
+        document.getElementById('stdout-area').className = 'io-output placeholder-text';
+        document.getElementById('diff-result').textContent = '';
+        document.getElementById('diff-result').className = 'diff-result';
+        e.target.value = '';
     });
 
     // 输入自动保存
