@@ -92,6 +92,8 @@ eyebrow: Module 05
 | [2026-4-29](huawei/ai-20260429/) | AI岗 | 20道选择题(NMF/MobileNet/LDA/张量并行/PagedAttention/RLHF/Dead ReLU)、LSTM前向传播、大模型语料清洗 |
 | [2026-5-9](huawei/dev-20260509/) | 研发岗 | 位图(Bitmap)、滑动窗口+单调队列、完全背包+方案重构 |
 | [2026-5-9](huawei/ai-20260509/) | AI岗 | 20道选择题(KV-Cache/Prefill-Decode/PPO/Prompt Tuning/量化部署)、逻辑回归BGD、多头注意力掩码计算 |
+| [2026-5-13](huawei/dev-20260513/) | 研发岗 | 滑动窗口+哈希表、二叉树层序解析+递归合并、二维Dijkstra(节点+电量) |
+| [2026-5-13](huawei/ai-20260513/) | AI岗 | 20道选择题(向量检索/Agent安全/多模态/对比学习/ZeRO/DPO)、BPE分词模拟、2D空洞卷积 |
 
 ### 网易笔试真题 {#netease}
 
