@@ -177,16 +177,26 @@ async function initPyodide() {
 }
 
 // ---------- 代码运行 ----------
+const EXECUTION_TIMEOUT_MS = 10000; // 10 秒超时
+let pyodideCorrupted = false; // 标记 Pyodide 运行时是否损坏（如超时后）
+
 async function runCode() {
-    if (!pyodide) return;
+    if (!pyodide || pyodideCorrupted) {
+        if (pyodideCorrupted) {
+            await reinitPyodide();
+        }
+        if (!pyodide) return;
+    }
 
     const runBtn = document.getElementById('run-btn');
+    const debugBtn = document.getElementById('debug-btn');
     const stdoutArea = document.getElementById('stdout-area');
     const runStatus = document.getElementById('run-status');
     const statusInfo = document.getElementById('status-info');
     const statusTime = document.getElementById('status-time');
 
     runBtn.disabled = true;
+    debugBtn.disabled = true;
     runStatus.textContent = '运行中...';
     runStatus.className = 'run-status running';
     statusInfo.textContent = '运行中...';
@@ -208,7 +218,7 @@ async function runCode() {
             stdoutArea.classList.add('has-error');
             runStatus.textContent = '运行错误';
             runStatus.className = 'run-status error';
-            statusInfo.textContent = '运行错误';
+            statusInfo.textContent = classifyError(result.error);
         } else {
             stdoutArea.textContent = result.stdout || '(无输出)';
             if (!result.stdout) stdoutArea.classList.add('placeholder-text');
@@ -229,6 +239,26 @@ async function runCode() {
     }
 
     runBtn.disabled = false;
+    debugBtn.disabled = false;
+}
+
+async function reinitPyodide() {
+    const status = document.getElementById('pyodide-status');
+    status.textContent = '重新初始化...';
+    status.classList.remove('ready', 'error');
+    status.classList.add('loading');
+    pyodideCorrupted = false;
+    try {
+        pyodide = await loadPyodide();
+        status.textContent = 'Pyodide 就绪';
+        status.classList.remove('loading');
+        status.classList.add('ready');
+    } catch (e) {
+        status.textContent = '加载失败';
+        status.classList.remove('loading');
+        status.classList.add('error');
+        pyodide = null;
+    }
 }
 
 async function executePython(code, stdinText) {
@@ -250,6 +280,9 @@ async function executePython(code, stdinText) {
         await pyodide.loadPackagesFromImports(code);
     } catch (_) {}
 
+    // 注入迭代计数器防止无限循环（在 Python 层面限制循环次数）
+    const guardedCode = addLoopGuard(code);
+
     // 捕获 stdout 和 stderr
     const captureCode = `
 import sys, io
@@ -266,13 +299,47 @@ __out = __stdout_capture.getvalue()
 __err = __stderr_capture.getvalue()
 `;
 
+    // 使用 Promise.race 添加超时保护
+    const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('__TIMEOUT__')), EXECUTION_TIMEOUT_MS);
+    });
+
     try {
         await pyodide.runPythonAsync(captureCode);
         try {
-            await pyodide.runPythonAsync(code);
+            await Promise.race([
+                pyodide.runPythonAsync(guardedCode),
+                timeoutPromise
+            ]);
         } catch (e) {
-            // Python 运行时错误 — 仍需恢复 stdout
-            await pyodide.runPythonAsync(restoreCode);
+            const errMsg = String(e.message || e);
+            if (errMsg === '__TIMEOUT__' || errMsg.includes('__LoopTimeout__')) {
+                // 超时：Pyodide 可能仍在运行，标记为损坏
+                pyodideCorrupted = true;
+                const stdout = tryGetStdout();
+                return {
+                    stdout,
+                    error: '⏱ 执行超时（超过 10 秒）\n\n可能原因：\n' +
+                           '  1. while 循环条件永远为真（无限循环）\n' +
+                           '  2. 递归没有正确的终止条件\n' +
+                           '  3. 输入数据量过大导致算法超时\n\n' +
+                           '提示：检查循环条件和边界，确保循环能正常退出。\n' +
+                           '运行时已自动重置，可直接修改代码后重新运行。'
+                };
+            }
+            if (errMsg.includes('__LoopGuardExceeded__')) {
+                try { await pyodide.runPythonAsync(restoreCode); } catch (_) {}
+                const stdout = pyodide.globals.get('__out') || '';
+                return {
+                    stdout,
+                    error: '⏱ 循环次数超限（超过 10,000,000 次迭代）\n\n可能原因：\n' +
+                           '  1. while 循环条件永远为真（无限循环）\n' +
+                           '  2. 循环变量未正确更新\n\n' +
+                           '提示：检查循环条件，确保循环变量在每次迭代后向终止条件靠近。'
+                };
+            }
+            // 普通 Python 运行时错误 — 恢复 stdout
+            try { await pyodide.runPythonAsync(restoreCode); } catch (_) {}
             const stdout = pyodide.globals.get('__out') || '';
             return { stdout, error: extractPythonError(e) };
         }
@@ -281,20 +348,118 @@ __err = __stderr_capture.getvalue()
         const stderr = pyodide.globals.get('__err') || '';
         return { stdout, warning: stderr || null, error: null };
     } catch (e) {
+        const errMsg = String(e.message || e);
+        if (errMsg === '__TIMEOUT__') {
+            pyodideCorrupted = true;
+            return {
+                stdout: '',
+                error: '⏱ 执行超时（超过 10 秒）\n\n' +
+                       '运行时已自动重置，可直接修改代码后重新运行。'
+            };
+        }
         // 最终兜底：恢复 stdout
         try { await pyodide.runPythonAsync(`import sys; sys.stdout = sys.__stdout__; sys.stderr = sys.__stderr__`); } catch (_) {}
         return { stdout: '', error: extractPythonError(e) };
     }
 }
 
+function tryGetStdout() {
+    try {
+        return pyodide.globals.get('__out') || '';
+    } catch (_) {
+        try {
+            return pyodide.globals.get('__stdout_capture')?.getvalue() || '';
+        } catch (_) {}
+    }
+    return '';
+}
+
+// 在 while 循环中注入迭代计数器，防止无限循环锁死浏览器
+function addLoopGuard(code) {
+    const MAX_ITERATIONS = 10000000;
+    const lines = code.split('\n');
+    const result = [`__loop_guard_counter = 0`];
+    for (let i = 0; i < lines.length; i++) {
+        result.push(lines[i]);
+        const stripped = lines[i].trimStart();
+        if (/^while\s+/.test(stripped) && stripped.endsWith(':')) {
+            const baseIndent = lines[i].length - lines[i].trimStart().length;
+            const bodyIndent = ' '.repeat(baseIndent + 4);
+            result.push(bodyIndent + '__loop_guard_counter += 1');
+            result.push(bodyIndent + `if __loop_guard_counter > ${MAX_ITERATIONS}: raise RuntimeError("__LoopGuardExceeded__")`);
+        }
+    }
+    return result.join('\n');
+}
+
 function extractPythonError(err) {
     const msg = String(err.message || err);
     // 移除 Pyodide 包装信息，只保留 Python traceback
     const idx = msg.indexOf('Traceback');
-    if (idx >= 0) return msg.slice(idx);
+    if (idx >= 0) {
+        const traceback = msg.slice(idx);
+        // 在 traceback 末尾追加友好提示
+        const hint = getErrorHint(traceback);
+        return hint ? traceback + '\n\n💡 ' + hint : traceback;
+    }
     // 取最后几行有意义的信息
     const lines = msg.split('\n').filter(l => l.trim());
-    return lines.slice(-3).join('\n') || msg;
+    const shortMsg = lines.slice(-3).join('\n') || msg;
+    const hint = getErrorHint(shortMsg);
+    return hint ? shortMsg + '\n\n💡 ' + hint : shortMsg;
+}
+
+function getErrorHint(errorText) {
+    if (/ValueError.*invalid literal/i.test(errorText)) {
+        return '输入格式错误：尝试将非数字字符串转为整数。请检查输入数据格式是否与 input() 读取方式匹配。';
+    }
+    if (/EOFError|StopIteration/i.test(errorText)) {
+        return '输入不足：代码尝试读取更多输入，但输入已用完。请检查「输入」区的数据行数是否足够。';
+    }
+    if (/IndexError/i.test(errorText)) {
+        return '下标越界：访问了列表/数组中不存在的索引。检查数组长度和循环边界。';
+    }
+    if (/TypeError.*argument/i.test(errorText) || /TypeError.*expected/i.test(errorText)) {
+        return '参数类型错误：函数接收到了不匹配的参数类型。检查变量类型是否正确。';
+    }
+    if (/RecursionError|maximum recursion/i.test(errorText)) {
+        return '递归深度超限：递归没有正确终止，或数据规模过大。考虑加 sys.setrecursionlimit() 或改用迭代。';
+    }
+    if (/NameError/i.test(errorText)) {
+        return '变量未定义：使用了未声明或拼写错误的变量名。';
+    }
+    if (/SyntaxError/i.test(errorText)) {
+        return '语法错误：代码格式不正确。检查缩进、括号、冒号等是否匹配。';
+    }
+    if (/KeyError/i.test(errorText)) {
+        return '键不存在：字典中没有该 key。考虑使用 dict.get() 或先检查 key 是否存在。';
+    }
+    if (/ZeroDivisionError/i.test(errorText)) {
+        return '除零错误：除数为 0。检查除法运算前是否需要特判。';
+    }
+    if (/MemoryError/i.test(errorText)) {
+        return '内存不足：数据结构占用过多内存。考虑优化算法的空间复杂度。';
+    }
+    if (/__LoopGuardExceeded__/i.test(errorText)) {
+        return '循环次数过多，可能是无限循环。';
+    }
+    return '';
+}
+
+function classifyError(errorText) {
+    if (/超时|__TIMEOUT__|__LoopTimeout__/i.test(errorText)) return '执行超时（可能无限循环）';
+    if (/LoopGuardExceeded/i.test(errorText)) return '无限循环';
+    if (/SyntaxError/i.test(errorText)) return '语法错误';
+    if (/ValueError.*invalid literal/i.test(errorText)) return '输入格式错误';
+    if (/EOFError|StopIteration/i.test(errorText)) return '输入不足';
+    if (/IndexError/i.test(errorText)) return '下标越界';
+    if (/TypeError/i.test(errorText)) return '类型错误';
+    if (/RecursionError/i.test(errorText)) return '递归超限';
+    if (/NameError/i.test(errorText)) return '变量未定义';
+    if (/KeyError/i.test(errorText)) return '键不存在';
+    if (/ZeroDivisionError/i.test(errorText)) return '除零错误';
+    if (/MemoryError/i.test(errorText)) return '内存不足';
+    return '运行错误';
 }
 
 // ---------- 输出对比 ----------
@@ -321,15 +486,22 @@ function compareOutput() {
 
 // ---------- 调试功能 ----------
 async function runDebug() {
-    if (!pyodide) return;
+    if (!pyodide || pyodideCorrupted) {
+        if (pyodideCorrupted) {
+            await reinitPyodide();
+        }
+        if (!pyodide) return;
+    }
 
     const debugBtn = document.getElementById('debug-btn');
+    const runBtn = document.getElementById('run-btn');
     const debugPanel = document.getElementById('debug-panel');
     const stdoutArea = document.getElementById('stdout-area');
     const runStatus = document.getElementById('run-status');
     const statusInfo = document.getElementById('status-info');
 
     debugBtn.disabled = true;
+    runBtn.disabled = true;
     statusInfo.textContent = '调试录制中...';
     runStatus.textContent = '调试中...';
     runStatus.className = 'run-status running';
@@ -362,8 +534,15 @@ async function runDebug() {
     stdoutArea.textContent = '';
     stdoutArea.classList.remove('has-error', 'placeholder-text');
 
+    const debugTimeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('__TIMEOUT__')), EXECUTION_TIMEOUT_MS);
+    });
+
     try {
-        await pyodide.runPythonAsync(traceCode);
+        await Promise.race([
+            pyodide.runPythonAsync(traceCode),
+            debugTimeoutPromise
+        ]);
         const framesProxy = pyodide.globals.get('__trace_frames');
         const stdoutVal = pyodide.globals.get('__out') || '';
         const stderrVal = pyodide.globals.get('__err') || '';
@@ -418,26 +597,41 @@ async function runDebug() {
 
         compareOutput();
     } catch (e) {
-        stdoutArea.textContent = extractPythonError(e);
-        stdoutArea.classList.add('has-error');
-        runStatus.textContent = '调试错误';
-        runStatus.className = 'run-status error';
-        statusInfo.textContent = '调试错误';
-        // 仍然尝试提取已录制的帧
+        const errMsg = String(e.message || e);
+        if (errMsg === '__TIMEOUT__') {
+            pyodideCorrupted = true;
+            stdoutArea.textContent = '⏱ 调试超时（超过 10 秒）\n\n' +
+                '可能存在无限循环，请检查 while 循环条件。\n' +
+                '运行时已自动重置，可直接修改代码后重新运行。';
+            stdoutArea.classList.add('has-error');
+            runStatus.textContent = '超时';
+            runStatus.className = 'run-status error';
+            statusInfo.textContent = '调试超时（可能无限循环）';
+        } else {
+            stdoutArea.textContent = extractPythonError(e);
+            stdoutArea.classList.add('has-error');
+            runStatus.textContent = '调试错误';
+            runStatus.className = 'run-status error';
+            statusInfo.textContent = classifyError(errMsg);
+            // 仍然尝试提取已录制的帧
+            try {
+                const stdoutVal = pyodide.globals.get('__out') || '';
+                if (stdoutVal) {
+                    stdoutArea.textContent = stdoutVal + '\n' + stdoutArea.textContent;
+                }
+            } catch (_) {}
+        }
+    }
+
+    // 恢复 stdout（如果 Pyodide 没有损坏）
+    if (!pyodideCorrupted) {
         try {
-            const stdoutVal = pyodide.globals.get('__out') || '';
-            if (stdoutVal) {
-                stdoutArea.textContent = stdoutVal + '\n' + stdoutArea.textContent;
-            }
+            await pyodide.runPythonAsync(`import sys; sys.stdout = sys.__stdout__; sys.stderr = sys.__stderr__`);
         } catch (_) {}
     }
 
-    // 恢复 stdout
-    try {
-        await pyodide.runPythonAsync(`import sys; sys.stdout = sys.__stdout__; sys.stderr = sys.__stderr__`);
-    } catch (_) {}
-
     debugBtn.disabled = false;
+    runBtn.disabled = false;
 }
 
 function buildTraceSetup() {
