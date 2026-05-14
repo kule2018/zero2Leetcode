@@ -799,10 +799,14 @@ function bindEvents() {
     // 输入自动保存
     const stdinArea = document.getElementById('stdin-area');
     const savedInput = localStorage.getItem(STORAGE_INPUT_KEY);
-    if (savedInput !== null) {
+    const savedCode = localStorage.getItem(STORAGE_KEY);
+    if (savedInput && savedInput.trim()) {
         stdinArea.value = savedInput;
-    } else {
+    } else if (!savedCode || savedCode === DEFAULT_CODE) {
+        // 无保存输入且代码是默认的，使用默认输入
         stdinArea.value = DEFAULT_INPUT;
+    } else {
+        stdinArea.value = '';
     }
     let inputTimer = null;
     stdinArea.addEventListener('input', () => {
