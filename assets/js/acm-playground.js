@@ -295,84 +295,69 @@ async function executePython(code, stdinText) {
     const timeoutMs = getTimeoutMs();
     const guardedCode = timeoutMs > 0 ? addLoopGuard(code) : code;
 
-    // 捕获 stdout 和 stderr
-    const captureCode = `
-import sys, io
-__stdout_capture = io.StringIO()
-__stderr_capture = io.StringIO()
+    // 将 setup + 用户代码 + teardown 合成单次调用（与调试模式一致，避免跨调用状态丢失）
+    const indentedCode = guardedCode.split('\n').map(l => '    ' + l).join('\n');
+    const wrappedCode = `
+import sys, io as __io, traceback as __tb
+__stdout_capture = __io.StringIO()
+__stderr_capture = __io.StringIO()
 sys.stdout = __stdout_capture
 sys.stderr = __stderr_capture
+try:
+${indentedCode}
+except Exception as __e:
+    __stderr_capture.write(__tb.format_exc())
+finally:
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
+    __out = __stdout_capture.getvalue()
+    __err = __stderr_capture.getvalue()
 `;
 
-    const restoreCode = `
-sys.stdout = sys.__stdout__
-sys.stderr = sys.__stderr__
-__out = __stdout_capture.getvalue()
-__err = __stderr_capture.getvalue()
-`;
+    const execPromise = pyodide.runPythonAsync(wrappedCode);
+    const raceTarget = timeoutMs > 0
+        ? Promise.race([
+            execPromise,
+            new Promise((_, reject) => setTimeout(() => reject(new Error('__TIMEOUT__')), timeoutMs))
+          ])
+        : execPromise;
 
     try {
-        await pyodide.runPythonAsync(captureCode);
-        // 必须在 captureCode 之后创建 execPromise，否则 stdout 尚未重定向
-        const execPromise = pyodide.runPythonAsync(guardedCode);
-        const raceTarget = timeoutMs > 0
-            ? Promise.race([
-                execPromise,
-                new Promise((_, reject) => setTimeout(() => reject(new Error('__TIMEOUT__')), timeoutMs))
-              ])
-            : execPromise;
-        try {
-            await raceTarget;
-        } catch (e) {
-            const errMsg = String(e.message || e);
-            if (errMsg === '__TIMEOUT__' || errMsg.includes('__LoopTimeout__')) {
-                // 超时：Pyodide 可能仍在运行，标记为损坏
-                pyodideCorrupted = true;
-                const stdout = tryGetStdout();
-                const secs = (timeoutMs / 1000).toFixed(0);
-                return {
-                    stdout,
-                    error: `⏱ 执行超时（超过 ${secs} 秒）\n\n可能原因：\n` +
-                           '  1. while 循环条件永远为真（无限循环）\n' +
-                           '  2. 递归没有正确的终止条件\n' +
-                           '  3. 输入数据量过大导致算法超时\n\n' +
-                           '提示：如果是 ML/DL 训练代码，可将超时设为「5min」或「无限制」。\n' +
-                           '运行时已自动重置，可直接修改代码后重新运行。'
-                };
-            }
-            if (errMsg.includes('__LoopGuardExceeded__')) {
-                try { await pyodide.runPythonAsync(restoreCode); } catch (_) {}
-                const stdout = pyodide.globals.get('__out') || '';
-                return {
-                    stdout,
-                    error: '⏱ 循环次数超限（超过 10,000,000 次迭代）\n\n可能原因：\n' +
-                           '  1. while 循环条件永远为真（无限循环）\n' +
-                           '  2. 循环变量未正确更新\n\n' +
-                           '提示：检查循环条件，确保循环变量在每次迭代后向终止条件靠近。'
-                };
-            }
-            // 普通 Python 运行时错误 — 恢复 stdout
-            try { await pyodide.runPythonAsync(restoreCode); } catch (_) {}
-            const stdout = pyodide.globals.get('__out') || '';
-            return { stdout, error: extractPythonError(e) };
-        }
-        await pyodide.runPythonAsync(restoreCode);
+        await raceTarget;
         const stdout = pyodide.globals.get('__out') || '';
         const stderr = pyodide.globals.get('__err') || '';
-        return { stdout, warning: stderr || null, error: null };
+        if (stderr) {
+            const hint = getErrorHint(stderr);
+            const errorMsg = stderr.includes('Traceback') ? stderr : stderr;
+            return { stdout, error: hint ? errorMsg + '\n\n💡 ' + hint : errorMsg };
+        }
+        return { stdout, warning: null, error: null };
     } catch (e) {
         const errMsg = String(e.message || e);
         if (errMsg === '__TIMEOUT__') {
             pyodideCorrupted = true;
             const secs = (timeoutMs / 1000).toFixed(0);
             return {
-                stdout: '',
-                error: `⏱ 执行超时（超过 ${secs} 秒）\n\n` +
+                stdout: tryGetStdout(),
+                error: `⏱ 执行超时（超过 ${secs} 秒）\n\n可能原因：\n` +
+                       '  1. while 循环条件永远为真（无限循环）\n' +
+                       '  2. 递归没有正确的终止条件\n' +
+                       '  3. 输入数据量过大导致算法超时\n\n' +
                        '提示：如果是 ML/DL 训练代码，可将超时设为「5min」或「无限制」。\n' +
                        '运行时已自动重置，可直接修改代码后重新运行。'
             };
         }
-        // 最终兜底：恢复 stdout
+        if (errMsg.includes('__LoopGuardExceeded__')) {
+            const stdout = tryGetStdout();
+            return {
+                stdout,
+                error: '⏱ 循环次数超限（超过 10,000,000 次迭代）\n\n可能原因：\n' +
+                       '  1. while 循环条件永远为真（无限循环）\n' +
+                       '  2. 循环变量未正确更新\n\n' +
+                       '提示：检查循环条件，确保循环变量在每次迭代后向终止条件靠近。'
+            };
+        }
+        // 兜底：恢复 stdout
         try { await pyodide.runPythonAsync(`import sys; sys.stdout = sys.__stdout__; sys.stderr = sys.__stderr__`); } catch (_) {}
         return { stdout: '', error: extractPythonError(e) };
     }
