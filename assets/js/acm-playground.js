@@ -311,17 +311,16 @@ __out = __stdout_capture.getvalue()
 __err = __stderr_capture.getvalue()
 `;
 
-    // 使用 Promise.race 添加超时保护（设为 0 表示无限制）
-    const execPromise = pyodide.runPythonAsync(guardedCode);
-    const raceTarget = timeoutMs > 0
-        ? Promise.race([
-            execPromise,
-            new Promise((_, reject) => setTimeout(() => reject(new Error('__TIMEOUT__')), timeoutMs))
-          ])
-        : execPromise;
-
     try {
         await pyodide.runPythonAsync(captureCode);
+        // 必须在 captureCode 之后创建 execPromise，否则 stdout 尚未重定向
+        const execPromise = pyodide.runPythonAsync(guardedCode);
+        const raceTarget = timeoutMs > 0
+            ? Promise.race([
+                execPromise,
+                new Promise((_, reject) => setTimeout(() => reject(new Error('__TIMEOUT__')), timeoutMs))
+              ])
+            : execPromise;
         try {
             await raceTarget;
         } catch (e) {
