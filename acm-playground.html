@@ -74,6 +74,14 @@
                 </select>
                 <span class="toolbar-divider"></span>
                 <span id="pyodide-status" class="pyodide-status loading">Pyodide 加载中...</span>
+                <span class="toolbar-divider"></span>
+                <select id="timeout-select" class="template-select" title="执行超时时间">
+                    <option value="10000">超时: 10s</option>
+                    <option value="30000">超时: 30s</option>
+                    <option value="60000">超时: 60s</option>
+                    <option value="300000">超时: 5min</option>
+                    <option value="0">无限制</option>
+                </select>
             </div>
             <div class="toolbar-right">
                 <button id="run-btn" class="btn btn-run" disabled>

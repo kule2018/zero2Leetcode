@@ -177,8 +177,12 @@ async function initPyodide() {
 }
 
 // ---------- 代码运行 ----------
-const EXECUTION_TIMEOUT_MS = 10000; // 10 秒超时
 let pyodideCorrupted = false; // 标记 Pyodide 运行时是否损坏（如超时后）
+
+function getTimeoutMs() {
+    const sel = document.getElementById('timeout-select');
+    return sel ? parseInt(sel.value, 10) : 10000;
+}
 
 async function runCode() {
     if (!pyodide || pyodideCorrupted) {
@@ -280,8 +284,9 @@ async function executePython(code, stdinText) {
         await pyodide.loadPackagesFromImports(code);
     } catch (_) {}
 
-    // 注入迭代计数器防止无限循环（在 Python 层面限制循环次数）
-    const guardedCode = addLoopGuard(code);
+    // 根据超时设置决定是否注入循环保护
+    const timeoutMs = getTimeoutMs();
+    const guardedCode = timeoutMs > 0 ? addLoopGuard(code) : code;
 
     // 捕获 stdout 和 stderr
     const captureCode = `
@@ -299,31 +304,33 @@ __out = __stdout_capture.getvalue()
 __err = __stderr_capture.getvalue()
 `;
 
-    // 使用 Promise.race 添加超时保护
-    const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('__TIMEOUT__')), EXECUTION_TIMEOUT_MS);
-    });
+    // 使用 Promise.race 添加超时保护（设为 0 表示无限制）
+    const execPromise = pyodide.runPythonAsync(guardedCode);
+    const raceTarget = timeoutMs > 0
+        ? Promise.race([
+            execPromise,
+            new Promise((_, reject) => setTimeout(() => reject(new Error('__TIMEOUT__')), timeoutMs))
+          ])
+        : execPromise;
 
     try {
         await pyodide.runPythonAsync(captureCode);
         try {
-            await Promise.race([
-                pyodide.runPythonAsync(guardedCode),
-                timeoutPromise
-            ]);
+            await raceTarget;
         } catch (e) {
             const errMsg = String(e.message || e);
             if (errMsg === '__TIMEOUT__' || errMsg.includes('__LoopTimeout__')) {
                 // 超时：Pyodide 可能仍在运行，标记为损坏
                 pyodideCorrupted = true;
                 const stdout = tryGetStdout();
+                const secs = (timeoutMs / 1000).toFixed(0);
                 return {
                     stdout,
-                    error: '⏱ 执行超时（超过 10 秒）\n\n可能原因：\n' +
+                    error: `⏱ 执行超时（超过 ${secs} 秒）\n\n可能原因：\n` +
                            '  1. while 循环条件永远为真（无限循环）\n' +
                            '  2. 递归没有正确的终止条件\n' +
                            '  3. 输入数据量过大导致算法超时\n\n' +
-                           '提示：检查循环条件和边界，确保循环能正常退出。\n' +
+                           '提示：如果是 ML/DL 训练代码，可将超时设为「5min」或「无限制」。\n' +
                            '运行时已自动重置，可直接修改代码后重新运行。'
                 };
             }
@@ -351,9 +358,11 @@ __err = __stderr_capture.getvalue()
         const errMsg = String(e.message || e);
         if (errMsg === '__TIMEOUT__') {
             pyodideCorrupted = true;
+            const secs = (timeoutMs / 1000).toFixed(0);
             return {
                 stdout: '',
-                error: '⏱ 执行超时（超过 10 秒）\n\n' +
+                error: `⏱ 执行超时（超过 ${secs} 秒）\n\n` +
+                       '提示：如果是 ML/DL 训练代码，可将超时设为「5min」或「无限制」。\n' +
                        '运行时已自动重置，可直接修改代码后重新运行。'
             };
         }
@@ -534,15 +543,17 @@ async function runDebug() {
     stdoutArea.textContent = '';
     stdoutArea.classList.remove('has-error', 'placeholder-text');
 
-    const debugTimeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('__TIMEOUT__')), EXECUTION_TIMEOUT_MS);
-    });
+    const debugTimeoutMs = getTimeoutMs();
+    const debugExecPromise = pyodide.runPythonAsync(traceCode);
+    const debugRaceTarget = debugTimeoutMs > 0
+        ? Promise.race([
+            debugExecPromise,
+            new Promise((_, reject) => setTimeout(() => reject(new Error('__TIMEOUT__')), debugTimeoutMs))
+          ])
+        : debugExecPromise;
 
     try {
-        await Promise.race([
-            pyodide.runPythonAsync(traceCode),
-            debugTimeoutPromise
-        ]);
+        await debugRaceTarget;
         const framesProxy = pyodide.globals.get('__trace_frames');
         const stdoutVal = pyodide.globals.get('__out') || '';
         const stderrVal = pyodide.globals.get('__err') || '';
