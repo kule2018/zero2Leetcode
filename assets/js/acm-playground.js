@@ -295,8 +295,8 @@ async function executePython(code, stdinText) {
     const timeoutMs = getTimeoutMs();
     const guardedCode = timeoutMs > 0 ? addLoopGuard(code) : code;
 
-    // 单次调用：先设置全局变量存用户代码，再用 exec() 执行（避免缩进和作用域问题）
-    pyodide.globals.set('__user_code__', guardedCode);
+    // 将 setup + 用户代码 + teardown 合成单次调用（与调试模式一致，避免跨调用状态丢失）
+    const indentedCode = guardedCode.split('\n').map(l => '    ' + l).join('\n');
     const wrappedCode = `
 import sys, io as __io, traceback as __tb
 __stdout_capture = __io.StringIO()
@@ -304,7 +304,7 @@ __stderr_capture = __io.StringIO()
 sys.stdout = __stdout_capture
 sys.stderr = __stderr_capture
 try:
-    exec(__user_code__, globals())
+${indentedCode}
 except Exception as __e:
     __stderr_capture.write(__tb.format_exc())
 finally:
