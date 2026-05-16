@@ -378,12 +378,37 @@ function tryGetStdout() {
 function addLoopGuard(code) {
     const MAX_ITERATIONS = 10000000;
     const lines = code.split('\n');
+
+    // Pass 1: find which def lines enclose a while loop and need 'global' injection
+    const defsNeedingGlobal = new Set();
+    for (let i = 0; i < lines.length; i++) {
+        const stripped = lines[i].trimStart();
+        if (/^while\s+/.test(stripped) && stripped.endsWith(':')) {
+            const whileIndent = lines[i].length - stripped.length;
+            if (whileIndent > 0) {
+                for (let j = i - 1; j >= 0; j--) {
+                    const prevStripped = lines[j].trimStart();
+                    const prevIndent = lines[j].length - prevStripped.length;
+                    if (/^def\s+/.test(prevStripped) && prevStripped.endsWith(':') && prevIndent < whileIndent) {
+                        defsNeedingGlobal.add(j);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // Pass 2: build result with injections
     const result = [`__loop_guard_counter = 0`];
     for (let i = 0; i < lines.length; i++) {
         result.push(lines[i]);
+        if (defsNeedingGlobal.has(i)) {
+            const defIndent = lines[i].length - lines[i].trimStart().length;
+            result.push(' '.repeat(defIndent + 4) + 'global __loop_guard_counter');
+        }
         const stripped = lines[i].trimStart();
         if (/^while\s+/.test(stripped) && stripped.endsWith(':')) {
-            const baseIndent = lines[i].length - lines[i].trimStart().length;
+            const baseIndent = lines[i].length - stripped.length;
             const bodyIndent = ' '.repeat(baseIndent + 4);
             result.push(bodyIndent + '__loop_guard_counter += 1');
             result.push(bodyIndent + `if __loop_guard_counter > ${MAX_ITERATIONS}: raise RuntimeError("__LoopGuardExceeded__")`);
