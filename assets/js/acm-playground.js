@@ -291,12 +291,10 @@ async function executePython(code, stdinText) {
         await pyodide.loadPackagesFromImports(code);
     } catch (_) {}
 
-    // 根据超时设置决定是否注入循环保护
     const timeoutMs = getTimeoutMs();
-    const guardedCode = timeoutMs > 0 ? addLoopGuard(code) : code;
 
     // 将 setup + 用户代码 + teardown 合成单次调用（与调试模式一致，避免跨调用状态丢失）
-    const indentedCode = guardedCode.split('\n').map(l => '    ' + l).join('\n');
+    const indentedCode = code.split('\n').map(l => '    ' + l).join('\n');
     const wrappedCode = `
 import sys, io as __io, traceback as __tb
 __stdout_capture = __io.StringIO()
@@ -347,16 +345,6 @@ finally:
                        '运行时已自动重置，可直接修改代码后重新运行。'
             };
         }
-        if (errMsg.includes('__LoopGuardExceeded__')) {
-            const stdout = tryGetStdout();
-            return {
-                stdout,
-                error: '⏱ 循环次数超限（超过 10,000,000 次迭代）\n\n可能原因：\n' +
-                       '  1. while 循环条件永远为真（无限循环）\n' +
-                       '  2. 循环变量未正确更新\n\n' +
-                       '提示：检查循环条件，确保循环变量在每次迭代后向终止条件靠近。'
-            };
-        }
         // 兜底：恢复 stdout
         try { await pyodide.runPythonAsync(`import sys; sys.stdout = sys.__stdout__; sys.stderr = sys.__stderr__`); } catch (_) {}
         return { stdout: '', error: extractPythonError(e) };
@@ -374,48 +362,7 @@ function tryGetStdout() {
     return '';
 }
 
-// 在 while 循环中注入迭代计数器，防止无限循环锁死浏览器
-function addLoopGuard(code) {
-    const MAX_ITERATIONS = 10000000;
-    const lines = code.split('\n');
 
-    // Pass 1: find which def lines enclose a while loop and need 'global' injection
-    const defsNeedingGlobal = new Set();
-    for (let i = 0; i < lines.length; i++) {
-        const stripped = lines[i].trimStart();
-        if (/^while\s+/.test(stripped) && stripped.endsWith(':')) {
-            const whileIndent = lines[i].length - stripped.length;
-            if (whileIndent > 0) {
-                for (let j = i - 1; j >= 0; j--) {
-                    const prevStripped = lines[j].trimStart();
-                    const prevIndent = lines[j].length - prevStripped.length;
-                    if (/^def\s+/.test(prevStripped) && prevStripped.endsWith(':') && prevIndent < whileIndent) {
-                        defsNeedingGlobal.add(j);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    // Pass 2: build result with injections
-    const result = [`__loop_guard_counter = 0`];
-    for (let i = 0; i < lines.length; i++) {
-        result.push(lines[i]);
-        if (defsNeedingGlobal.has(i)) {
-            const defIndent = lines[i].length - lines[i].trimStart().length;
-            result.push(' '.repeat(defIndent + 4) + 'global __loop_guard_counter');
-        }
-        const stripped = lines[i].trimStart();
-        if (/^while\s+/.test(stripped) && stripped.endsWith(':')) {
-            const baseIndent = lines[i].length - stripped.length;
-            const bodyIndent = ' '.repeat(baseIndent + 4);
-            result.push(bodyIndent + '__loop_guard_counter += 1');
-            result.push(bodyIndent + `if __loop_guard_counter > ${MAX_ITERATIONS}: raise RuntimeError("__LoopGuardExceeded__")`);
-        }
-    }
-    return result.join('\n');
-}
 
 function extractPythonError(err) {
     const msg = String(err.message || err);
@@ -465,15 +412,11 @@ function getErrorHint(errorText) {
     if (/MemoryError/i.test(errorText)) {
         return '内存不足：数据结构占用过多内存。考虑优化算法的空间复杂度。';
     }
-    if (/__LoopGuardExceeded__/i.test(errorText)) {
-        return '循环次数过多，可能是无限循环。';
-    }
     return '';
 }
 
 function classifyError(errorText) {
     if (/超时|__TIMEOUT__|__LoopTimeout__/i.test(errorText)) return '执行超时（可能无限循环）';
-    if (/LoopGuardExceeded/i.test(errorText)) return '无限循环';
     if (/SyntaxError/i.test(errorText)) return '语法错误';
     if (/ValueError.*invalid literal/i.test(errorText)) return '输入格式错误';
     if (/EOFError|StopIteration/i.test(errorText)) return '输入不足';
