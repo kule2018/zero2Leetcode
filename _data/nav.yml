@@ -103,6 +103,8 @@ modules:
             slug: "alibaba/dev-20260516"
           - title: "算法岗 5.16"
             slug: "alibaba/algo-20260516"
+          - title: "AI研发岗 5.16"
+            slug: "alibaba/ai-20260516"
       - name: "蚂蚁"
         articles:
           - title: "研发岗 3.26"
@@ -195,6 +197,8 @@ modules:
             slug: "pinduoduo/general-20260412"
           - title: "暑期实习 4.26"
             slug: "pinduoduo/general-20260426"
+          - title: "暑期实习 5.17"
+            slug: "pinduoduo/general-20260517"
       - name: "携程"
         articles:
           - title: "研发岗 3.29"
