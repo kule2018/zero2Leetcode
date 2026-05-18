@@ -282,6 +282,8 @@ modules:
             slug: "fundamentals/alibaba-backend"
           - title: "腾讯后台开发八股文"
             slug: "fundamentals/tencent-backend"
+          - title: "字节跳动后端八股文"
+            slug: "fundamentals/bytedance-backend"
           - title: "美团后台开发八股文"
             slug: "fundamentals/meituan-backend"
           - title: "程序员八股文50题"
