@@ -233,6 +233,10 @@ modules:
         articles:
           - title: "研发岗 5.9"
             slug: "shopee/dev-20260509"
+      - name: "上海AILab"
+        articles:
+          - title: "通用 5.16"
+            slug: "shailab/general-20260516"
       - name: "荣耀"
         articles:
           - title: "通用 5.6"
