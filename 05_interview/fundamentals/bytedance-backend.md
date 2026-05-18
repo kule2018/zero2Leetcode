@@ -83,6 +83,12 @@ permalink: /05_interview/fundamentals/bytedance-backend/
 21. 为什么用 redo log 写会快？
 > 顺序写（追加写 WAL），而数据页是随机写。先写 redo log 再异步刷脏页，将随机 IO 转为顺序 IO。
 
+22. binlog 和 redo log 的二阶段提交？谁先提交？
+> redo log prepare → 写 binlog → redo log commit。binlog 先落盘。目的：保证 binlog 和 redo log 一致，崩溃恢复时若 binlog 完整则提交，否则回滚。
+
+23. 数据库宕机恢复后怎么保证数据不丢？
+> WAL 机制：事务提交前 redo log 必须刷盘（innodb_flush_log_at_trx_commit=1）。恢复时重放 redo log 恢复已提交事务，用 undo log 回滚未提交事务。配合二阶段提交保证 binlog 一致。
+
 ### 架构与优化
 
 22. MySQL 的架构介绍一下？为什么要做分层架构？server 层和存储引擎层为什么要分开？
@@ -102,6 +108,12 @@ permalink: /05_interview/fundamentals/bytedance-backend/
 
 27. 分库分表如何处理？水平分表后如何计算 count？
 > 分库（按业务/用户ID hash）、分表（按时间/ID 取模）。count：①各分表 count 求和；②维护独立计数表；③定期异步统计。
+
+28. MySQL 有哪些巧妙的优化来提高吞吐量？
+> Buffer Pool（减少磁盘读）、Change Buffer（合并二级索引写）、自适应哈希索引、WAL+顺序写、预读（read-ahead）、MRR（Multi-Range Read 排序回表）、ICP（Index Condition Pushdown 减少回表）。
+
+29. 慢 SQL 优化的目标是什么？为什么要优化？
+> 目标：减少扫描行数、降低锁持有时间、减少临时表/排序。原因：慢 SQL 占连接池→其他请求排队→流量上涨时 DB 连接耗尽→雪崩。除索引外：读写分离、缓存前置、异步化、分库分表。
 
 ### SQL 题
 
@@ -182,6 +194,12 @@ permalink: /05_interview/fundamentals/bytedance-backend/
 19. Redis Rehash 过程详解？
 > 渐进式 rehash：分配新哈希表（2倍大小），每次 CRUD 操作时迁移一个桶到新表，迁移期间同时查两个表。直到旧表为空释放。避免一次性 rehash 阻塞。
 
+20. Redis 大 Key 问题怎么解决？
+> 大 Key：单个 value 过大（如几 MB 的 String、百万元素的 Hash）→阻塞主线程、网络带宽打满、主从同步延迟。解决：①拆分（Hash 分段 key_1~key_N）；②压缩（序列化/gzip）；③异步删除（UNLINK 替代 DEL）；④定期 `redis-cli --bigkeys` 扫描。
+
+21. 如何让拆分后的 key 均匀分散在集群不同分片中？
+> 避免 hash tag（`{}`）导致同 slot。方案：key 命名中加入随机后缀或业务 ID → CRC16 自然散列到不同 slot。若需要同 slot（如事务），用 hash tag `{user:123}:field_N`。
+
 ---
 
 ## 三、计算机网络
@@ -217,8 +235,8 @@ permalink: /05_interview/fundamentals/bytedance-backend/
 9. HTTP 和 HTTPS 的区别？HTTPS 连接建立过程/SSL/TLS 握手过程？
 > HTTPS = HTTP + TLS 加密。握手：Client Hello（支持的加密套件）→Server Hello+证书→客户端验证证书→客户端生成预主密钥用服务器公钥加密发送→双方计算会话密钥→对称加密通信。
 
-10. HTTP 1.0/1.1/2.0/3.0 的区别？长连接和短连接？
-> 1.0 短连接（每次请求新建 TCP）；1.1 长连接+pipeline（但队头阻塞）；2.0 多路复用+头部压缩+服务器推送+二进制帧；3.0 基于 QUIC（UDP），解决 TCP 队头阻塞。
+10. HTTP 1.0/1.1/2.0/3.0 的区别？长连接和短连接？各自使用场景？
+> 1.0 短连接（每次请求新建 TCP）；1.1 长连接+pipeline（但队头阻塞）；2.0 多路复用+头部压缩+服务器推送+二进制帧；3.0 基于 QUIC（UDP），解决 TCP 队头阻塞。长连接场景：频繁交互（WebSocket/数据库连接池/RPC）。短连接场景：低频一次性请求、客户端数量极多无法维持连接。
 
 11. HTTP 请求报文包含哪些字段？有哪些请求方式？
 > 请求行（方法+URL+版本）+请求头（Host/Content-Type/Cookie/Authorization）+空行+请求体。方法：GET/POST/PUT/DELETE/PATCH/HEAD/OPTIONS。
@@ -287,6 +305,9 @@ permalink: /05_interview/fundamentals/bytedance-backend/
 
 14. Linux 常见命令？系统输入命令比较卡如何排查？
 > top/htop（CPU/内存）、iostat（磁盘 IO）、vmstat（上下文切换）、netstat/ss（网络连接）、strace（系统调用跟踪）、dmesg（内核日志）。排查卡顿：看 CPU（top）→ 内存/swap（free）→ 磁盘 IO（iostat/iotop）→ 网络（iftop）。
+
+15. CPU 各级存储的速度？多核访问同一资源可能出现什么问题？
+> 寄存器（1 cycle）→L1（~1ns）→L2（~3ns）→L3（~10ns）→内存（~100ns）→SSD（~100μs）→HDD（~10ms）。多核问题：缓存一致性（A 核改了 x，B 核 cache 中 x 还是旧值）。解决：MESI 协议（Modified/Exclusive/Shared/Invalid）+ 总线嗅探/目录协议。
 
 ---
 
@@ -454,6 +475,12 @@ permalink: /05_interview/fundamentals/bytedance-backend/
 14. 设计一个视频网站供很多人观看？设计一个聊天窗口供多人聊天？
 > 视频：CDN 分发 + 分片上传 + 转码队列 + HLS/DASH 自适应码率 + 热点视频预热缓存。聊天：WebSocket 长连接 + 消息队列广播 + 会话管理 + 消息持久化 + 离线消息拉取。
 
+15. 手写令牌桶限流器代码？
+> 核心：维护令牌数 tokens + 上次填充时间。每次请求时先按时间差补充令牌（tokens += elapsed * rate，cap 上限），再判断 tokens≥1 则放行并 -1，否则拒绝。支持突发（桶满时可连续消耗），与漏桶区别：漏桶匀速出，令牌桶允许突发。
+
+16. 分布式场景中上游调下游服务，路由是怎么确定的？
+> 服务注册中心（Nacos/ZK/Consul）维护服务实例列表。上游通过 SDK 拉取实例列表→负载均衡策略选一个（轮询/加权/一致性哈希/最少连接）→发起 RPC。健康检查剔除故障节点，灰度发布用权重/标签路由。
+
 ---
 
 ## 八、算法与数据结构（手撕题）
@@ -497,6 +524,10 @@ permalink: /05_interview/fundamentals/bytedance-backend/
 | 33 | 大数阶乘 | 1 | — |
 | 34 | [LC 295. 数据流中位数](https://onefly.top/zero2Leetcode/playground.html?id=295) | 1 | 295 |
 | 35 | 手写可重入锁 | 1 | — |
+| 36 | [LC 103. 二叉树锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/) | 1 | 103 |
+| 37 | 手写令牌桶限流器 | 1 | — |
+| 38 | 给定集合 A 和正整数 n，求组成 ≤n 的最大值（0/1背包变体） | 1 | — |
+| 39 | 十六进制转换 | 1 | — |
 
 ---
 
