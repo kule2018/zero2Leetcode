@@ -98,6 +98,8 @@ eyebrow: Module 05
 | [2026-5-9](huawei/ai-20260509/) | AI岗 | 20道选择题(KV-Cache/Prefill-Decode/PPO/Prompt Tuning/量化部署)、逻辑回归BGD、多头注意力掩码计算 |
 | [2026-5-13](huawei/dev-20260513/) | 研发岗 | 滑动窗口+哈希表、二叉树层序解析+递归合并、二维Dijkstra(节点+电量) |
 | [2026-5-13](huawei/ai-20260513/) | AI岗 | 20道选择题(向量检索/Agent安全/多模态/对比学习/ZeRO/DPO)、BPE分词模拟、2D空洞卷积 |
+| [2026-5-20](huawei/dev-20260520/) | 研发岗 | 二分答案、二叉树前序+中序重建+剪枝合并、树形依赖背包 |
+| [2026-5-20](huawei/ai-20260520/) | AI岗 | 20道选择题(多项式拟合/线代/PagedAttention/KV Cache/PD分离/量化/特征工程)、二维费用分组背包、KMP+差分扫描 |
 
 ### 网易笔试真题 {#netease}
 
