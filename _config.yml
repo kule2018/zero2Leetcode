@@ -2,6 +2,8 @@ title: Zero2Leetcode
 description: 从零基础Python到LeetCode中等难度的系统性学习平台
 url: https://onefly.top
 markdown: kramdown
+kramdown:
+  math_engine: null
 baseurl: /zero2Leetcode
 reactions_api: "https://zero2pm-reactions.ranxi169.workers.dev"
 
