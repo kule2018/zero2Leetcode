@@ -257,6 +257,8 @@ modules:
         articles:
           - title: "通用 5.16"
             slug: "shailab/general-20260516"
+          - title: "通用 5.26"
+            slug: "shailab/general-20260526"
       - name: "荣耀"
         articles:
           - title: "通用 5.6"
