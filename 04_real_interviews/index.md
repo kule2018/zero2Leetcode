@@ -108,6 +108,8 @@ eyebrow: Module 05
 | [2026-5-27](huawei/ai-20260527/) | AI岗 | 20道选择题(ZeRO/SmoothQuant/FP8/TP-PP-DP拓扑/ReAct/RAG)、二分答案+贪心check、滑动窗口+惰性堆Top-K |
 | [2026-6-3](huawei/dev-20260603/) | 研发岗 | 模拟(标识符压缩)、树上DFS(爆破收益)、回溯+状态压缩(NPU调度) |
 | [2026-6-3](huawei/ai-20260603/) | AI岗 | 20道选择题(CUDA双缓冲/KV Cache/MoE/Agent记忆/反向传播)、在线最小二乘回归、三层MLP反向传播 |
+| [2026-6-12](huawei/dev-20260612/) | 研发岗 | 循环异或加密(模拟)、前序中序重建二叉树+路径和剪枝、双层网格BFS最短路 |
+| [2026-6-12](huawei/ai-20260612/) | AI岗 | 20道选择题(相似度度量/PCA/梯度消失/GQA-MQA/KV Cache/3D混合并行)、K-Means点云聚类、Expert Choice Routing |
 
 ### 网易笔试真题 {#netease}
 
