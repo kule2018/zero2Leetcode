@@ -112,6 +112,8 @@ eyebrow: Module 05
 | [2026-6-12](huawei/ai-20260612/) | AI岗 | 20道选择题(相似度度量/PCA/梯度消失/GQA-MQA/KV Cache/3D混合并行)、K-Means点云聚类、Expert Choice Routing |
 | [2026-6-17](huawei/dev-20260617/) | 研发岗 | 枚举交汇站、双栈撤销重做、枚举目标颜色+网格DP |
 | [2026-6-17](huawei/ai-20260617/) | AI岗 | 20道选择题(激活函数/量化/RAG/MLE/K-Means/数值计算)、流水线并行枚举、DFT频域特征+K-Means聚类 |
+| [2026-6-24](huawei/dev-20260624/) | 研发岗 | 贪心区间调度、队列模拟、前序中序重建二叉树+路径和剪枝 |
+| [2026-6-24](huawei/ai-20260624/) | AI岗 | 20道选择题(Beam Search/RAG/Flash Decoding/RoPE/MHA参数量)、动态RoPE位置编码模拟、区间DP+决策单调性分治 |
 
 ### 网易笔试真题 {#netease}
 
