@@ -15,19 +15,25 @@
         var article = document.querySelector('.doc-article');
         if (!article) return;
 
-        // 找到所有 Python 代码块
+        // 找到所有 Python / Go 代码块
         // kramdown 渲染结构: div.highlighter-rouge > div.highlight > pre > code
         var codeBlocks = article.querySelectorAll('pre > code');
-        var pythonBlocks = [];
+        var runnableBlocks = [];
         for (var i = 0; i < codeBlocks.length; i++) {
             var cls = codeBlocks[i].className || '';
             var parentCls = (codeBlocks[i].closest('.highlighter-rouge') || {}).className || '';
+            var language = null;
             if (cls.indexOf('python') !== -1 || parentCls.indexOf('language-python') !== -1) {
-                pythonBlocks.push(codeBlocks[i]);
+                language = 'python';
+            } else if (/(^|\s)language-(go|golang)(\s|$)/.test(cls + ' ' + parentCls) ||
+                       /(^|\s)(go|golang)(\s|$)/.test(cls)) {
+                language = 'go';
             }
+            if (language) runnableBlocks.push({ element: codeBlocks[i], language: language });
         }
 
-        pythonBlocks.forEach(function (codeEl) {
+        runnableBlocks.forEach(function (block) {
+            var codeEl = block.element;
             // 找到最外层容器（div.highlighter-rouge），或直接用 <pre>
             var wrapper = codeEl.closest('.highlighter-rouge') || codeEl.parentElement;
             var data = findSampleData(wrapper);
@@ -42,6 +48,7 @@
             // 构建 URL
             var base = (window.Z2L_BASE || '').replace(/\/$/, '');
             var params = [];
+            params.push('language=' + encodeURIComponent(block.language));
             params.push('code=' + encodeURIComponent(encodeB64(data.code)));
             if (data.input) params.push('input=' + encodeURIComponent(encodeB64(data.input)));
             if (data.expected) params.push('expected=' + encodeURIComponent(encodeB64(data.expected)));
@@ -53,7 +60,7 @@
     }
 
     /**
-     * 从一个 Python 代码块的外层容器向上查找同一道题的 样例输入/输出
+     * 从一个代码块的外层容器向上查找同一道题的样例输入/输出
      * wrapper 可以是 div.highlighter-rouge 或 <pre>
      * 返回 { code, input, expected } 或 null
      */

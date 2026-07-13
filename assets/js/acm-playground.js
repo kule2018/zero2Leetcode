@@ -3,7 +3,7 @@
 // =============================================
 
 // ---------- ACM 输入模板 ----------
-const ACM_TEMPLATES = {
+const PYTHON_TEMPLATES = {
     single: {
         code: `n = int(input())
 print(n)
@@ -74,6 +74,206 @@ for i in range(1, n + 1):
     }
 };
 
+const GO_TEMPLATES = {
+    single: {
+        code: `package main
+
+import "fmt"
+
+func main() {
+    var n int
+    fmt.Scan(&n)
+    fmt.Println(n)
+}
+`,
+        input: '42',
+        expected: '42'
+    },
+    two: {
+        code: `package main
+
+import "fmt"
+
+func main() {
+    var n, m int
+    fmt.Scan(&n, &m)
+    fmt.Println(n + m)
+}
+`,
+        input: '3 5',
+        expected: '8'
+    },
+    array: {
+        code: `package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+    "sort"
+)
+
+func main() {
+    in := bufio.NewReader(os.Stdin)
+    out := bufio.NewWriter(os.Stdout)
+    defer out.Flush()
+
+    var n int
+    fmt.Fscan(in, &n)
+    arr := make([]int, n)
+    for i := range arr {
+        fmt.Fscan(in, &arr[i])
+    }
+
+    sort.Ints(arr)
+    for i, value := range arr {
+        if i > 0 {
+            fmt.Fprint(out, " ")
+        }
+        fmt.Fprint(out, value)
+    }
+    fmt.Fprintln(out)
+}
+`,
+        input: '5\n3 1 4 1 5',
+        expected: '1 1 3 4 5'
+    },
+    matrix: {
+        code: `package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+)
+
+func main() {
+    in := bufio.NewReader(os.Stdin)
+    out := bufio.NewWriter(os.Stdout)
+    defer out.Flush()
+
+    var n, m int
+    fmt.Fscan(in, &n, &m)
+    matrix := make([][]int, n)
+    for i := range matrix {
+        matrix[i] = make([]int, m)
+        for j := range matrix[i] {
+            fmt.Fscan(in, &matrix[i][j])
+        }
+    }
+
+    for _, row := range matrix {
+        for j, value := range row {
+            if j > 0 {
+                fmt.Fprint(out, " ")
+            }
+            fmt.Fprint(out, value)
+        }
+        fmt.Fprintln(out)
+    }
+}
+`,
+        input: '3 3\n1 2 3\n4 5 6\n7 8 9',
+        expected: '1 2 3\n4 5 6\n7 8 9'
+    },
+    multi: {
+        code: `package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+)
+
+func main() {
+    in := bufio.NewReader(os.Stdin)
+    out := bufio.NewWriter(os.Stdout)
+    defer out.Flush()
+
+    var tests int
+    fmt.Fscan(in, &tests)
+    for ; tests > 0; tests-- {
+        var n, sum, value int
+        fmt.Fscan(in, &n)
+        for i := 0; i < n; i++ {
+            fmt.Fscan(in, &value)
+            sum += value
+        }
+        fmt.Fprintln(out, sum)
+    }
+}
+`,
+        input: '2\n3\n1 2 3\n4\n1 2 3 4',
+        expected: '6\n10'
+    },
+    string: {
+        code: `package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+    "strings"
+)
+
+func main() {
+    reader := bufio.NewReader(os.Stdin)
+    text, _ := reader.ReadString('\\n')
+    text = strings.TrimRight(text, "\\r\\n")
+
+    chars := []rune(text)
+    for left, right := 0, len(chars)-1; left < right; left, right = left+1, right-1 {
+        chars[left], chars[right] = chars[right], chars[left]
+    }
+    fmt.Println(string(chars))
+}
+`,
+        input: 'hello',
+        expected: 'olleh'
+    },
+    graph: {
+        code: `package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+    "sort"
+)
+
+func main() {
+    in := bufio.NewReader(os.Stdin)
+    out := bufio.NewWriter(os.Stdout)
+    defer out.Flush()
+
+    var n, m int
+    fmt.Fscan(in, &n, &m)
+    graph := make([][]int, n+1)
+    for i := 0; i < m; i++ {
+        var u, v int
+        fmt.Fscan(in, &u, &v)
+        graph[u] = append(graph[u], v)
+        graph[v] = append(graph[v], u)
+    }
+
+    for node := 1; node <= n; node++ {
+        sort.Ints(graph[node])
+        fmt.Fprintf(out, "Node %d: [", node)
+        for i, neighbor := range graph[node] {
+            if i > 0 {
+                fmt.Fprint(out, ", ")
+            }
+            fmt.Fprint(out, neighbor)
+        }
+        fmt.Fprintln(out, "]")
+    }
+}
+`,
+        input: '4 4\n1 2\n1 3\n2 4\n3 4',
+        expected: 'Node 1: [2, 3]\nNode 2: [1, 4]\nNode 3: [1, 4]\nNode 4: [2, 3]'
+    }
+};
+
 const DEFAULT_CODE = `# ACM 模式：使用 input() 读取输入，print() 输出结果
 # 在右侧「输入」区粘贴测试数据，点击运行即可
 #
@@ -93,20 +293,90 @@ print(' '.join(map(str, arr)))
 const DEFAULT_INPUT = `5
 3 1 4 1 5`;
 
+const DEFAULT_GO_CODE = GO_TEMPLATES.array.code;
+
+const LANGUAGES = {
+    python: {
+        label: 'Python 3',
+        mode: 'python',
+        defaultCode: DEFAULT_CODE,
+        defaultInput: DEFAULT_INPUT,
+        templates: PYTHON_TEMPLATES,
+        supportsDebug: true
+    },
+    go: {
+        label: 'Go',
+        mode: 'text/x-go',
+        defaultCode: DEFAULT_GO_CODE,
+        defaultInput: DEFAULT_INPUT,
+        templates: GO_TEMPLATES,
+        supportsDebug: false
+    }
+};
+
+const GO_PLAYGROUND_API = 'https://play.golang.org/compile';
+const STORAGE_LANGUAGE_KEY = 'z2l-acm-language';
+const LEGACY_STORAGE_KEY = 'z2l-acm-code';
+const LEGACY_STORAGE_INPUT_KEY = 'z2l-acm-input';
+
 // ---------- 全局状态 ----------
 let pyodide = null;
+let pyodideLoading = false;
+let pyodideLoadFailed = false;
+let pyodideInitPromise = null;
+let isRunning = false;
+let goRuntimeState = 'ready';
+let codeSaveTimer = null;
+let inputSaveTimer = null;
+let suppressEditorSave = false;
 let debugFrames = [];
 let debugIndex = -1;
 let debugLineWidget = null; // CodeMirror line class marker
 const breakpoints = new Set(); // line numbers (0-based)
-const STORAGE_KEY = 'z2l-acm-code';
-const STORAGE_INPUT_KEY = 'z2l-acm-input';
+let currentLanguage = getInitialLanguage();
+
+function normalizeLanguage(language) {
+    return Object.prototype.hasOwnProperty.call(LANGUAGES, language) ? language : 'python';
+}
+
+function getInitialLanguage() {
+    const params = new URLSearchParams(window.location.search);
+    const requested = params.get('language') || params.get('lang');
+    return normalizeLanguage(requested || localStorage.getItem(STORAGE_LANGUAGE_KEY));
+}
+
+function getCodeStorageKey(language) {
+    return `z2l-acm-code:${language}`;
+}
+
+function getInputStorageKey(language) {
+    return `z2l-acm-input:${language}`;
+}
+
+function getSavedCode(language) {
+    const saved = localStorage.getItem(getCodeStorageKey(language));
+    if (saved !== null) return saved;
+    return language === 'python' ? localStorage.getItem(LEGACY_STORAGE_KEY) : null;
+}
+
+function getSavedInput(language) {
+    const saved = localStorage.getItem(getInputStorageKey(language));
+    if (saved !== null) return saved;
+    return language === 'python' ? localStorage.getItem(LEGACY_STORAGE_INPUT_KEY) : null;
+}
+
+function setEditorValue(value) {
+    suppressEditorSave = true;
+    window.acmEditor.setValue(value);
+    suppressEditorSave = false;
+}
 
 // ---------- CodeMirror 编辑器初始化 ----------
 function initEditor() {
     const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    const language = LANGUAGES[currentLanguage];
     const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
-        mode: 'python',
+        mode: language.mode,
         theme: isDark ? 'material-darker' : 'eclipse',
         lineNumbers: true,
         indentUnit: 4,
@@ -128,23 +398,25 @@ function initEditor() {
 
     // 断点点击
     editor.on('gutterClick', (cm, line, gutter) => {
-        if (gutter === 'CodeMirror-linenumbers' || gutter === 'breakpoints') {
+        if (LANGUAGES[currentLanguage].supportsDebug &&
+            (gutter === 'CodeMirror-linenumbers' || gutter === 'breakpoints')) {
             toggleBreakpoint(cm, line);
         }
     });
 
     // 自动保存
-    let saveTimer = null;
     editor.on('change', () => {
-        clearTimeout(saveTimer);
-        saveTimer = setTimeout(() => {
-            localStorage.setItem(STORAGE_KEY, editor.getValue());
+        if (suppressEditorSave) return;
+        clearTimeout(codeSaveTimer);
+        const languageAtChange = currentLanguage;
+        codeSaveTimer = setTimeout(() => {
+            localStorage.setItem(getCodeStorageKey(languageAtChange), editor.getValue());
         }, 500);
     });
 
     // 恢复代码
-    const saved = localStorage.getItem(STORAGE_KEY);
-    editor.setValue(saved || DEFAULT_CODE);
+    const saved = getSavedCode(currentLanguage);
+    editor.setValue(saved !== null ? saved : language.defaultCode);
 
     window.acmEditor = editor;
     return editor;
@@ -163,24 +435,78 @@ function toggleBreakpoint(cm, line) {
     }
 }
 
-// ---------- Pyodide 初始化 ----------
-async function initPyodide() {
-    const status = document.getElementById('pyodide-status');
+function clearBreakpoints() {
+    breakpoints.clear();
+    if (window.acmEditor) {
+        window.acmEditor.clearGutter('breakpoints');
+    }
+}
+
+function setRuntimeStatus(text, state) {
+    const status = document.getElementById('runtime-status');
+    if (!status) return;
+    status.textContent = text;
+    status.className = `runtime-status ${state}`;
+}
+
+function updateRuntimeControls() {
     const runBtn = document.getElementById('run-btn');
     const debugBtn = document.getElementById('debug-btn');
-    try {
-        pyodide = await loadPyodide();
-        status.textContent = 'Pyodide 就绪';
-        status.classList.remove('loading');
-        status.classList.add('ready');
-        runBtn.disabled = false;
-        debugBtn.disabled = false;
-    } catch (e) {
-        status.textContent = '加载失败';
-        status.classList.remove('loading');
-        status.classList.add('error');
-        console.error('Pyodide load error:', e);
+    const languageSelect = document.getElementById('language-select');
+    if (!runBtn || !debugBtn) return;
+
+    if (languageSelect) languageSelect.disabled = isRunning;
+
+    if (currentLanguage === 'go') {
+        const states = {
+            ready: ['Go 在线编译', 'ready'],
+            loading: ['Go 编译中...', 'loading'],
+            error: ['Go 服务异常', 'error']
+        };
+        setRuntimeStatus(...states[goRuntimeState]);
+        runBtn.disabled = isRunning;
+        debugBtn.disabled = true;
+        debugBtn.title = 'Go 暂不支持逐行调试';
+        return;
     }
+
+    if (pyodide) {
+        setRuntimeStatus('Python 3 就绪', 'ready');
+    } else if (pyodideLoadFailed) {
+        setRuntimeStatus('Python 加载失败', 'error');
+    } else {
+        setRuntimeStatus(pyodideLoading ? 'Python 加载中...' : 'Python 未加载', 'loading');
+    }
+    runBtn.disabled = isRunning || !pyodide;
+    debugBtn.disabled = isRunning || !pyodide;
+    debugBtn.title = '逐行调试 Python 代码';
+}
+
+// ---------- Pyodide 初始化 ----------
+async function initPyodide() {
+    if (pyodide) return pyodide;
+    if (pyodideInitPromise) return pyodideInitPromise;
+
+    pyodideLoading = true;
+    pyodideLoadFailed = false;
+    updateRuntimeControls();
+
+    pyodideInitPromise = (async () => {
+        try {
+            pyodide = await loadPyodide();
+            return pyodide;
+        } catch (e) {
+            pyodideLoadFailed = true;
+            console.error('Pyodide load error:', e);
+            return null;
+        } finally {
+            pyodideLoading = false;
+            pyodideInitPromise = null;
+            updateRuntimeControls();
+        }
+    })();
+
+    return pyodideInitPromise;
 }
 
 // ---------- 代码运行 ----------
@@ -192,83 +518,187 @@ function getTimeoutMs() {
 }
 
 async function runCode() {
-    if (!pyodide || pyodideCorrupted) {
-        if (pyodideCorrupted) {
-            await reinitPyodide();
-        }
-        if (!pyodide) return;
-    }
+    if (isRunning) return;
 
-    const runBtn = document.getElementById('run-btn');
-    const debugBtn = document.getElementById('debug-btn');
+    const languageAtStart = currentLanguage;
     const stdoutArea = document.getElementById('stdout-area');
     const runStatus = document.getElementById('run-status');
     const statusInfo = document.getElementById('status-info');
     const statusTime = document.getElementById('status-time');
 
-    runBtn.disabled = true;
-    debugBtn.disabled = true;
-    runStatus.textContent = '运行中...';
-    runStatus.className = 'run-status running';
-    statusInfo.textContent = '运行中...';
-    stdoutArea.textContent = '';
-    stdoutArea.classList.remove('has-error', 'placeholder-text');
-
-    const userCode = window.acmEditor.getValue();
-    const stdinText = document.getElementById('stdin-area').value;
-
-    const t0 = performance.now();
-
+    isRunning = true;
+    if (languageAtStart === 'go') goRuntimeState = 'loading';
+    updateRuntimeControls();
     try {
-        const result = await executePython(userCode, stdinText);
-        const elapsed = (performance.now() - t0).toFixed(1);
-
-        if (result.error) {
-            const parts = [result.stdout, result.error].filter(Boolean);
-            stdoutArea.textContent = parts.join('\n');
-            stdoutArea.classList.add('has-error');
-            runStatus.textContent = '运行错误';
-            runStatus.className = 'run-status error';
-            statusInfo.textContent = classifyError(result.error);
-        } else {
-            stdoutArea.textContent = result.stdout || '(无输出)';
-            if (!result.stdout) stdoutArea.classList.add('placeholder-text');
-            runStatus.textContent = `${elapsed} ms`;
-            runStatus.className = 'run-status success';
-            statusInfo.textContent = result.warning ? '运行完成（有警告）' : '运行完成';
+        if (languageAtStart === 'python' && (!pyodide || pyodideCorrupted)) {
+            if (pyodideCorrupted) await reinitPyodide();
+            if (!pyodide) {
+                stdoutArea.textContent = 'Python 运行时尚未就绪，请稍后重试。';
+                stdoutArea.classList.add('has-error');
+                statusInfo.textContent = 'Python 运行时未就绪';
+                return;
+            }
         }
-        statusTime.textContent = `耗时 ${elapsed} ms`;
 
-        // 自动对比
-        compareOutput();
-    } catch (e) {
-        stdoutArea.textContent = String(e);
-        stdoutArea.classList.add('has-error');
-        runStatus.textContent = '异常';
-        runStatus.className = 'run-status error';
-        statusInfo.textContent = '运行异常';
+        runStatus.textContent = languageAtStart === 'go' ? '编译中...' : '运行中...';
+        runStatus.className = 'run-status running';
+        statusInfo.textContent = languageAtStart === 'go' ? 'Go 编译中...' : '运行中...';
+        stdoutArea.textContent = '';
+        stdoutArea.classList.remove('has-error', 'placeholder-text');
+
+        const userCode = window.acmEditor.getValue();
+        const stdinText = document.getElementById('stdin-area').value;
+        const t0 = performance.now();
+
+        try {
+            const result = languageAtStart === 'go'
+                ? await executeGo(userCode, stdinText)
+                : await executePython(userCode, stdinText);
+            const elapsed = (performance.now() - t0).toFixed(1);
+
+            if (languageAtStart === 'go') {
+                goRuntimeState = result.phase === 'service' ? 'error' : 'ready';
+            }
+
+            if (result.error) {
+                const parts = [result.stdout, result.error].filter(Boolean);
+                stdoutArea.textContent = parts.join('\n');
+                stdoutArea.classList.add('has-error');
+                runStatus.textContent = result.phase === 'compile'
+                    ? '编译错误'
+                    : result.phase === 'service' ? '服务异常' : '运行错误';
+                runStatus.className = 'run-status error';
+                statusInfo.textContent = classifyError(result.error, languageAtStart, result.phase);
+            } else {
+                const warningText = result.warning
+                    ? `Go vet:\n${String(result.warning).trimEnd()}`
+                    : '';
+                stdoutArea.textContent = [result.stdout || '(无输出)', warningText]
+                    .filter(Boolean)
+                    .join('\n\n');
+                if (!result.stdout && !warningText) stdoutArea.classList.add('placeholder-text');
+                runStatus.textContent = `${elapsed} ms`;
+                runStatus.className = 'run-status success';
+                statusInfo.textContent = result.warning ? '运行完成（有警告）' : '运行完成';
+            }
+            statusTime.textContent = `耗时 ${elapsed} ms`;
+
+            // 自动对比
+            compareOutput(result.error ? null : result.stdout);
+        } catch (e) {
+            if (languageAtStart === 'go') goRuntimeState = 'error';
+            stdoutArea.textContent = String(e);
+            stdoutArea.classList.add('has-error');
+            runStatus.textContent = '异常';
+            runStatus.className = 'run-status error';
+            statusInfo.textContent = '运行异常';
+        }
+    } finally {
+        isRunning = false;
+        if (languageAtStart === 'go' && goRuntimeState === 'loading') {
+            goRuntimeState = 'ready';
+        }
+        updateRuntimeControls();
     }
-
-    runBtn.disabled = false;
-    debugBtn.disabled = false;
 }
 
 async function reinitPyodide() {
-    const status = document.getElementById('pyodide-status');
-    status.textContent = '重新初始化...';
-    status.classList.remove('ready', 'error');
-    status.classList.add('loading');
     pyodideCorrupted = false;
+    pyodide = null;
+    return initPyodide();
+}
+
+// Playground 支持 txtar 多文件格式；辅助文件注入 stdin，避免改写用户源码。
+function buildGoPlaygroundSource(code, stdinText) {
+    const stdinLiteral = JSON.stringify(stdinText);
+    return `-- 000_z2l_stdin.go --
+package main
+
+import "os"
+
+var _ = func() bool {
+    reader, writer, err := os.Pipe()
+    if err != nil {
+        panic(err)
+    }
+    os.Stdin = reader
+    go func() {
+        _, _ = writer.Write([]byte(${stdinLiteral}))
+        _ = writer.Close()
+    }()
+    return true
+}()
+-- main.go --
+${code}
+`;
+}
+
+async function executeGo(code, stdinText) {
+    const controller = new AbortController();
+    const timeoutMs = getTimeoutMs();
+    const timeoutId = timeoutMs > 0
+        ? setTimeout(() => controller.abort(), timeoutMs)
+        : null;
+
     try {
-        pyodide = await loadPyodide();
-        status.textContent = 'Pyodide 就绪';
-        status.classList.remove('loading');
-        status.classList.add('ready');
+        const body = new URLSearchParams({
+            version: '2',
+            withVet: 'true',
+            body: buildGoPlaygroundSource(code, stdinText)
+        });
+        const response = await fetch(GO_PLAYGROUND_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body,
+            signal: controller.signal
+        });
+
+        if (!response.ok) {
+            return {
+                stdout: '',
+                error: `Go 在线编译服务请求失败（HTTP ${response.status}）`,
+                phase: 'service'
+            };
+        }
+
+        const data = await response.json();
+        if (data.Errors) {
+            return {
+                stdout: '',
+                error: String(data.Errors).trimEnd(),
+                phase: 'compile'
+            };
+        }
+
+        let stdout = '';
+        let stderr = '';
+        const events = Array.isArray(data.Events) ? data.Events : [];
+        events.forEach((event) => {
+            if (event.Kind === 'stderr') {
+                stderr += event.Message || '';
+            } else {
+                stdout += event.Message || '';
+            }
+        });
+
+        const failed = (typeof data.Status === 'number' && data.Status !== 0) || Boolean(stderr);
+        return {
+            stdout,
+            error: failed ? (stderr || `Go 程序异常退出（状态码 ${data.Status}）`) : null,
+            warning: data.VetErrors || null,
+            phase: failed ? 'runtime' : null
+        };
     } catch (e) {
-        status.textContent = '加载失败';
-        status.classList.remove('loading');
-        status.classList.add('error');
-        pyodide = null;
+        const timedOut = e && e.name === 'AbortError';
+        return {
+            stdout: '',
+            error: timedOut
+                ? `Go 在线编译请求超时（超过 ${(timeoutMs / 1000).toFixed(0)} 秒）`
+                : '无法连接 Go 在线编译服务，请检查网络后重试。',
+            phase: 'service'
+        };
+    } finally {
+        if (timeoutId !== null) clearTimeout(timeoutId);
     }
 }
 
@@ -415,8 +845,19 @@ function getErrorHint(errorText) {
     return '';
 }
 
-function classifyError(errorText) {
-    if (/超时|__TIMEOUT__|__LoopTimeout__/i.test(errorText)) return '执行超时（可能无限循环）';
+function classifyError(errorText, language = currentLanguage, phase = null) {
+    if (/超时|timeout|timed out|__TIMEOUT__|__LoopTimeout__/i.test(errorText)) {
+        return '执行超时（可能无限循环）';
+    }
+    if (phase === 'service') return 'Go 在线编译服务异常';
+    if (language === 'go') {
+        if (phase === 'compile' || /syntax error|undefined:|imported and not used|cannot use/i.test(errorText)) {
+            return 'Go 编译错误';
+        }
+        if (/deadlock/i.test(errorText)) return 'Go 协程死锁';
+        if (/panic:|fatal error:/i.test(errorText)) return 'Go 运行时异常';
+        return 'Go 运行错误';
+    }
     if (/SyntaxError/i.test(errorText)) return '语法错误';
     if (/ValueError.*invalid literal/i.test(errorText)) return '输入格式错误';
     if (/EOFError|StopIteration/i.test(errorText)) return '输入不足';
@@ -431,11 +872,13 @@ function classifyError(errorText) {
 }
 
 // ---------- 输出对比 ----------
-function compareOutput() {
+function compareOutput(actualOutput = null) {
     const expectedArea = document.getElementById('expected-area');
     const diffResult = document.getElementById('diff-result');
     const expected = expectedArea.value.trim();
-    const actual = document.getElementById('stdout-area').textContent.trim();
+    const actual = (actualOutput === null
+        ? document.getElementById('stdout-area').textContent
+        : actualOutput).trim();
 
     if (!expected) {
         diffResult.textContent = '';
@@ -454,12 +897,17 @@ function compareOutput() {
 
 // ---------- 调试功能 ----------
 async function runDebug() {
+    if (currentLanguage !== 'python' || isRunning) return;
+
     if (!pyodide || pyodideCorrupted) {
         if (pyodideCorrupted) {
             await reinitPyodide();
         }
         if (!pyodide) return;
     }
+
+    isRunning = true;
+    updateRuntimeControls();
 
     const debugBtn = document.getElementById('debug-btn');
     const runBtn = document.getElementById('run-btn');
@@ -600,8 +1048,8 @@ async function runDebug() {
         } catch (_) {}
     }
 
-    debugBtn.disabled = false;
-    runBtn.disabled = false;
+    isRunning = false;
+    updateRuntimeControls();
 }
 
 function buildTraceSetup() {
@@ -718,70 +1166,145 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
+function resetExecutionUi() {
+    document.getElementById('stdout-area').textContent = '点击「运行」或按 Ctrl+Enter 执行代码';
+    document.getElementById('stdout-area').className = 'io-output placeholder-text';
+    document.getElementById('run-status').textContent = '';
+    document.getElementById('run-status').className = 'run-status';
+    document.getElementById('diff-result').textContent = '';
+    document.getElementById('diff-result').className = 'diff-result';
+    document.getElementById('status-info').textContent = '就绪';
+    document.getElementById('status-time').textContent = '';
+    closeDebugPanel();
+}
+
+function saveCurrentDraft() {
+    clearTimeout(codeSaveTimer);
+    clearTimeout(inputSaveTimer);
+    localStorage.setItem(getCodeStorageKey(currentLanguage), window.acmEditor.getValue());
+    localStorage.setItem(
+        getInputStorageKey(currentLanguage),
+        document.getElementById('stdin-area').value
+    );
+}
+
+function updateLanguageUi() {
+    const config = LANGUAGES[currentLanguage];
+    const languageSelect = document.getElementById('language-select');
+    const languageHint = document.getElementById('language-hint');
+    const runtimeStatus = document.getElementById('runtime-status');
+    const timeoutSelect = document.getElementById('timeout-select');
+    const debugTip = document.getElementById('debug-tip');
+
+    languageSelect.value = currentLanguage;
+    languageHint.textContent = `${config.label} · ACM 模式`;
+    runtimeStatus.title = currentLanguage === 'go'
+        ? '代码通过官方 Go Playground 在线编译运行'
+        : 'Python 代码在当前浏览器内运行';
+    timeoutSelect.title = currentLanguage === 'go'
+        ? '请求等待上限；Go 程序另受官方沙箱时间限制'
+        : '执行超时时间';
+    debugTip.textContent = config.supportsDebug
+        ? '点击行号设置断点'
+        : 'Go 暂不支持逐行调试';
+
+    window.acmEditor.setOption('mode', config.mode);
+    window.acmEditor.setOption('indentWithTabs', currentLanguage === 'go');
+    window.acmEditor.refresh();
+    updateRuntimeControls();
+}
+
+function switchLanguage(nextLanguage) {
+    const next = normalizeLanguage(nextLanguage);
+    if (next === currentLanguage) return;
+
+    saveCurrentDraft();
+    currentLanguage = next;
+    localStorage.setItem(STORAGE_LANGUAGE_KEY, currentLanguage);
+    clearBreakpoints();
+    closeDebugPanel();
+
+    const config = LANGUAGES[currentLanguage];
+    const savedCode = getSavedCode(currentLanguage);
+    const savedInput = getSavedInput(currentLanguage);
+    setEditorValue(savedCode !== null ? savedCode : config.defaultCode);
+    document.getElementById('stdin-area').value = savedInput !== null
+        ? savedInput
+        : config.defaultInput;
+    document.getElementById('template-select').value = '';
+    resetExecutionUi();
+    updateLanguageUi();
+}
+
 // ---------- 事件绑定 ----------
 function bindEvents() {
     document.getElementById('run-btn').addEventListener('click', runCode);
     document.getElementById('debug-btn').addEventListener('click', runDebug);
 
+    document.getElementById('language-select').addEventListener('change', (e) => {
+        switchLanguage(e.target.value);
+    });
+
     document.getElementById('reset-btn').addEventListener('click', () => {
-        window.acmEditor.setValue(DEFAULT_CODE);
-        document.getElementById('stdin-area').value = DEFAULT_INPUT;
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem(STORAGE_INPUT_KEY);
-        document.getElementById('stdout-area').textContent = '点击「运行」或按 Ctrl+Enter 执行代码';
-        document.getElementById('stdout-area').className = 'io-output placeholder-text';
-        document.getElementById('run-status').textContent = '';
-        document.getElementById('run-status').className = 'run-status';
-        document.getElementById('diff-result').textContent = '';
-        document.getElementById('diff-result').className = 'diff-result';
-        document.getElementById('status-info').textContent = '就绪';
-        document.getElementById('status-time').textContent = '';
-        closeDebugPanel();
+        const config = LANGUAGES[currentLanguage];
+        clearTimeout(codeSaveTimer);
+        clearTimeout(inputSaveTimer);
+        localStorage.removeItem(getCodeStorageKey(currentLanguage));
+        localStorage.removeItem(getInputStorageKey(currentLanguage));
+        if (currentLanguage === 'python') {
+            localStorage.removeItem(LEGACY_STORAGE_KEY);
+            localStorage.removeItem(LEGACY_STORAGE_INPUT_KEY);
+        }
+        setEditorValue(config.defaultCode);
+        document.getElementById('stdin-area').value = config.defaultInput;
+        clearBreakpoints();
+        resetExecutionUi();
     });
 
     // 清空输入
     document.getElementById('clear-input-btn').addEventListener('click', () => {
         document.getElementById('stdin-area').value = '';
-        localStorage.removeItem(STORAGE_INPUT_KEY);
+        localStorage.setItem(getInputStorageKey(currentLanguage), '');
     });
 
     // 模板选择
     document.getElementById('template-select').addEventListener('change', (e) => {
         const key = e.target.value;
-        if (!key || !ACM_TEMPLATES[key]) return;
-        const tpl = ACM_TEMPLATES[key];
-        window.acmEditor.setValue(tpl.code);
+        const templates = LANGUAGES[currentLanguage].templates;
+        if (!key || !templates[key]) return;
+        const tpl = templates[key];
+        setEditorValue(tpl.code);
         document.getElementById('stdin-area').value = tpl.input;
         document.getElementById('expected-area').value = tpl.expected || '';
-        document.getElementById('stdout-area').textContent = '点击「运行」或按 Ctrl+Enter 执行代码';
-        document.getElementById('stdout-area').className = 'io-output placeholder-text';
-        document.getElementById('diff-result').textContent = '';
-        document.getElementById('diff-result').className = 'diff-result';
+        localStorage.setItem(getCodeStorageKey(currentLanguage), tpl.code);
+        localStorage.setItem(getInputStorageKey(currentLanguage), tpl.input);
+        resetExecutionUi();
         e.target.value = '';
     });
 
     // 输入自动保存
     const stdinArea = document.getElementById('stdin-area');
-    const savedInput = localStorage.getItem(STORAGE_INPUT_KEY);
-    const savedCode = localStorage.getItem(STORAGE_KEY);
-    if (savedInput && savedInput.trim()) {
+    const config = LANGUAGES[currentLanguage];
+    const savedInput = getSavedInput(currentLanguage);
+    const savedCode = getSavedCode(currentLanguage);
+    if (savedInput !== null) {
         stdinArea.value = savedInput;
-    } else if (!savedCode || savedCode === DEFAULT_CODE) {
+    } else if (savedCode === null || savedCode === config.defaultCode) {
         // 无保存输入且代码是默认的，使用默认输入
-        stdinArea.value = DEFAULT_INPUT;
+        stdinArea.value = config.defaultInput;
     } else {
         stdinArea.value = '';
     }
-    let inputTimer = null;
     stdinArea.addEventListener('input', () => {
-        clearTimeout(inputTimer);
-        inputTimer = setTimeout(() => {
-            localStorage.setItem(STORAGE_INPUT_KEY, stdinArea.value);
+        clearTimeout(inputSaveTimer);
+        const languageAtChange = currentLanguage;
+        inputSaveTimer = setTimeout(() => {
+            localStorage.setItem(getInputStorageKey(languageAtChange), stdinArea.value);
         }, 500);
     });
 
     // 期望输出变化时自动对比
-    document.getElementById('expected-area').addEventListener('input', compareOutput);
+    document.getElementById('expected-area').addEventListener('input', () => compareOutput());
 
     // 调试控制
     document.getElementById('debug-prev').addEventListener('click', () => debugStep(-1));
@@ -807,7 +1330,7 @@ function bindEvents() {
         });
     }
 
-    // URL 参数：?code=...&input=...&expected=...（从真题文章跳转）
+    // URL 参数：?language=go&code=...&input=...&expected=...（从真题文章跳转）
     const params = new URLSearchParams(window.location.search);
     if (params.has('code')) {
         try {
@@ -816,7 +1339,9 @@ function bindEvents() {
     }
     if (params.has('input')) {
         try {
-            document.getElementById('stdin-area').value = decodeB64(params.get('input'));
+            const input = decodeB64(params.get('input'));
+            document.getElementById('stdin-area').value = input;
+            localStorage.setItem(getInputStorageKey(currentLanguage), input);
         } catch (_) {}
     }
     if (params.has('expected')) {
@@ -824,6 +1349,9 @@ function bindEvents() {
             document.getElementById('expected-area').value = decodeB64(params.get('expected'));
         } catch (_) {}
     }
+
+    localStorage.setItem(STORAGE_LANGUAGE_KEY, currentLanguage);
+    updateLanguageUi();
 }
 
 // Base64 解码（支持 Unicode / 中文）

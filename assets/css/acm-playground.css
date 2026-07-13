@@ -64,25 +64,29 @@
     border-color: var(--primary);
 }
 
-/* Pyodide 状态 */
-.pyodide-status {
+.language-select {
+    min-width: 118px;
+}
+
+/* 运行时状态 */
+.runtime-status {
     font-size: 0.8rem;
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-sm);
     white-space: nowrap;
 }
 
-.pyodide-status.loading {
+.runtime-status.loading {
     color: var(--medium);
     background: rgba(255, 192, 30, 0.12);
 }
 
-.pyodide-status.ready {
+.runtime-status.ready {
     color: var(--easy);
     background: rgba(0, 184, 163, 0.12);
 }
 
-.pyodide-status.error {
+.runtime-status.error {
     color: var(--hard);
     background: rgba(255, 55, 95, 0.12);
 }
@@ -538,6 +542,20 @@
 }
 
 /* ---------- 响应式 ---------- */
+@media (max-width: 1100px) and (min-width: 769px) {
+    .acm-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+        width: 100%;
+    }
+
+    .toolbar-right {
+        margin-left: auto;
+    }
+}
+
 @media (max-width: 768px) {
     .acm-layout {
         flex-direction: column;
@@ -561,11 +579,35 @@
 
     .toolbar-left {
         width: 100%;
+        display: grid;
+        grid-template-columns: minmax(105px, 0.75fr) minmax(145px, 1.25fr);
+        gap: var(--spacing-sm);
     }
 
     .template-select {
-        flex: 1;
+        width: 100%;
         min-width: unset;
+    }
+
+    .toolbar-divider {
+        display: none;
+    }
+
+    .runtime-status {
+        justify-self: start;
+        align-self: center;
+    }
+
+    .toolbar-right {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .toolbar-right .btn-run,
+    .toolbar-right .btn-debug,
+    .toolbar-right .btn-reset {
+        padding-left: var(--spacing-sm);
+        padding-right: var(--spacing-sm);
     }
 
     .statusbar-right {
