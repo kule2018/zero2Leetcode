@@ -22,7 +22,13 @@ Thumbs.db
 .env
 
 # Claude Code 本地配置
-.claude/
+.claude/skills/local-dev/
+.claude/skills/leetcode-blog-writer/
+.claude/skills/crawl-wechat/output/
+.claude/skills/cnblogs-publisher/TEMP_PROGRESS_*.md
+.claude/skills/cnblogs-publisher/RESUME_PROMPT_*.md
+.claude/skills/cnblogs-publisher/remaining_publish_queue_*.json
+.claude/skills/cnblogs-publisher/published_links_*.json
 
 # Playwright 浏览器 session（含登录凭证）
 .browser_profile/
@@ -36,4 +42,3 @@ Thumbs.db
 .agents/
 华为AI机考一周速成题单&攻略.pdf
 华为实习面试手撕10天备考速通规划.pdf
-.claude/skills/local-dev/
