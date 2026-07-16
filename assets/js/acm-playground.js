@@ -299,6 +299,8 @@ const LANGUAGES = {
     python: {
         label: 'Python 3',
         mode: 'python',
+        fileExtension: 'py',
+        mimeType: 'text/x-python;charset=utf-8',
         defaultCode: DEFAULT_CODE,
         defaultInput: DEFAULT_INPUT,
         templates: PYTHON_TEMPLATES,
@@ -307,6 +309,8 @@ const LANGUAGES = {
     go: {
         label: 'Go',
         mode: 'text/x-go',
+        fileExtension: 'go',
+        mimeType: 'text/x-go;charset=utf-8',
         defaultCode: DEFAULT_GO_CODE,
         defaultInput: DEFAULT_INPUT,
         templates: GO_TEMPLATES,
@@ -318,6 +322,9 @@ const GO_PLAYGROUND_API = 'https://play.golang.org/compile';
 const STORAGE_LANGUAGE_KEY = 'z2l-acm-language';
 const LEGACY_STORAGE_KEY = 'z2l-acm-code';
 const LEGACY_STORAGE_INPUT_KEY = 'z2l-acm-input';
+const WORKSPACE_FORMAT = 'zero2leetcode-acm';
+const WORKSPACE_VERSION = 1;
+const MAX_WORKSPACE_FILE_SIZE = 2 * 1024 * 1024;
 
 // ---------- 全局状态 ----------
 let pyodide = null;
@@ -328,12 +335,15 @@ let isRunning = false;
 let goRuntimeState = 'ready';
 let codeSaveTimer = null;
 let inputSaveTimer = null;
+let expectedSaveTimer = null;
+let fileToastTimer = null;
 let suppressEditorSave = false;
 let debugFrames = [];
 let debugIndex = -1;
 let debugLineWidget = null; // CodeMirror line class marker
 const breakpoints = new Set(); // line numbers (0-based)
 let currentLanguage = getInitialLanguage();
+const lastSourceNames = { python: 'main', go: 'main' };
 
 function normalizeLanguage(language) {
     return Object.prototype.hasOwnProperty.call(LANGUAGES, language) ? language : 'python';
@@ -353,6 +363,10 @@ function getInputStorageKey(language) {
     return `z2l-acm-input:${language}`;
 }
 
+function getExpectedStorageKey(language) {
+    return `z2l-acm-expected:${language}`;
+}
+
 function getSavedCode(language) {
     const saved = localStorage.getItem(getCodeStorageKey(language));
     if (saved !== null) return saved;
@@ -363,6 +377,10 @@ function getSavedInput(language) {
     const saved = localStorage.getItem(getInputStorageKey(language));
     if (saved !== null) return saved;
     return language === 'python' ? localStorage.getItem(LEGACY_STORAGE_INPUT_KEY) : null;
+}
+
+function getSavedExpected(language) {
+    return localStorage.getItem(getExpectedStorageKey(language));
 }
 
 function setEditorValue(value) {
@@ -453,9 +471,11 @@ function updateRuntimeControls() {
     const runBtn = document.getElementById('run-btn');
     const debugBtn = document.getElementById('debug-btn');
     const languageSelect = document.getElementById('language-select');
+    const importWorkspaceBtn = document.getElementById('import-workspace-btn');
     if (!runBtn || !debugBtn) return;
 
     if (languageSelect) languageSelect.disabled = isRunning;
+    if (importWorkspaceBtn) importWorkspaceBtn.disabled = isRunning;
 
     if (currentLanguage === 'go') {
         const states = {
@@ -899,15 +919,23 @@ function compareOutput(actualOutput = null) {
 async function runDebug() {
     if (currentLanguage !== 'python' || isRunning) return;
 
+    isRunning = true;
+    updateRuntimeControls();
+    try {
+        await runDebugSession();
+    } finally {
+        isRunning = false;
+        updateRuntimeControls();
+    }
+}
+
+async function runDebugSession() {
     if (!pyodide || pyodideCorrupted) {
         if (pyodideCorrupted) {
             await reinitPyodide();
         }
         if (!pyodide) return;
     }
-
-    isRunning = true;
-    updateRuntimeControls();
 
     const debugBtn = document.getElementById('debug-btn');
     const runBtn = document.getElementById('run-btn');
@@ -1048,8 +1076,6 @@ async function runDebug() {
         } catch (_) {}
     }
 
-    isRunning = false;
-    updateRuntimeControls();
 }
 
 function buildTraceSetup() {
@@ -1166,6 +1192,223 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
+function showFileToast(message, type = 'success') {
+    const toast = document.getElementById('file-toast');
+    clearTimeout(fileToastTimer);
+    toast.textContent = message;
+    toast.className = `file-toast ${type} is-visible`;
+    fileToastTimer = setTimeout(() => {
+        toast.classList.remove('is-visible');
+    }, 3200);
+}
+
+function downloadTextFile(content, filename, mimeType) {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function openSaveCodeDialog() {
+    const config = LANGUAGES[currentLanguage];
+    const dialog = document.getElementById('save-code-dialog');
+    const input = document.getElementById('save-code-filename');
+    document.getElementById('save-code-extension').textContent = `.${config.fileExtension}`;
+    document.getElementById('save-code-error').textContent = '';
+    document.getElementById('filename-field').classList.remove('has-error');
+    input.setAttribute('aria-invalid', 'false');
+    input.value = lastSourceNames[currentLanguage] || 'main';
+    dialog.showModal();
+    requestAnimationFrame(() => {
+        input.focus();
+        input.select();
+    });
+}
+
+function closeSaveCodeDialog() {
+    const dialog = document.getElementById('save-code-dialog');
+    if (dialog.open) dialog.close();
+}
+
+function validateSourceName(value) {
+    const extension = `.${LANGUAGES[currentLanguage].fileExtension}`;
+    let name = value.trim();
+    if (name.toLowerCase().endsWith(extension.toLowerCase())) {
+        name = name.slice(0, -extension.length).trim();
+    }
+
+    if (!name) return { error: '请输入文件名' };
+    if (name === '.' || name === '..') return { error: '请输入有效的文件名' };
+    if (/[<>:"/\\|?*\u0000-\u001F]/.test(name)) {
+        return { error: '文件名不能包含 < > : " / \\ | ? *' };
+    }
+    if (/[. ]$/.test(name)) return { error: '文件名不能以空格或句点结尾' };
+    if (/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\..*)?$/i.test(name)) {
+        return { error: '该文件名是系统保留名称，请换一个名称' };
+    }
+    return { name };
+}
+
+function saveSourceCode() {
+    const input = document.getElementById('save-code-filename');
+    const result = validateSourceName(input.value);
+    const error = document.getElementById('save-code-error');
+    const field = document.getElementById('filename-field');
+
+    if (result.error) {
+        error.textContent = result.error;
+        field.classList.add('has-error');
+        input.setAttribute('aria-invalid', 'true');
+        input.focus();
+        return;
+    }
+
+    const config = LANGUAGES[currentLanguage];
+    const filename = `${result.name}.${config.fileExtension}`;
+    lastSourceNames[currentLanguage] = result.name;
+    downloadTextFile(window.acmEditor.getValue(), filename, config.mimeType);
+    closeSaveCodeDialog();
+    document.getElementById('status-info').textContent = `代码已保存为 ${filename}`;
+    showFileToast(`代码已保存为 ${filename}`);
+}
+
+function getWorkspaceExportName() {
+    const now = new Date();
+    const pad = (value) => String(value).padStart(2, '0');
+    const stamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}`;
+    return `acm-practice-${currentLanguage}-${stamp}.json`;
+}
+
+function exportWorkspace() {
+    const payload = {
+        format: WORKSPACE_FORMAT,
+        version: WORKSPACE_VERSION,
+        language: currentLanguage,
+        code: window.acmEditor.getValue(),
+        input: document.getElementById('stdin-area').value,
+        expected: document.getElementById('expected-area').value
+    };
+    const filename = getWorkspaceExportName();
+    downloadTextFile(`${JSON.stringify(payload, null, 2)}\n`, filename, 'application/json;charset=utf-8');
+    document.getElementById('status-info').textContent = `练习包已导出为 ${filename}`;
+    showFileToast('练习包已导出（含代码、输入和期望输出）');
+}
+
+function validateWorkspace(payload) {
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+        return '练习包内容必须是 JSON 对象';
+    }
+    if (payload.format !== WORKSPACE_FORMAT) return '不是 Zero2Leetcode ACM 练习包';
+    if (payload.version !== WORKSPACE_VERSION) return `暂不支持练习包版本 ${payload.version}`;
+    if (!Object.prototype.hasOwnProperty.call(LANGUAGES, payload.language)) {
+        return `暂不支持语言 ${String(payload.language)}`;
+    }
+    if (typeof payload.code !== 'string') return '练习包缺少有效的代码内容';
+    if (typeof payload.input !== 'string') return '练习包缺少有效的标准输入';
+    if (typeof payload.expected !== 'string') return '练习包缺少有效的期望输出';
+    return '';
+}
+
+function persistStorageEntries(entries) {
+    let previousValues;
+    let writtenCount = 0;
+
+    try {
+        previousValues = entries.map(([key]) => localStorage.getItem(key));
+        entries.forEach(([key, value]) => {
+            localStorage.setItem(key, value);
+            writtenCount += 1;
+        });
+        return true;
+    } catch (_) {
+        if (previousValues) {
+            entries.slice(0, writtenCount).forEach(([key]) => {
+                try { localStorage.removeItem(key); } catch (_) {}
+            });
+            entries.slice(0, writtenCount).forEach(([key], index) => {
+                try {
+                    const previous = previousValues[index];
+                    if (previous !== null) localStorage.setItem(key, previous);
+                } catch (_) {}
+            });
+        }
+        return false;
+    }
+}
+
+function persistImportedWorkspace(payload) {
+    return persistStorageEntries([
+        [getCodeStorageKey(payload.language), payload.code],
+        [getInputStorageKey(payload.language), payload.input],
+        [getExpectedStorageKey(payload.language), payload.expected],
+        [STORAGE_LANGUAGE_KEY, payload.language]
+    ]);
+}
+
+function applyImportedWorkspace(payload) {
+    clearTimeout(codeSaveTimer);
+    clearTimeout(inputSaveTimer);
+    clearTimeout(expectedSaveTimer);
+
+    if (payload.language !== currentLanguage) {
+        if (!saveCurrentDraft()) return false;
+    }
+    if (!persistImportedWorkspace(payload)) return false;
+
+    currentLanguage = payload.language;
+
+    setEditorValue(payload.code);
+    document.getElementById('stdin-area').value = payload.input;
+    document.getElementById('expected-area').value = payload.expected;
+    document.getElementById('template-select').value = '';
+    clearBreakpoints();
+    resetExecutionUi();
+    updateLanguageUi();
+    document.getElementById('status-info').textContent = '练习包已导入';
+    showFileToast('练习包已导入，代码、输入和期望输出已恢复');
+    window.acmEditor.focus();
+    return true;
+}
+
+async function importWorkspaceFile(file) {
+    if (!file) return;
+    if (isRunning) {
+        showFileToast('代码运行或调试期间不能导入练习包', 'error');
+        return;
+    }
+    if (file.size > MAX_WORKSPACE_FILE_SIZE) {
+        showFileToast('导入失败：练习包不能超过 2 MB', 'error');
+        return;
+    }
+
+    let payload;
+    try {
+        payload = JSON.parse(await file.text());
+    } catch (_) {
+        showFileToast('导入失败：文件不是有效的 JSON', 'error');
+        return;
+    }
+
+    const validationError = validateWorkspace(payload);
+    if (validationError) {
+        showFileToast(`导入失败：${validationError}`, 'error');
+        return;
+    }
+    if (isRunning) {
+        showFileToast('代码运行或调试期间不能导入练习包', 'error');
+        return;
+    }
+    if (!applyImportedWorkspace(payload)) {
+        showFileToast('导入失败：浏览器无法保存练习草稿', 'error');
+    }
+}
+
 function resetExecutionUi() {
     document.getElementById('stdout-area').textContent = '点击「运行」或按 Ctrl+Enter 执行代码';
     document.getElementById('stdout-area').className = 'io-output placeholder-text';
@@ -1181,11 +1424,12 @@ function resetExecutionUi() {
 function saveCurrentDraft() {
     clearTimeout(codeSaveTimer);
     clearTimeout(inputSaveTimer);
-    localStorage.setItem(getCodeStorageKey(currentLanguage), window.acmEditor.getValue());
-    localStorage.setItem(
-        getInputStorageKey(currentLanguage),
-        document.getElementById('stdin-area').value
-    );
+    clearTimeout(expectedSaveTimer);
+    return persistStorageEntries([
+        [getCodeStorageKey(currentLanguage), window.acmEditor.getValue()],
+        [getInputStorageKey(currentLanguage), document.getElementById('stdin-area').value],
+        [getExpectedStorageKey(currentLanguage), document.getElementById('expected-area').value]
+    ]);
 }
 
 function updateLanguageUi() {
@@ -1195,6 +1439,7 @@ function updateLanguageUi() {
     const runtimeStatus = document.getElementById('runtime-status');
     const timeoutSelect = document.getElementById('timeout-select');
     const debugTip = document.getElementById('debug-tip');
+    const saveCodeBtn = document.getElementById('save-code-btn');
 
     languageSelect.value = currentLanguage;
     languageHint.textContent = `${config.label} · ACM 模式`;
@@ -1207,6 +1452,7 @@ function updateLanguageUi() {
     debugTip.textContent = config.supportsDebug
         ? '点击行号设置断点'
         : 'Go 暂不支持逐行调试';
+    saveCodeBtn.title = `保存为本地 .${config.fileExtension} 文件`;
 
     window.acmEditor.setOption('mode', config.mode);
     window.acmEditor.setOption('indentWithTabs', currentLanguage === 'go');
@@ -1218,7 +1464,11 @@ function switchLanguage(nextLanguage) {
     const next = normalizeLanguage(nextLanguage);
     if (next === currentLanguage) return;
 
-    saveCurrentDraft();
+    if (!saveCurrentDraft()) {
+        document.getElementById('language-select').value = currentLanguage;
+        showFileToast('切换失败：浏览器无法保存当前草稿', 'error');
+        return;
+    }
     currentLanguage = next;
     localStorage.setItem(STORAGE_LANGUAGE_KEY, currentLanguage);
     clearBreakpoints();
@@ -1227,10 +1477,12 @@ function switchLanguage(nextLanguage) {
     const config = LANGUAGES[currentLanguage];
     const savedCode = getSavedCode(currentLanguage);
     const savedInput = getSavedInput(currentLanguage);
+    const savedExpected = getSavedExpected(currentLanguage);
     setEditorValue(savedCode !== null ? savedCode : config.defaultCode);
     document.getElementById('stdin-area').value = savedInput !== null
         ? savedInput
         : config.defaultInput;
+    document.getElementById('expected-area').value = savedExpected !== null ? savedExpected : '';
     document.getElementById('template-select').value = '';
     resetExecutionUi();
     updateLanguageUi();
@@ -1240,6 +1492,27 @@ function switchLanguage(nextLanguage) {
 function bindEvents() {
     document.getElementById('run-btn').addEventListener('click', runCode);
     document.getElementById('debug-btn').addEventListener('click', runDebug);
+    document.getElementById('save-code-btn').addEventListener('click', openSaveCodeDialog);
+    document.getElementById('save-code-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveSourceCode();
+    });
+    document.getElementById('save-code-close').addEventListener('click', closeSaveCodeDialog);
+    document.getElementById('save-code-cancel').addEventListener('click', closeSaveCodeDialog);
+    document.getElementById('save-code-filename').addEventListener('input', () => {
+        document.getElementById('save-code-error').textContent = '';
+        document.getElementById('filename-field').classList.remove('has-error');
+        document.getElementById('save-code-filename').setAttribute('aria-invalid', 'false');
+    });
+    document.getElementById('export-workspace-btn').addEventListener('click', exportWorkspace);
+    document.getElementById('import-workspace-btn').addEventListener('click', () => {
+        document.getElementById('workspace-file-input').click();
+    });
+    document.getElementById('workspace-file-input').addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        e.target.value = '';
+        await importWorkspaceFile(file);
+    });
 
     document.getElementById('language-select').addEventListener('change', (e) => {
         switchLanguage(e.target.value);
@@ -1249,14 +1522,17 @@ function bindEvents() {
         const config = LANGUAGES[currentLanguage];
         clearTimeout(codeSaveTimer);
         clearTimeout(inputSaveTimer);
+        clearTimeout(expectedSaveTimer);
         localStorage.removeItem(getCodeStorageKey(currentLanguage));
         localStorage.removeItem(getInputStorageKey(currentLanguage));
+        localStorage.removeItem(getExpectedStorageKey(currentLanguage));
         if (currentLanguage === 'python') {
             localStorage.removeItem(LEGACY_STORAGE_KEY);
             localStorage.removeItem(LEGACY_STORAGE_INPUT_KEY);
         }
         setEditorValue(config.defaultCode);
         document.getElementById('stdin-area').value = config.defaultInput;
+        document.getElementById('expected-area').value = '';
         clearBreakpoints();
         resetExecutionUi();
     });
@@ -1278,6 +1554,7 @@ function bindEvents() {
         document.getElementById('expected-area').value = tpl.expected || '';
         localStorage.setItem(getCodeStorageKey(currentLanguage), tpl.code);
         localStorage.setItem(getInputStorageKey(currentLanguage), tpl.input);
+        localStorage.setItem(getExpectedStorageKey(currentLanguage), tpl.expected || '');
         resetExecutionUi();
         e.target.value = '';
     });
@@ -1303,8 +1580,18 @@ function bindEvents() {
         }, 500);
     });
 
-    // 期望输出变化时自动对比
-    document.getElementById('expected-area').addEventListener('input', () => compareOutput());
+    // 期望输出自动保存，并在已有运行结果时更新对比
+    const expectedArea = document.getElementById('expected-area');
+    const savedExpected = getSavedExpected(currentLanguage);
+    expectedArea.value = savedExpected !== null ? savedExpected : '';
+    expectedArea.addEventListener('input', () => {
+        compareOutput();
+        clearTimeout(expectedSaveTimer);
+        const languageAtChange = currentLanguage;
+        expectedSaveTimer = setTimeout(() => {
+            localStorage.setItem(getExpectedStorageKey(languageAtChange), expectedArea.value);
+        }, 500);
+    });
 
     // 调试控制
     document.getElementById('debug-prev').addEventListener('click', () => debugStep(-1));
@@ -1346,7 +1633,9 @@ function bindEvents() {
     }
     if (params.has('expected')) {
         try {
-            document.getElementById('expected-area').value = decodeB64(params.get('expected'));
+            const expected = decodeB64(params.get('expected'));
+            document.getElementById('expected-area').value = expected;
+            localStorage.setItem(getExpectedStorageKey(currentLanguage), expected);
         } catch (_) {}
     }
 

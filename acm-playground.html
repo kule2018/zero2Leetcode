@@ -16,7 +16,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css?v=2">
-    <link rel="stylesheet" href="assets/css/acm-playground.css?v=20260713">
+    <link rel="stylesheet" href="assets/css/acm-playground.css?v=20260716">
     <!-- CodeMirror 5 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
     <link rel="stylesheet"
@@ -92,7 +92,7 @@
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M4 2l10 6-10 6V2z" />
                     </svg>
-                    运行 (Ctrl+Enter)
+                    运行<span class="run-shortcut"> (Ctrl+Enter)</span>
                 </button>
                 <button id="debug-btn" class="btn btn-debug" disabled>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -102,6 +102,14 @@
                     调试
                 </button>
                 <button id="reset-btn" class="btn btn-reset">重置</button>
+                <button id="save-code-btn" class="btn btn-save-code" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    保存代码
+                </button>
             </div>
         </div>
 
@@ -111,7 +119,27 @@
             <div class="acm-panel acm-panel-editor">
                 <div class="panel-header">
                     <span class="panel-title">代码编辑器</span>
-                    <span id="language-hint" class="panel-hint">Python 3 · ACM 模式</span>
+                    <div class="panel-header-tools">
+                        <span id="language-hint" class="panel-hint">Python 3 · ACM 模式</span>
+                        <div class="workspace-actions" role="group" aria-label="练习导入导出">
+                            <button id="import-workspace-btn" class="workspace-action-btn" type="button" title="导入练习包（JSON）" aria-label="导入练习包（JSON）">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17 8 12 3 7 8"/>
+                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                                <span class="workspace-action-label">导入练习</span>
+                            </button>
+                            <button id="export-workspace-btn" class="workspace-action-btn" type="button" title="导出练习包（JSON）" aria-label="导出练习包（JSON）">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                <span class="workspace-action-label">导出练习</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body editor-body">
                     <textarea id="code-editor"></textarea>
@@ -223,6 +251,43 @@
         </div>
     </main>
 
+    <input id="workspace-file-input" type="file" accept=".json,application/json" hidden>
+
+    <div id="file-toast" class="file-toast" role="status" aria-live="polite"></div>
+
+    <dialog id="save-code-dialog" class="file-dialog" aria-labelledby="save-code-title">
+        <form id="save-code-form" class="file-dialog-form">
+            <div class="file-dialog-header">
+                <h2 id="save-code-title">保存代码</h2>
+                <button id="save-code-close" class="dialog-close-btn" type="button" aria-label="关闭保存窗口" title="关闭">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="file-dialog-body">
+                <label for="save-code-filename">文件名</label>
+                <div id="filename-field" class="filename-field">
+                    <input id="save-code-filename" type="text" value="main" maxlength="120" autocomplete="off" spellcheck="false" aria-describedby="save-code-extension save-code-error" aria-invalid="false">
+                    <span id="save-code-extension" class="filename-extension">.py</span>
+                </div>
+                <p id="save-code-error" class="filename-error" role="alert"></p>
+            </div>
+            <div class="file-dialog-footer">
+                <button id="save-code-cancel" class="dialog-btn dialog-btn-cancel" type="button">取消</button>
+                <button class="dialog-btn dialog-btn-confirm" type="submit">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    保存
+                </button>
+            </div>
+        </form>
+    </dialog>
+
     <!-- CodeMirror JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js"></script>
@@ -232,7 +297,7 @@
     <!-- Pyodide -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
     <!-- ACM Playground Logic -->
-    <script src="assets/js/acm-playground.js?v=20260713"></script>
+    <script src="assets/js/acm-playground.js?v=20260716"></script>
     <!-- Theme toggle -->
     <script>
     (function () {

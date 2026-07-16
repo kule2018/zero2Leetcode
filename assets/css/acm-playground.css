@@ -158,6 +158,28 @@
     color: var(--text-primary);
 }
 
+.btn-save-code {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-tertiary);
+    color: var(--primary-light);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+}
+
+.btn-save-code:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+    box-shadow: 0 3px 12px rgba(124, 92, 255, 0.22);
+}
+
 /* ---------- 两栏布局 ---------- */
 .acm-layout {
     flex: 1;
@@ -235,6 +257,65 @@
     font-size: 0.72rem;
     color: var(--text-muted);
     font-family: var(--font-mono);
+}
+
+.panel-header-tools,
+.workspace-actions {
+    display: flex;
+    align-items: center;
+}
+
+.panel-header-tools {
+    gap: var(--spacing-sm);
+    min-width: 0;
+}
+
+.workspace-actions {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.workspace-action-btn {
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 7px;
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.workspace-action-btn + .workspace-action-btn {
+    border-left: 1px solid var(--border-color);
+}
+
+.workspace-action-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+}
+
+.workspace-action-btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+}
+
+.workspace-action-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-save-code:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 .panel-action-btn {
@@ -541,6 +622,203 @@
     color: var(--text-muted);
 }
 
+/* ---------- 文件保存与练习包 ---------- */
+.file-toast {
+    position: fixed;
+    z-index: 1300;
+    top: 76px;
+    right: var(--spacing-md);
+    max-width: min(420px, calc(100vw - 32px));
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--easy);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-md);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.file-toast.error {
+    border-left-color: var(--hard);
+}
+
+.file-toast.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.file-dialog {
+    width: min(420px, calc(100vw - 32px));
+    margin: auto;
+    padding: 0;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+}
+
+.file-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.66);
+}
+
+.file-dialog-form {
+    margin: 0;
+}
+
+.file-dialog-header,
+.file-dialog-footer {
+    display: flex;
+    align-items: center;
+}
+
+.file-dialog-header {
+    height: 48px;
+    justify-content: space-between;
+    padding: 0 var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.file-dialog-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.dialog-close-btn {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.dialog-close-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
+.file-dialog-body {
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+}
+
+.file-dialog-body label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.filename-field {
+    height: 40px;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.filename-field:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(124, 92, 255, 0.16);
+}
+
+.filename-field.has-error {
+    border-color: var(--hard);
+}
+
+.filename-field input {
+    min-width: 0;
+    flex: 1;
+    padding: 0 var(--spacing-sm);
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+
+.filename-extension {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--spacing-sm);
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    border-left: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+}
+
+.filename-error {
+    min-height: 18px;
+    margin: 5px 0 0;
+    color: var(--hard);
+    font-size: 0.75rem;
+    line-height: 18px;
+}
+
+.file-dialog-footer {
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border-color);
+}
+
+.dialog-btn {
+    min-width: 72px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 0 var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.dialog-btn-cancel {
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.dialog-btn-confirm {
+    color: #000;
+    background: var(--easy);
+    border: 1px solid var(--easy);
+}
+
+.dialog-btn:hover {
+    filter: brightness(1.08);
+}
+
+.dialog-close-btn:focus-visible,
+.dialog-btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
 /* ---------- 响应式 ---------- */
 @media (max-width: 1100px) and (min-width: 769px) {
     .acm-toolbar {
@@ -601,16 +879,37 @@
     .toolbar-right {
         width: 100%;
         justify-content: flex-end;
+        flex-wrap: wrap;
     }
 
     .toolbar-right .btn-run,
     .toolbar-right .btn-debug,
-    .toolbar-right .btn-reset {
+    .toolbar-right .btn-reset,
+    .toolbar-right .btn-save-code {
         padding-left: var(--spacing-sm);
         padding-right: var(--spacing-sm);
     }
 
+    .run-shortcut {
+        display: none;
+    }
+
+    .acm-panel-editor .panel-hint {
+        display: none;
+    }
+
     .statusbar-right {
+        display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .workspace-action-btn {
+        width: 30px;
+        padding: 0;
+    }
+
+    .workspace-action-label {
         display: none;
     }
 }
