@@ -17,11 +17,11 @@
 
 ## 📖 项目简介
 
-本项目专为**计算机专业求职者**设计，帮助你从 Python 零基础到能够独立解决 LeetCode 中等难度题目，顺利通过企业笔试机试第一关。
+本项目专为**计算机专业求职者**设计，帮助你从 Python 零基础到能够独立解决 LeetCode 中等难度题目，系统准备企业笔试、机试与技术面试。
 
 ### ✨ 核心亮点
 
-- 📚 **系统学习路线** — 4 阶段从 Python 基础到 LeetCode 实战
+- 📚 **系统学习路线** — 6 阶段覆盖 Python 基础、算法刷题、ACM 笔试真题、面试手撕与八股文
 - 🖥️ **在线练习场** — 内置 98 道 Hot 100 题目，浏览器直接运行 Python
 - 🎯 **ACM 模拟 IDE** — 支持 Python / Go、stdin/stdout、输出对比和 Python 断点调试
 - 🤖 **AI 刷题助手** — 内置 AI 教练，自动读取题目和代码，给出诊断和提示
@@ -35,7 +35,7 @@
 
 ### ⏱️ 学习周期
 
-建议 **8-12 周**，每天投入 2-3 小时
+建议 **12-18 周**，每天投入 2-3 小时
 
 ---
 
@@ -125,23 +125,38 @@ AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当
 ## 🗺️ 学习路线
 
 ```mermaid
-flowchart LR
-    python["阶段一<br/>Python 基础语法<br/>1-2 周"]
-    structures["阶段二<br/>数据结构掌握<br/>2-3 周"]
-    algorithms["阶段三<br/>核心算法突破<br/>3-4 周"]
-    practice["阶段四<br/>LeetCode 实战<br/>2-3 周"]
+flowchart TB
+    subgraph foundation["基础能力"]
+        direction LR
+        python["阶段一<br/>Python 基础语法<br/>1-2 周"]
+        structures["阶段二<br/>数据结构掌握<br/>2-3 周"]
+        algorithms["阶段三<br/>核心算法突破<br/>3-4 周"]
+        python --> structures --> algorithms
+    end
 
-    python --> structures --> algorithms --> practice
+    subgraph jobReady["求职实战"]
+        direction LR
+        practice["阶段四<br/>LeetCode 实战<br/>2-3 周"]
+        acm["阶段五<br/>ACM 模式笔试真题<br/>2-3 周"]
+        interview["阶段六<br/>面试手撕与八股文<br/>2-3 周"]
+        practice --> acm --> interview
+    end
+
+    foundation --> jobReady
 
     classDef pythonStage fill:#e8f3ff,stroke:#1f6feb,color:#0b1f33,stroke-width:2px
     classDef structureStage fill:#eafbf0,stroke:#238636,color:#102a18,stroke-width:2px
     classDef algorithmStage fill:#fff4e5,stroke:#b35900,color:#3b2300,stroke-width:2px
     classDef practiceStage fill:#f4ecff,stroke:#8250df,color:#27143d,stroke-width:2px
+    classDef acmStage fill:#ffeef0,stroke:#cf222e,color:#3d0c11,stroke-width:2px
+    classDef interviewStage fill:#e6fffb,stroke:#0f766e,color:#0f2f2c,stroke-width:2px
 
     class python pythonStage
     class structures structureStage
     class algorithms algorithmStage
     class practice practiceStage
+    class acm acmStage
+    class interview interviewStage
 ```
 
 ### 阶段一：Python 基础 (1-2 周) `./00_python_basics/`
@@ -183,6 +198,14 @@ flowchart LR
 ### 阶段四：LeetCode 实战 (2-3 周) `./03_leetcode_practice/`
 
 主攻 **LeetCode Hot 100**，覆盖面试高频题
+
+### 阶段五：ACM 模式笔试真题 (2-3 周) `./04_real_interviews/`
+
+进入 [大厂笔试机试真题](./04_real_interviews/)，按公司和岗位限时完成真实题目，并使用 [ACM 模拟 IDE](acm-playground.html) 训练标准输入输出、样例验证与现场调试。
+
+### 阶段六：面试手撕 & 八股文 (2-3 周) `./05_interview/`
+
+进入 [大厂面试备战](./05_interview/)，结合高频手撕代码、计算机基础、岗位八股文和真实面经，训练现场讲解、追问应对与完整面试表达。
 
 ---
 
