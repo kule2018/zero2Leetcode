@@ -245,6 +245,8 @@ modules:
             slug: "pinduoduo/data-20260702"
           - title: "算法岗 7.2"
             slug: "pinduoduo/algo-20260702"
+          - title: "通用 7.19"
+            slug: "pinduoduo/general-20260719"
       - name: "携程"
         articles:
           - title: "研发岗 3.29"
