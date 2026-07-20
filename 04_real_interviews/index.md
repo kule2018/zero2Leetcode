@@ -149,6 +149,7 @@ eyebrow: Module 05
 | [2026-7-2](pinduoduo/data-20260702/) | 数据岗 | LEFT JOIN品类统计、ROW_NUMBER分组TopN、窗口函数累计升级 |
 | [2026-7-2](pinduoduo/algo-20260702/) | 算法岗 | 对角线遍历矩阵、图论拓扑剥离、函数图找环、CLIP对比学习损失 |
 | [2026-7-19](pinduoduo/general-20260719/) | 通用 | 区间赋值判定、单调队列优化DP、坐标变换+LIS、基环树+异或方程 |
+| [2026-7-19](pinduoduo/data-20260719/) | 数据分析岗 | LEFT JOIN分组聚合、两级条件聚合、LAG+分组孤岛 |
 
 ### 携程笔试真题 {#ctrip}
 

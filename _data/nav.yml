@@ -247,6 +247,8 @@ modules:
             slug: "pinduoduo/algo-20260702"
           - title: "云弧计划提前批-通用 7.19"
             slug: "pinduoduo/general-20260719"
+          - title: "秋招-数据分析岗 7.19"
+            slug: "pinduoduo/data-20260719"
       - name: "携程"
         articles:
           - title: "研发岗 3.29"
