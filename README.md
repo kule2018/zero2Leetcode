@@ -124,12 +124,24 @@ AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当
 
 ## 🗺️ 学习路线
 
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│  Python     │───▶│   数据结构   │───▶│   核心算法   │───▶│  LeetCode   │
-│  基础语法    │    │   掌握       │    │   突破       │    │  实战       │
-│  (1-2周)    │    │   (2-3周)    │    │   (3-4周)    │    │  (2-3周)    │
-└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+```mermaid
+flowchart LR
+    python["阶段一<br/>Python 基础语法<br/>1-2 周"]
+    structures["阶段二<br/>数据结构掌握<br/>2-3 周"]
+    algorithms["阶段三<br/>核心算法突破<br/>3-4 周"]
+    practice["阶段四<br/>LeetCode 实战<br/>2-3 周"]
+
+    python --> structures --> algorithms --> practice
+
+    classDef pythonStage fill:#e8f3ff,stroke:#1f6feb,color:#0b1f33,stroke-width:2px
+    classDef structureStage fill:#eafbf0,stroke:#238636,color:#102a18,stroke-width:2px
+    classDef algorithmStage fill:#fff4e5,stroke:#b35900,color:#3b2300,stroke-width:2px
+    classDef practiceStage fill:#f4ecff,stroke:#8250df,color:#27143d,stroke-width:2px
+
+    class python pythonStage
+    class structures structureStage
+    class algorithms algorithmStage
+    class practice practiceStage
 ```
 
 ### 阶段一：Python 基础 (1-2 周) `./00_python_basics/`
