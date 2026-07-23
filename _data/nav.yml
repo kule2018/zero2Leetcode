@@ -301,6 +301,10 @@ modules:
         articles:
           - title: "Agent开发岗 7.12"
             slug: "deepseek/dev-20260712"
+      - name: "百度"
+        articles:
+          - title: "算法岗 7.23"
+            slug: "baidu/algo-20260723"
       - name: "备考技巧"
         articles:
           - title: "笔试必知必会"
