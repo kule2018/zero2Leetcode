@@ -211,6 +211,10 @@ modules:
             slug: "huawei/dev-20260715"
           - title: "AI岗 7.15"
             slug: "huawei/ai-20260715"
+          - title: "研发岗 7.24"
+            slug: "huawei/dev-20260724"
+          - title: "AI岗 7.24"
+            slug: "huawei/ai-20260724"
           - title: "机考备考指南"
             slug: "huawei/exam-guide"
           - title: "AI机考一周速成攻略"
@@ -303,6 +307,8 @@ modules:
             slug: "deepseek/dev-20260712"
       - name: "百度"
         articles:
+          - title: "研发岗 7.16"
+            slug: "baidu/dev-20260716"
           - title: "算法岗 7.23"
             slug: "baidu/algo-20260723"
       - name: "备考技巧"
@@ -313,6 +319,8 @@ modules:
             slug: "tips/ml-coding-trend"
           - title: "Hot100面试手撕考频排行"
             slug: "tips/hot100-frequency"
+          - title: "百度研发/算法岗备考攻略"
+            slug: "tips/baidu-exam-guide"
 
   - title: "面试备战"
     slug: "05_interview"
