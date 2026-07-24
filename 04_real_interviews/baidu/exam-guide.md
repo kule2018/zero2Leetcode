@@ -2,8 +2,8 @@
 layout: default
 title: 百度研发/算法岗笔试备考攻略
 description: 百度研发与算法岗笔试题型、考点分布、三阶段刷题路线、岗位差异、真题拆解与100分钟考场策略
-permalink: /04_real_interviews/tips/baidu-exam-guide/
-eyebrow: 大厂真题 / 备考技巧
+permalink: /04_real_interviews/baidu/exam-guide/
+eyebrow: 大厂真题 / 百度
 ---
 
 # 百度研发/算法岗笔试备考攻略

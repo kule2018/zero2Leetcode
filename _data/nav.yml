@@ -311,6 +311,8 @@ modules:
             slug: "baidu/dev-20260716"
           - title: "算法岗 7.23"
             slug: "baidu/algo-20260723"
+          - title: "研发/算法岗备考攻略"
+            slug: "baidu/exam-guide"
       - name: "备考技巧"
         articles:
           - title: "笔试必知必会"
@@ -319,8 +321,6 @@ modules:
             slug: "tips/ml-coding-trend"
           - title: "Hot100面试手撕考频排行"
             slug: "tips/hot100-frequency"
-          - title: "百度研发/算法岗备考攻略"
-            slug: "tips/baidu-exam-guide"
 
   - title: "面试备战"
     slug: "05_interview"
