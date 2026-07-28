@@ -285,6 +285,8 @@ modules:
         articles:
           - title: "通用 4.19"
             slug: "nio/general-20260419"
+          - title: "通用岗 7.26"
+            slug: "nio/general-20260726"
       - name: "虾皮"
         articles:
           - title: "研发岗 5.9"
