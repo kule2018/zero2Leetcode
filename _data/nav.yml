@@ -315,6 +315,8 @@ modules:
             slug: "baidu/algo-20260723"
           - title: "算法岗 7.30"
             slug: "baidu/algo-20260730"
+          - title: "后端研发岗 7.30"
+            slug: "baidu/backend-20260730"
           - title: "研发/算法岗备考攻略"
             slug: "baidu/exam-guide"
       - name: "备考技巧"
