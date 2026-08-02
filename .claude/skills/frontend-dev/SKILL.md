@@ -30,6 +30,8 @@ description: Zero2Leetcode 前端开发技能 — 快速理解项目技术栈、
 | **静态生成** | Jekyll（GitHub Pages） |
 | **代码编辑器** | CodeMirror 5（CDN 引入） |
 | **Python 运行时** | Pyodide v0.26.4（浏览器端 Python） |
+| **Go 运行时** | 官方 Go Playground（远程编译执行） |
+| **Java 运行时** | CheerpJ 4.3 + ECJ 3.42.0（浏览器端 Java 17） |
 | **Markdown 渲染** | Marked.js |
 | **AI 集成** | OpenRouter API（SSE 流式） |
 | **部署** | GitHub Pages + GitHub Actions |
@@ -43,7 +45,7 @@ description: Zero2Leetcode 前端开发技能 — 快速理解项目技术栈、
 zero2Leetcode/
 ├── index.html                    # 首页（学习路线、知识模块、题目清单）
 ├── playground.html               # 在线练习场（三栏布局：题目|编辑器|AI）
-├── acm-playground.html           # ACM 模拟 IDE（Python/Go、stdin/stdout、调试）
+├── acm-playground.html           # ACM 模拟 IDE（Python/Go/Java、stdin/stdout、调试）
 ├── _config.yml                   # Jekyll 配置
 │
 ├── assets/
@@ -57,10 +59,13 @@ zero2Leetcode/
 │   │   ├── playground.js         # 练习场核心（~2300 LOC）
 │   │   ├── acm-playground.js     # ACM 模拟 IDE 核心逻辑
 │   │   ├── acm-bridge.js         # 真题文章与 ACM IDE 的代码/样例桥接
+│   │   ├── java-runner-worker.js # CheerpJ Java 编译执行 Worker
 │   │   ├── ai-assistant.js       # AI 助手 UI + API 调用
 │   │   ├── problems-data.js      # 题目元数据总表
 │   │   └── playground-extra/     # 批次扩展题目文件
-│   │       └── batch-1.js ... batch-8.js
+│   │       └── batch-*.js         # 当前为 batch-1.js ... batch-8.js
+│   ├── vendor/
+│   │   └── zero2leetcode-java-runner.jar # ECJ + 浏览器 runner
 │   └── images/
 │       └── logo.svg
 │
@@ -117,14 +122,15 @@ zero2Leetcode/
 ### acm-playground.html（ACM 模拟 IDE）
 
 - **加载的 CSS**：`style.css` + `acm-playground.css` + CodeMirror CSS（CDN）
-- **加载的 JS**：CodeMirror 核心与 Python/Go 模式（CDN）→ Pyodide（CDN）→ `acm-playground.js`
+- **加载的 JS**：CodeMirror 核心与 Python/Go/Java 模式（CDN）→ Pyodide（CDN）→ `acm-playground.js`
 - **页面结构**：
   - `.acm-toolbar` — 语言、输入模板、超时、运行/调试/重置/保存代码
   - `.acm-layout` — 左侧代码编辑器，右侧 stdin/stdout/期望输出与调试面板
   - `.acm-statusbar` — 执行状态与调试提示
-- **运行模式**：Python 通过浏览器内 Pyodide 执行；Go 通过官方 Go Playground 在线编译服务执行
+- **运行模式**：Python 通过浏览器内 Pyodide 执行；Go 通过官方 Go Playground 在线编译；Java 17 由 Web Worker 加载 CheerpJ 4.3，并使用同域 ECJ runner JAR 在访问者浏览器内编译执行
+- **调试能力**：仅 Python 支持逐行调试；Go 和 Java 首版只支持编译运行
 - **持久化**：代码、输入、期望输出与当前语言按语言分别保存到 localStorage
-- **文件能力**：源代码保存为 `.py`/`.go`，练习包使用 JSON 导入导出；真题文章由 `acm-bridge.js` 注入跳转参数
+- **文件能力**：源代码保存为 `.py`/`.go`/`.java`，练习包使用 JSON 导入导出；真题文章由 `acm-bridge.js` 识别三种语言并注入跳转参数
 
 ## CSS 架构与规范
 
@@ -176,7 +182,8 @@ playground.js     →  window.editor, window.currentProblem, DETAILED_PROBLEMS �
 batch-*.js        →  window.PLAYGROUND_EXTRA_PROBLEMS（扩展题目）
 ai-assistant.js   →  读取 window.currentProblem 获取当前题目上下文
 app.js            →  读取 window.PROBLEMS_DATA 构建首页表格
-acm-playground.js →  管理 ACM 编辑器、Python/Go 运行、调试与文件导入导出
+acm-playground.js →  管理 ACM 编辑器、Python/Go/Java 执行、调试与文件导入导出
+java-runner-worker.js → 加载 CheerpJ 与 ECJ runner，在独立 Worker 中执行 Java
 ```
 
 ### 关键 JS 模式
@@ -185,7 +192,7 @@ acm-playground.js →  管理 ACM 编辑器、Python/Go 运行、调试与文件
 2. **事件绑定**：`addEventListener` 绑定在 `DOMContentLoaded` 之后
 3. **模板渲染**：使用字符串模板字面量（backtick）生成 HTML，赋值给 `innerHTML`
 4. **数据存取**：`localStorage.getItem/setItem` + JSON 序列化
-5. **异步模式**：`async/await` 用于 Pyodide 加载和 AI API 调用
+5. **异步模式**：`async/await` 用于 Pyodide、远程 Go、Java Worker 和 AI API 调用
 6. **AI 流式响应**：使用 `fetch` + `ReadableStream` 读取 SSE 事件流
 
 ### 添加新功能的入口
@@ -304,11 +311,14 @@ acm-playground.js →  管理 ACM 编辑器、Python/Go 运行、调试与文件
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/go/go.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/clike/clike.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
 
 <!-- 页面逻辑最后加载 -->
 <script src="assets/js/acm-playground.js?v=<version>"></script>
 ```
+
+Java 不在页面主线程加载 JVM。`acm-playground.js` 按需创建 `java-runner-worker.js`，Worker 从 CheerpJ 官方 CDN 加载运行时，并从 `assets/vendor/` 读取随站点发布的 runner JAR。修改 Worker 或 runner 时必须同步递增资源版本并运行 `tests/acm-java.test.cjs`。
 
 ## 调试与验证
 
@@ -335,6 +345,7 @@ npx serve .
 - [ ] 脚本加载顺序正确（依赖项在前）
 - [ ] localStorage 的 key 使用有意义的前缀避免冲突
 - [ ] 导航栏链接在所有页面间保持一致
+- [ ] 修改 ACM Java 链路后，Worker、runner JAR 和第三方许可文件均进入 Jekyll 发布产物
 
 ## 踩坑经验（来自 zero2Agent 姊妹项目）
 
