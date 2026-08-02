@@ -12,7 +12,7 @@ the runtime is not redistributed or self-hosted by this repository.
 
 ## Eclipse Compiler for Java 3.42.0
 
-`assets/vendor/zero2leetcode-java-runner.jar` contains the Eclipse Compiler for
+`assets/vendor/zero2leetcode-java-runner-20260803.jar` contains the Eclipse Compiler for
 Java (ECJ) 3.42.0 and the Zero2Leetcode browser runner bridge. ECJ is distributed
 under the Eclipse Public License 2.0. The complete license text is included at
 [`LICENSE-EPL-2.0.txt`](LICENSE-EPL-2.0.txt).
@@ -22,3 +22,35 @@ under the Eclipse Public License 2.0. The complete license text is included at
 - License: https://www.eclipse.org/legal/epl-2.0/
 - Original artifact: https://repo.maven.apache.org/maven2/org/eclipse/jdt/ecj/3.42.0/ecj-3.42.0.jar
 - Original SHA-256: `29F6D3918EE02DB4400C103BC25DD90A22491C3A395867D9393070CB96A7DD29`
+
+## Eclipse Temurin 21.0.12+8 / OpenJDK API Signatures
+
+`assets/vendor/zero2leetcode-java-runner-20260803.jar` contains compile-time
+Java 17 API signature data derived from `lib/ct.sym` in Eclipse Temurin
+21.0.12+8. The GitHub Pages build uses the Linux x64 JDK. The build extracts
+the `H` release entries (Java 17) from every module represented in `ct.sym`,
+omits module descriptors, and packages the remaining `.sig` files for ECJ's
+platform class path. These files are compiler signatures only; the Temurin JVM
+is not embedded or executed by the site.
+
+The Temurin distribution and the derived OpenJDK signature data are provided
+under the GNU General Public License, version 2, with the Classpath Exception
+(`GPL-2.0 WITH Classpath-exception-2.0`). The original Temurin notice, release
+metadata, GPLv2 with Classpath Exception text, and the complete legal notices
+for all modules in the source JDK are preserved under
+[`third_party/temurin-21.0.12+8/`](third_party/temurin-21.0.12+8/).
+
+- Project: https://adoptium.net/temurin/
+- Release: https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.12%2B8
+- CI source archive: [OpenJDK21U-jdk_x64_linux_hotspot_21.0.12_8.tar.gz](https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12%2B8/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12_8.tar.gz)
+- CI source archive size: `207486543` bytes
+- CI source archive SHA-256: `E4446FF06A276155697597CC0F1B15DA004FF083F4964A35271ECEE567177370`
+- CI checksum record: https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12%2B8/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12_8.tar.gz.sha256.txt
+- CI `lib/ct.sym` size: `10715134` bytes
+- CI `lib/ct.sym` SHA-256: `5448AC59687B76A2F2A08F87B59B2DEEAE5CDC904914B5674510114E7ADF84B3`
+- Cross-platform check: all `4692` extracted Java 17 signature entries are byte-identical in the Linux x64 and Windows x64 Temurin archives for this release.
+- JDK source revision: https://github.com/adoptium/jdk21u/commit/04806bcb1d50b35efc1c22a4d3b082c9a9a47563
+- Temurin build revision: https://github.com/adoptium/temurin-build/commit/e6ba7dec3d07654074559310376a3ae89da5f4ac
+- Original notice: [`NOTICE`](third_party/temurin-21.0.12+8/NOTICE)
+- Original release metadata: [`release`](third_party/temurin-21.0.12+8/release)
+- Complete module notices: [`legal/`](third_party/temurin-21.0.12+8/legal/)

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-RUNNER_JAR="$ROOT/assets/vendor/zero2leetcode-java-runner.jar"
+RUNNER_JAR="$ROOT/assets/vendor/zero2leetcode-java-runner-20260803.jar"
 TEST_SOURCE="$ROOT/tools/java-browser-runner/BrowserJavaRunnerTest.java"
 TEMPLATE_GENERATOR="$ROOT/tools/java-browser-runner/generate-template-test.cjs"
 TMP_DIR="$(mktemp -d)"

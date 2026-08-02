@@ -2,7 +2,10 @@ package top.onefly.zero2leetcode.runner;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
@@ -14,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -23,12 +27,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
 import javax.tools.FileObject;
-import javax.tools.ForwardingJavaFileManager;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
-import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import org.eclipse.jdt.internal.compiler.tool.EclipseCompiler;
 
@@ -36,6 +38,7 @@ import org.eclipse.jdt.internal.compiler.tool.EclipseCompiler;
 public final class BrowserJavaRunner {
     private static final int MIN_OUTPUT_BYTES = 1024;
     private static final JavaCompiler COMPILER = new EclipseCompiler();
+    private static final PlatformClassPath PLATFORM_CLASSES = PlatformClassPath.load();
 
     private BrowserJavaRunner() {}
 
@@ -44,7 +47,7 @@ public final class BrowserJavaRunner {
         return result.success ? "ok" : result.errors;
     }
 
-    public static String run(String source, String stdin, int maxOutputBytes) {
+    public static synchronized String run(String source, String stdin, int maxOutputBytes) {
         if (source == null || source.trim().isEmpty()) {
             return result("", "Java 源码不能为空。", null, "compile", false);
         }
@@ -166,15 +169,10 @@ public final class BrowserJavaRunner {
         }
     }
 
-    private static CompilationResult compile(String source, String fileName) {
+    private static synchronized CompilationResult compile(String source, String fileName) {
         System.setProperty("jdt.compiler.useSingleThread", "true");
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
-        StandardJavaFileManager standardManager = COMPILER.getStandardFileManager(
-            diagnostics,
-            Locale.SIMPLIFIED_CHINESE,
-            StandardCharsets.UTF_8
-        );
-        MemoryFileManager manager = new MemoryFileManager(standardManager);
+        MemoryFileManager manager = new MemoryFileManager();
         List<String> options = List.of(
             "-source", "17",
             "-target", "17",
@@ -186,7 +184,11 @@ public final class BrowserJavaRunner {
         boolean success = false;
         String internalError = null;
         StringWriter compilerOutput = new StringWriter();
+        String runtimeJavaVersion = System.getProperty("java.version");
         try {
+            // CheerpJ 17 does not expose lib/modules. ECJ otherwise tries to open
+            // that JRT image before consulting our JavaFileManager.
+            System.setProperty("java.version", "1.8");
             JavaCompiler.CompilationTask task = COMPILER.getTask(
                 compilerOutput,
                 manager,
@@ -199,9 +201,12 @@ public final class BrowserJavaRunner {
         } catch (Throwable error) {
             internalError = "Java 编译器异常：" + error.getClass().getSimpleName() + ": " + error.getMessage();
         } finally {
-            try {
-                manager.close();
-            } catch (IOException ignored) {}
+            if (runtimeJavaVersion == null) {
+                System.clearProperty("java.version");
+            } else {
+                System.setProperty("java.version", runtimeJavaVersion);
+            }
+            manager.close();
         }
 
         List<String> errors = new ArrayList<>();
@@ -373,6 +378,7 @@ public final class BrowserJavaRunner {
     }
 
     private static final class ClassFile extends SimpleJavaFileObject {
+        private final String className;
         private final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
         ClassFile(String className) {
@@ -380,6 +386,7 @@ public final class BrowserJavaRunner {
                 URI.create("mem:///" + className.replace('.', '/') + JavaFileObject.Kind.CLASS.extension),
                 JavaFileObject.Kind.CLASS
             );
+            this.className = className;
         }
 
         @Override
@@ -387,32 +394,122 @@ public final class BrowserJavaRunner {
             return bytes;
         }
 
+        @Override
+        public InputStream openInputStream() {
+            return new ByteArrayInputStream(bytes.toByteArray());
+        }
+
         byte[] bytes() {
             return bytes.toByteArray();
         }
     }
 
-    private static final class MemoryFileManager
-        extends ForwardingJavaFileManager<StandardJavaFileManager> {
-        private final Map<String, ClassFile> output = new LinkedHashMap<>();
+    private static final class PlatformClassFile extends SimpleJavaFileObject {
+        private static final String RESOURCE_ROOT = "/META-INF/java17-api/";
+        private final String className;
 
-        MemoryFileManager(StandardJavaFileManager fileManager) {
-            super(fileManager);
+        PlatformClassFile(String className) {
+            super(
+                URI.create("platform:///" + className.replace('.', '/') + Kind.CLASS.extension),
+                Kind.CLASS
+            );
+            this.className = className;
         }
 
         @Override
+        public InputStream openInputStream() throws IOException {
+            String resourceName = RESOURCE_ROOT + className.replace('.', '/') + ".sig";
+            InputStream input = BrowserJavaRunner.class.getResourceAsStream(resourceName);
+            if (input == null) throw new IOException("缺少 Java 17 API 类型：" + className);
+            return input;
+        }
+    }
+
+    private static final class PlatformClassPath {
+        private static final String INDEX_RESOURCE = "/META-INF/java17-api.index";
+        private final Map<String, PlatformClassFile> byName;
+        private final Map<String, List<JavaFileObject>> byPackage;
+
+        private PlatformClassPath(
+            Map<String, PlatformClassFile> byName,
+            Map<String, List<JavaFileObject>> byPackage
+        ) {
+            this.byName = byName;
+            this.byPackage = byPackage;
+        }
+
+        static PlatformClassPath load() {
+            Map<String, PlatformClassFile> byName = new LinkedHashMap<>();
+            Map<String, List<JavaFileObject>> byPackage = new LinkedHashMap<>();
+            InputStream raw = BrowserJavaRunner.class.getResourceAsStream(INDEX_RESOURCE);
+            if (raw == null) {
+                throw new IllegalStateException("Java 17 API 索引未打包到 runner。");
+            }
+
+            try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(raw, StandardCharsets.UTF_8)
+            )) {
+                String className;
+                while ((className = reader.readLine()) != null) {
+                    className = className.trim();
+                    if (className.isEmpty()) continue;
+                    PlatformClassFile file = new PlatformClassFile(className);
+                    byName.put(className, file);
+                    int separator = className.lastIndexOf('.');
+                    String packageName = separator < 0 ? "" : className.substring(0, separator);
+                    byPackage.computeIfAbsent(packageName, ignored -> new ArrayList<>()).add(file);
+                }
+            } catch (IOException error) {
+                throw new IllegalStateException("无法读取 Java 17 API 索引。", error);
+            }
+
+            Map<String, List<JavaFileObject>> immutablePackages = new LinkedHashMap<>();
+            byPackage.forEach((name, files) ->
+                immutablePackages.put(name, Collections.unmodifiableList(files))
+            );
+            return new PlatformClassPath(
+                Collections.unmodifiableMap(byName),
+                Collections.unmodifiableMap(immutablePackages)
+            );
+        }
+
+        JavaFileObject find(String className) {
+            return byName.get(className);
+        }
+
+        Iterable<JavaFileObject> list(String packageName, boolean recurse) {
+            String normalizedPackage = packageName.replace('/', '.').replace('\\', '.');
+            if (!recurse) {
+                return byPackage.getOrDefault(normalizedPackage, Collections.emptyList());
+            }
+            List<JavaFileObject> files = new ArrayList<>();
+            String prefix = normalizedPackage.isEmpty() ? "" : normalizedPackage + ".";
+            byPackage.forEach((name, packageFiles) -> {
+                if (name.equals(normalizedPackage) || name.startsWith(prefix)) files.addAll(packageFiles);
+            });
+            return files;
+        }
+    }
+
+    private static final class MemoryFileManager implements JavaFileManager {
+        private final Map<String, ClassFile> output = new LinkedHashMap<>();
+
+        @Override
         public boolean hasLocation(JavaFileManager.Location location) {
-            return location == StandardLocation.SOURCE_PATH || super.hasLocation(location);
+            return location == StandardLocation.PLATFORM_CLASS_PATH ||
+                location == StandardLocation.CLASS_PATH ||
+                location == StandardLocation.SOURCE_PATH ||
+                location == StandardLocation.CLASS_OUTPUT;
         }
 
         @Override
         public boolean contains(JavaFileManager.Location location, FileObject file) throws IOException {
-            if (file instanceof SourceFile &&
-                (location == StandardLocation.SOURCE_PATH ||
-                 location == StandardLocation.MODULE_SOURCE_PATH)) {
-                return true;
+            if (location == StandardLocation.PLATFORM_CLASS_PATH) {
+                return file instanceof PlatformClassFile;
             }
-            return super.contains(location, file);
+            if (location == StandardLocation.SOURCE_PATH) return file instanceof SourceFile;
+            if (location == StandardLocation.CLASS_OUTPUT) return file instanceof ClassFile;
+            return false;
         }
 
         @Override
@@ -422,10 +519,27 @@ public final class BrowserJavaRunner {
             Set<JavaFileObject.Kind> kinds,
             boolean recurse
         ) throws IOException {
+            if (!kinds.contains(JavaFileObject.Kind.CLASS)) return Collections.emptyList();
+            if (location == StandardLocation.PLATFORM_CLASS_PATH) {
+                return PLATFORM_CLASSES.list(packageName, recurse);
+            }
+            if (location == StandardLocation.CLASS_OUTPUT) {
+                List<JavaFileObject> files = new ArrayList<>();
+                String prefix = packageName.isEmpty() ? "" : packageName + ".";
+                output.forEach((name, file) -> {
+                    int separator = name.lastIndexOf('.');
+                    String ownerPackage = separator < 0 ? "" : name.substring(0, separator);
+                    if (ownerPackage.equals(packageName) ||
+                        (recurse && ownerPackage.startsWith(prefix))) {
+                        files.add(file);
+                    }
+                });
+                return files;
+            }
             if (location == StandardLocation.SOURCE_PATH) {
                 return Collections.emptyList();
             }
-            return super.list(location, packageName, kinds, recurse);
+            return Collections.emptyList();
         }
 
         @Override
@@ -434,10 +548,12 @@ public final class BrowserJavaRunner {
             String className,
             JavaFileObject.Kind kind
         ) throws IOException {
-            if (location == StandardLocation.SOURCE_PATH) {
-                return null;
+            if (kind != JavaFileObject.Kind.CLASS) return null;
+            if (location == StandardLocation.PLATFORM_CLASS_PATH) {
+                return PLATFORM_CLASSES.find(className.replace('/', '.').replace('\\', '.'));
             }
-            return super.getJavaFileForInput(location, className, kind);
+            if (location == StandardLocation.CLASS_OUTPUT) return output.get(className);
+            return null;
         }
 
         @Override
@@ -446,10 +562,17 @@ public final class BrowserJavaRunner {
             String packageName,
             String relativeName
         ) throws IOException {
-            if (location == StandardLocation.SOURCE_PATH) {
-                return null;
+            if (location == StandardLocation.PLATFORM_CLASS_PATH && relativeName.endsWith(".class")) {
+                String normalizedPackage = packageName.replace('/', '.').replace('\\', '.');
+                String relativeClass = relativeName.substring(0, relativeName.length() - 6)
+                    .replace('/', '.')
+                    .replace('\\', '.');
+                String className = normalizedPackage.isEmpty()
+                    ? relativeClass
+                    : normalizedPackage + "." + relativeClass;
+                return PLATFORM_CLASSES.find(className);
             }
-            return super.getFileForInput(location, packageName, relativeName);
+            return null;
         }
 
         @Override
@@ -463,6 +586,59 @@ public final class BrowserJavaRunner {
             output.put(className, classFile);
             return classFile;
         }
+
+        @Override
+        public FileObject getFileForOutput(
+            JavaFileManager.Location location,
+            String packageName,
+            String relativeName,
+            FileObject sibling
+        ) {
+            String className = relativeName.endsWith(".class")
+                ? relativeName.substring(0, relativeName.length() - 6)
+                : relativeName;
+            if (!packageName.isEmpty()) className = packageName + "." + className;
+            return getJavaFileForOutput(location, className, JavaFileObject.Kind.CLASS, sibling);
+        }
+
+        @Override
+        public ClassLoader getClassLoader(JavaFileManager.Location location) {
+            return BrowserJavaRunner.class.getClassLoader();
+        }
+
+        @Override
+        public String inferBinaryName(JavaFileManager.Location location, JavaFileObject file) {
+            if (file instanceof PlatformClassFile) return ((PlatformClassFile) file).className;
+            if (file instanceof ClassFile) return ((ClassFile) file).className;
+            if (file instanceof SourceFile) {
+                String path = file.getName();
+                int slash = Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
+                String name = slash < 0 ? path : path.substring(slash + 1);
+                return name.endsWith(".java") ? name.substring(0, name.length() - 5) : name;
+            }
+            return null;
+        }
+
+        @Override
+        public boolean isSameFile(FileObject first, FileObject second) {
+            return first == second || first.toUri().equals(second.toUri());
+        }
+
+        @Override
+        public boolean handleOption(String current, Iterator<String> remaining) {
+            return false;
+        }
+
+        @Override
+        public int isSupportedOption(String option) {
+            return -1;
+        }
+
+        @Override
+        public void flush() {}
+
+        @Override
+        public void close() {}
 
         Map<String, byte[]> classBytes() {
             Map<String, byte[]> classes = new LinkedHashMap<>();

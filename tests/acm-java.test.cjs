@@ -291,11 +291,21 @@ test('browser worker pins CheerpJ 4.3 and initializes Java 17', () => {
 
     assert.match(workerSource, /cjrtnc\.leaningtech\.com\/4\.3\/loader\.js/);
     assert.match(workerSource, /cheerpjInit\(\{[\s\S]*version:\s*17/);
-    assert.match(workerSource, /cheerpjRunLibrary\(RUNNER_JAR_PATH\)/);
+    assert.match(workerSource, /cheerpjRunLibrary\(runnerJarPath\)/);
     assert.match(workerSource, /self\.addEventListener\('message'/);
+
+    const deployedWorker = new URL(
+        'https://onefly.top/zero2Leetcode/assets/js/java-runner-worker.js'
+    );
+    const appBaseUrl = new URL('../../', deployedWorker);
+    const runnerUrl = new URL(
+        'assets/vendor/zero2leetcode-java-runner-20260803.jar',
+        appBaseUrl
+    );
+    assert.equal(appBaseUrl.href, 'https://onefly.top/zero2Leetcode/');
     assert.equal(
-        new URL('../../', 'https://onefly.top/zero2Leetcode/assets/js/java-runner-worker.js').href,
-        'https://onefly.top/zero2Leetcode/'
+        `/app${runnerUrl.pathname}`,
+        '/app/zero2Leetcode/assets/vendor/zero2leetcode-java-runner-20260803.jar'
     );
 });
 

@@ -546,7 +546,7 @@ const LANGUAGES = {
 };
 
 const GO_PLAYGROUND_API = 'https://play.golang.org/compile';
-const JAVA_WORKER_URL = 'assets/js/java-runner-worker.js?v=20260802';
+const JAVA_WORKER_URL = 'assets/js/java-runner-worker.js?v=20260803';
 const JAVA_INIT_TIMEOUT_MS = 90000;
 const JAVA_MAX_CODE_BYTES = 48 * 1024;
 const JAVA_MAX_STDIN_BYTES = 16 * 1024;

@@ -122,9 +122,11 @@ AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当
 
 ### Java 17（Preview）浏览器执行
 
-Java 源码完全在当前浏览器中处理：页面从 Leaning Technologies 官方 CDN 加载 CheerpJ 4.3，由随站点发布的 ECJ 3.42.0 编译 `Main.java`，再在 CheerpJ 的 Java 17 运行时中执行。源码、标准输入和程序输出不会上传到本站或第三方代码执行服务。
+Java 源码完全在当前浏览器中处理：页面从 Leaning Technologies 官方 CDN 加载 CheerpJ 4.3，由随站点发布的 ECJ 3.42.0 和版本化 runner `assets/vendor/zero2leetcode-java-runner-20260803.jar` 编译 `Main.java`，再在 CheerpJ 的 Java 17 运行时中执行。源码、标准输入和程序输出不会上传到本站或第三方代码执行服务。
 
-这条执行链不依赖后端编译服务器，因此没有服务器按次执行费用。个人项目和 FOSS 项目可按 CheerpJ Community License 免费、不计量地使用官方 CDN，页面已保留所要求的可见署名；若项目所有者或使用性质变化，应重新核对官方许可。首次使用需要下载 CheerpJ 运行时和 Java runner，实际传输量会因浏览器与缓存状态不同约为 **13–24 MB**；资源缓存后，后续打开通常无需重复完整下载。首次加载必须能够访问 CheerpJ 官方 CDN。
+runner 使用 JDK 21 的 `lib/ct.sym` 提取 Java 17 API 签名，并把这些 `.sig` 文件和索引一起打包。浏览器运行时通过自定义 `JavaFileManager` 将它们作为 ECJ 的 `PLATFORM_CLASS_PATH`，因此编译阶段不依赖 CheerpJ JRE 提供完整的本地 JDK 文件布局。构建 runner 需要 JDK 21，runner 自身及用户代码的编译、运行目标均为 Java 17。
+
+这条执行链不依赖后端编译服务器，因此没有服务器按次执行费用。个人项目和 FOSS 项目可按 CheerpJ Community License 免费、不计量地使用官方 CDN，页面已保留所要求的可见署名；若项目所有者或使用性质变化，应重新核对官方许可。当前 runner 文件为 **5.69 MiB**（5,963,733 bytes）；CheerpJ 4.3 的 Java 17 `lib/modules` 镜像为 **36.38 MiB**（38,145,733 bytes），但运行时支持 HTTP Range 并按需读取模块片段，不会固定在首次运行时下载整个镜像。加上 CheerpJ loader、WebAssembly 和实际命中的模块片段后，冷启动传输量会随程序、浏览器和缓存状态变化，不能用固定的总量区间表示；若 runner 与整个模块镜像均完整传输，两者合计约 **42.07 MiB**。资源缓存后，后续打开通常无需重复完整下载。首次加载必须能够访问 CheerpJ 官方 CDN。
 
 当前 Java 支持编译运行、stdin/stdout 和样例输出对比，作为 Java 17 Preview 提供；暂不支持逐行调试。逐行回放和变量查看仍仅适用于 Python。第三方组件、版本、校验值与许可证见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
 

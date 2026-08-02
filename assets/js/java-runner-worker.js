@@ -1,7 +1,7 @@
 /* global cheerpjInit, cheerpjRunLibrary */
 
 const CHEERPJ_LOADER_URL = 'https://cjrtnc.leaningtech.com/4.3/loader.js';
-const RUNNER_JAR_PATH = '/app/assets/vendor/zero2leetcode-java-runner.jar';
+const RUNNER_JAR_FILE = 'assets/vendor/zero2leetcode-java-runner-20260803.jar';
 const MAX_OUTPUT_BYTES = 64 * 1024;
 
 let runnerClass = null;
@@ -19,18 +19,20 @@ async function initialize() {
         sendStatus('正在加载 Java 17...');
         importScripts(CHEERPJ_LOADER_URL);
 
-        const appBaseUrl = new URL('../../', self.location.href).href;
+        const appBaseUrl = new URL('../../', self.location.href);
         await cheerpjInit({
             version: 17,
             status: 'none',
-            overrideDocumentBase: appBaseUrl,
+            overrideDocumentBase: appBaseUrl.href,
             execCallback() {
                 throw new Error('Java 外部进程调用已禁用。');
             }
         });
 
         sendStatus('正在加载 Java 编译器...');
-        const library = await cheerpjRunLibrary(RUNNER_JAR_PATH);
+        const runnerUrl = new URL(RUNNER_JAR_FILE, appBaseUrl);
+        const runnerJarPath = `/app${runnerUrl.pathname}`;
+        const library = await cheerpjRunLibrary(runnerJarPath);
         runnerClass = await library.top.onefly.zero2leetcode.runner.BrowserJavaRunner;
         const warmupResult = await runnerClass.warmup();
         const warmupText = typeof warmupResult === 'string'
