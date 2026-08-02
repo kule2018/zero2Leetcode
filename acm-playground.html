@@ -18,6 +18,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css?v=2">
     <link rel="stylesheet" href="assets/css/acm-playground.css?v=20260802">
+    <link rel="stylesheet" href="assets/css/acm-ai-assistant.css?v=20260803-1">
     <!-- CodeMirror 5 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
     <link rel="stylesheet"
@@ -26,9 +27,12 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/eclipse.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/hint/show-hint.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"
+        integrity="sha384-948ahk4ZmxYVYOc+rxN1H2gM1EJ2Duhp7uHtZ4WSLkV4Vtx5MUqnV+l7u9B+jFv+"
+        crossorigin="anonymous" defer></script>
 </head>
 
-<body>
+<body data-ai-surface="acm">
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-container">
@@ -111,6 +115,17 @@
                         <line x1="12" y1="15" x2="12" y2="3"/>
                     </svg>
                     保存代码
+                </button>
+                <button id="ai-fab" class="btn btn-ai-coach" type="button" aria-label="打开 AI 教练" aria-controls="ai-panel" aria-expanded="false" title="AI 教练">
+                    <svg class="ai-brand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 3v3"/>
+                        <path d="M9 3h6"/>
+                        <rect x="4" y="7" width="16" height="11" rx="4"/>
+                        <path d="M9 11h.01"/>
+                        <path d="M15 11h.01"/>
+                        <path d="M8.5 15h7"/>
+                    </svg>
+                    <span class="ai-coach-label">AI 教练</span>
                 </button>
             </div>
         </div>
@@ -255,6 +270,106 @@
         </div>
     </main>
 
+    <aside id="ai-panel" class="acm-ai-panel" aria-labelledby="ai-panel-title" aria-hidden="true">
+        <div class="ai-panel-header">
+            <div id="ai-panel-title" class="ai-panel-title">
+                <span class="ai-panel-title-icon" aria-hidden="true">
+                    <svg class="ai-brand-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3v3"/>
+                        <path d="M9 3h6"/>
+                        <rect x="4" y="7" width="16" height="11" rx="4"/>
+                        <path d="M9 11h.01"/>
+                        <path d="M15 11h.01"/>
+                        <path d="M8.5 15h7"/>
+                    </svg>
+                </span>
+                <span>AI 编程教练</span>
+            </div>
+            <div class="ai-panel-actions">
+                <button id="ai-clear-btn" class="ai-icon-btn" type="button" aria-label="清空对话" title="清空对话">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M3 6h18"/>
+                        <path d="M8 6V4h8v2"/>
+                        <path d="M5 6v14a2 2 0 002 2h10a2 2 0 002-2V6"/>
+                    </svg>
+                </button>
+                <button id="ai-config-btn" class="ai-icon-btn" type="button" aria-label="配置 AI 服务" title="配置 AI 服务">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33A1.65 1.65 0 0014 20.83V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15 1.65 1.65 0 003.09 14H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 117.04 4.3l.06.06A1.65 1.65 0 008.92 4 1.65 1.65 0 0010 2.91V3a2 2 0 114 0v.09A1.65 1.65 0 0015.08 4a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.12.6.64 1.03 1.25 1.03H21a2 2 0 110 4h-.35c-.61 0-1.13.42-1.25.97z"/>
+                    </svg>
+                </button>
+                <button id="ai-close-btn" class="ai-icon-btn" type="button" aria-label="关闭 AI 教练" title="关闭">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 6L6 18"/>
+                        <path d="M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="ai-context-summary" class="ai-context-summary"></div>
+        <div id="ai-messages" class="ai-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+        <div id="ai-live-status" class="ai-live-status" aria-live="polite" aria-atomic="true"></div>
+
+        <div id="ai-quick-actions" class="ai-quick-actions" aria-label="快捷提问">
+            <div class="ai-conversion-actions">
+                <button class="ai-quick-btn ai-quick-btn-primary" type="button" data-action="convert-java">
+                    <span class="ai-language-mark" aria-hidden="true">J</span>
+                    转为 Java 17
+                </button>
+                <button class="ai-quick-btn ai-quick-btn-primary" type="button" data-action="convert-go">
+                    <span class="ai-language-mark ai-language-mark-go" aria-hidden="true">Go</span>
+                    转为 Go
+                </button>
+            </div>
+            <div class="ai-secondary-actions">
+                <button class="ai-quick-btn" type="button" data-action="check-code">检查代码</button>
+                <button class="ai-quick-btn" type="button" data-action="explain-error">分析报错</button>
+                <button class="ai-quick-btn" type="button" data-action="explain-code">解释思路</button>
+                <button class="ai-quick-btn" type="button" data-action="generate-tests">补充样例</button>
+            </div>
+        </div>
+
+        <div class="ai-composer">
+            <div class="ai-input-area">
+                <textarea id="ai-input" class="ai-input" aria-label="向 AI 教练提问" placeholder="继续追问转换结果或粘贴报错..." rows="1"></textarea>
+                <button id="ai-send-btn" class="ai-send-btn" type="button" aria-label="发送消息" title="发送">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M22 2L11 13"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                    </svg>
+                </button>
+            </div>
+            <p class="ai-data-note">发送时会将当前代码、stdin、stdout 和期望输出提交给所配置的 AI 服务。</p>
+        </div>
+    </aside>
+
+    <div id="ai-overlay" class="ai-overlay" aria-hidden="true"></div>
+
+    <div id="ai-config-modal" class="ai-config-modal" role="dialog" aria-modal="true" aria-labelledby="ai-config-title" aria-hidden="true">
+        <div class="ai-config-content">
+            <h2 id="ai-config-title">AI 服务配置</h2>
+            <p class="ai-config-desc">发送消息时，当前代码和输入输出会提交给这里配置的 AI 服务。</p>
+            <div class="ai-config-field">
+                <label for="ai-cfg-base-url">API Base URL</label>
+                <input type="url" id="ai-cfg-base-url" placeholder="https://openrouter.ai/api/v1" autocomplete="url">
+            </div>
+            <div class="ai-config-field">
+                <label for="ai-cfg-api-key">API Key</label>
+                <input type="password" id="ai-cfg-api-key" placeholder="sk-..." autocomplete="off">
+            </div>
+            <div class="ai-config-field">
+                <label for="ai-cfg-model">Model</label>
+                <input type="text" id="ai-cfg-model" placeholder="openrouter/free" autocomplete="off">
+            </div>
+            <div class="ai-config-actions">
+                <button id="ai-config-cancel" class="ai-config-btn ai-config-btn-cancel" type="button">取消</button>
+                <button id="ai-config-save" class="ai-config-btn ai-config-btn-save" type="button">保存配置</button>
+            </div>
+        </div>
+    </div>
+
     <input id="workspace-file-input" type="file" accept=".json,application/json" hidden>
 
     <div id="file-toast" class="file-toast" role="status" aria-live="polite"></div>
@@ -303,6 +418,8 @@
     <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
     <!-- ACM Playground Logic -->
     <script src="assets/js/acm-playground.js?v=20260803"></script>
+    <!-- AI Coach -->
+    <script src="assets/js/ai-assistant.js?v=20260803-1"></script>
     <!-- Theme toggle -->
     <script>
     (function () {

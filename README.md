@@ -6,10 +6,10 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![LeetCode](https://img.shields.io/badge/LeetCode-Hot%20100-orange.svg)](https://leetcode.cn/studyplan/top-100-liked/)
-[![AI Coach](https://img.shields.io/badge/AI-刷题助手-blueviolet.svg)](#-ai-刷题助手)
+[![AI Coach](https://img.shields.io/badge/AI-编程教练-blueviolet.svg)](#-ai-编程教练)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[视频介绍](#-视频介绍) • [开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [ACM 模拟](https://onefly.top/zero2Leetcode/acm-playground.html) • [AI 助手](#-ai-刷题助手)
+[视频介绍](#-视频介绍) • [开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [ACM 模拟](https://onefly.top/zero2Leetcode/acm-playground.html) • [AI 教练](#-ai-编程教练)
 
 </div>
 
@@ -24,7 +24,7 @@
 - 📚 **系统学习路线** — 6 阶段覆盖 Python 基础、算法刷题、ACM 笔试真题、面试手撕与八股文
 - 🖥️ **在线练习场** — 内置 98 道 Hot 100 题目，浏览器直接运行 Python
 - 🎯 **ACM 模拟 IDE** — 支持 Python / Go / Java 17（Preview）、stdin/stdout、输出对比和 Python 断点调试
-- 🤖 **AI 刷题助手** — 内置 AI 教练，自动读取题目和代码，给出诊断和提示
+- 🤖 **AI 编程教练** — 在练习场诊断题目与代码，也能读取 ACM 代码和样例，把 Python 解法快速转换为 Java 17 / Go
 - 📝 **完整题解** — LeetCode Hot 100 全部题解
 
 ### 🎯 目标用户
@@ -57,11 +57,13 @@
 
 ---
 
-## 🤖 AI 刷题助手
+## 🤖 AI 编程教练
 
-> **全栈内置，免费使用，无需配置** — 点击练习场右下角 🤖 按钮即可体验
+> **默认接入 OpenRouter 免费模型** — 无需登录，也可以在设置中换成支持浏览器 CORS 和流式 `/chat/completions` 的 OpenAI 兼容 API
 
-AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当前正在做的题目和编写的代码**，然后以教学式方式帮你诊断问题、给出提示，而不是直接给答案。
+AI 教练同时用于两个编程页面：在 LeetCode 练习场读取当前题目与 Python 代码，给出提示和诊断；在 ACM 模拟 IDE 读取当前语言、代码、stdin、stdout、期望输出和运行状态，并基于已经写通的 Python 解法生成完整的 Java 17 或 Go ACM 程序。
+
+仓库题解仍以 Python 为主，不逐题人工维护 Java / Go 版本。语言转换结果由 AI 生成，请务必使用页面中的样例运行和输出对比再次验证。
 
 ### 功能预览
 
@@ -70,28 +72,28 @@ AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当
 | 练习场 & AI 按钮 | AI 面板 & 快捷操作 | AI 上下文诊断 |
 |:---:|:---:|:---:|
 | ![练习场](assets/images/screenshots/ai-fab-button.png) | ![AI面板](assets/images/screenshots/ai-panel-open.png) | ![AI诊断](assets/images/screenshots/ai-context-response.png) |
-| 右下角 🤖 浮动按钮 | 5 种快捷操作一键触发 | 精准识别「两数之和」并给出思路 |
+| 右下角 🤖 浮动按钮 | 常用操作一键触发 | 精准识别「两数之和」并给出思路 |
 
 </div>
 
 ### 快捷操作
 
-| 按钮 | 功能 |
-|------|------|
-| 🔍 帮我看看代码 | 诊断代码错误，指出问题根源 |
-| 💡 给个提示 | 不给答案，只给思路方向 |
-| 📖 解释题目 | 用通俗语言重新解释题意 |
-| 🐛 分析报错 | 根据报错信息定位原因 |
-| ✨ 优化代码 | 提供更优解法和改进建议 |
+| 场景 | 按钮 | 功能 |
+|------|------|------|
+| ACM | 转为 Java 17 | 生成包含 `public class Main` 的完整 Java 17 程序，保留 stdin/stdout |
+| ACM | 转为 Go | 生成包含 `package main` 的完整 Go 程序，保留 stdin/stdout |
+| 通用 | 检查代码 / 分析报错 | 结合代码、样例和最近输出定位问题 |
+| 通用 | 解释思路 | 说明算法、关键变量和复杂度 |
+| LeetCode | 给个提示 / 解释题目 / 优化代码 | 按当前题目提供教学式帮助 |
 
 ### 使用方式
 
-1. 打开 [在线练习场](playground.html)，选择一道题目
-2. 点击右下角 🤖 按钮，AI 面板从右侧滑出
-3. 点击快捷按钮或输入自定义问题
-4. AI 自动注入当前题目 + 你的代码作为上下文，给出针对性回答
+1. 打开 [在线练习场](playground.html) 或 [ACM 模拟 IDE](https://onefly.top/zero2Leetcode/acm-playground.html)
+2. 点击「AI 教练」打开对话面板
+3. 在 ACM 页面先用 Python 写出解法和样例，再点击「转为 Java 17」或「转为 Go」
+4. 继续追问转换结果或语言差异，把返回的完整代码复制到目标语言编辑器后运行验证
 
-> 💡 **默认免费可用**，内置 OpenRouter 免费 API。如需使用自己的 API，点击齿轮图标 ⚙️ 即可配置。
+> **数据说明：** 只有主动发送消息时，页面才会把当前上下文提交给所配置的 AI 服务。ACM 上下文可能包含代码、stdin、stdout 和期望输出，请勿放入密钥或隐私数据。默认使用 OpenRouter 免费模型；点击齿轮按钮可以更换 API、模型或密钥。
 
 ---
 
@@ -109,20 +111,23 @@ AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当
 | 🧩 **语言切换** | Python 浏览器内运行，Go 使用官方 Playground，Java 17（Preview）使用 CheerpJ 4.3 + ECJ 3.42.0 在浏览器内编译运行 |
 | 📝 **输入模板** | 三种语言各有 7 种常用模板（单整数、数组、矩阵、多组用例、图等） |
 | ✅ **输出对比** | 填入期望输出，自动判定 ACCEPTED / WRONG ANSWER |
+| 🤖 **AI 语言转换** | 读取当前代码与样例，把 Python 解法转换为完整 Java 17 / Go ACM 程序，并支持继续追问 |
 | 🐛 **断点调试** | Python 可点击行号设置断点，逐行回放并查看变量变化 |
 | 💾 **自动保存** | Python / Go / Java 草稿分别保存，切换语言和刷新均不丢失 |
 
 ### 使用方式
 
-1. 打开 [ACM 模拟 IDE](https://onefly.top/zero2Leetcode/acm-playground.html)
-2. 选择 Python、Go 或 Java 17（Preview），在左侧编辑器编写代码（或从真题文章粘贴）
-3. 在右侧「输入」区粘贴测试数据
-4. 点击「运行」或按 `Ctrl+Enter` 执行
-5. 使用 Python 时可点击「调试」进入逐行回放模式，查看每步变量状态
+1. 打开 [ACM 模拟 IDE](https://onefly.top/zero2Leetcode/acm-playground.html)，先用 Python 编写或粘贴解法
+2. 在右侧填写输入和期望输出，点击「运行」或按 `Ctrl+Enter` 验证 Python 结果
+3. 点击「AI 教练」，选择「转为 Java 17」或「转为 Go」生成完整 ACM 程序
+4. 切换到目标语言，把 AI 返回的代码复制到编辑器，再运行并对比样例输出
+5. 需要定位 Python 逻辑时，可点击「调试」逐行回放并查看变量状态
 
 ### Java 17（Preview）浏览器执行
 
 Java 源码完全在当前浏览器中处理：页面从 Leaning Technologies 官方 CDN 加载 CheerpJ 4.3，由随站点发布的 ECJ 3.42.0 和版本化 runner `assets/vendor/zero2leetcode-java-runner-20260803.jar` 编译 `Main.java`，再在 CheerpJ 的 Java 17 运行时中执行。源码、标准输入和程序输出不会上传到本站或第三方代码执行服务。
+
+这里的“不上传”仅指编译和运行过程。主动使用 AI 教练时，当前代码和输入输出会提交给所配置的 AI 服务，用于生成回复。
 
 runner 使用 JDK 21 的 `lib/ct.sym` 提取 Java 17 API 签名，并把这些 `.sig` 文件和索引一起打包。浏览器运行时通过自定义 `JavaFileManager` 将它们作为 ECJ 的 `PLATFORM_CLASS_PATH`，因此编译阶段不依赖 CheerpJ JRE 提供完整的本地 JDK 文件布局。构建 runner 需要 JDK 21，runner 自身及用户代码的编译、运行目标均为 Java 17。
 
@@ -398,11 +403,12 @@ zero2Leetcode/
 │   ├── css/
 │   │   ├── style.css            # 全站设计系统
 │   │   ├── playground.css       # 练习场 + AI 助手样式
-│   │   └── acm-playground.css   # ACM 模拟 IDE 样式
+│   │   ├── acm-playground.css   # ACM 模拟 IDE 样式
+│   │   └── acm-ai-assistant.css # ACM AI 教练抽屉样式
 │   ├── js/
 │   │   ├── playground.js        # 练习场核心逻辑
 │   │   ├── acm-playground.js    # ACM 模拟 IDE 逻辑
-│   │   └── ai-assistant.js      # 🤖 AI 刷题助手模块
+│   │   └── ai-assistant.js      # 练习场 / ACM 共用 AI 教练模块
 │   └── images/                  # 静态资源
 │
 ├── 00_python_basics/            # Python 基础
