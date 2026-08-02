@@ -253,6 +253,8 @@ modules:
             slug: "pinduoduo/general-20260719"
           - title: "秋招-数据分析岗 7.19"
             slug: "pinduoduo/data-20260719"
+          - title: "秋招-通用 8.2"
+            slug: "pinduoduo/general-20260802"
       - name: "携程"
         articles:
           - title: "研发岗 3.29"
