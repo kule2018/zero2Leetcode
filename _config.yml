@@ -20,5 +20,7 @@ include:
 exclude:
   - README.md
   - requirements.txt
+  - tests
+  - tools
   - "*.py"
   - __pycache__

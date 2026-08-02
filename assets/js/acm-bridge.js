@@ -15,7 +15,7 @@
         var article = document.querySelector('.doc-article');
         if (!article) return;
 
-        // 找到所有 Python / Go 代码块
+        // 找到所有 Python / Go / Java 代码块
         // kramdown 渲染结构: div.highlighter-rouge > div.highlight > pre > code
         var codeBlocks = article.querySelectorAll('pre > code');
         var runnableBlocks = [];
@@ -28,6 +28,9 @@
             } else if (/(^|\s)language-(go|golang)(\s|$)/.test(cls + ' ' + parentCls) ||
                        /(^|\s)(go|golang)(\s|$)/.test(cls)) {
                 language = 'go';
+            } else if (/(^|\s)language-java(\s|$)/.test(cls + ' ' + parentCls) ||
+                       /(^|\s)java(\s|$)/.test(cls)) {
+                language = 'java';
             }
             if (language) runnableBlocks.push({ element: codeBlocks[i], language: language });
         }

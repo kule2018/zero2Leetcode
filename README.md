@@ -9,7 +9,7 @@
 [![AI Coach](https://img.shields.io/badge/AI-刷题助手-blueviolet.svg)](#-ai-刷题助手)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[视频介绍](#-视频介绍) • [开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [ACM 模拟](acm-playground.html) • [AI 助手](#-ai-刷题助手)
+[视频介绍](#-视频介绍) • [开始学习](#-学习路线) • [题目列表](#-leetcode-hot-100) • [在线练习场](playground.html) • [ACM 模拟](https://onefly.top/zero2Leetcode/acm-playground.html) • [AI 助手](#-ai-刷题助手)
 
 </div>
 
@@ -23,7 +23,7 @@
 
 - 📚 **系统学习路线** — 6 阶段覆盖 Python 基础、算法刷题、ACM 笔试真题、面试手撕与八股文
 - 🖥️ **在线练习场** — 内置 98 道 Hot 100 题目，浏览器直接运行 Python
-- 🎯 **ACM 模拟 IDE** — 支持 Python / Go、stdin/stdout、输出对比和 Python 断点调试
+- 🎯 **ACM 模拟 IDE** — 支持 Python / Go / Java 17（Preview）、stdin/stdout、输出对比和 Python 断点调试
 - 🤖 **AI 刷题助手** — 内置 AI 教练，自动读取题目和代码，给出诊断和提示
 - 📝 **完整题解** — LeetCode Hot 100 全部题解
 
@@ -105,20 +105,28 @@ AI 刷题助手是本项目最核心的特色功能。它会**自动读取你当
 
 | 功能 | 说明 |
 |------|------|
-| 📥 **stdin/stdout** | Python 与 Go 均可直接读取标准输入并输出结果 |
-| 🧩 **语言切换** | Python 浏览器内运行，Go 通过官方 Go Playground 在线编译 |
-| 📝 **输入模板** | 两种语言各有 7 种常用模板（单整数、数组、矩阵、多组用例、图等） |
+| 📥 **stdin/stdout** | Python、Go 与 Java 均可直接读取标准输入并输出结果 |
+| 🧩 **语言切换** | Python 浏览器内运行，Go 使用官方 Playground，Java 17（Preview）使用 CheerpJ 4.3 + ECJ 3.42.0 在浏览器内编译运行 |
+| 📝 **输入模板** | 三种语言各有 7 种常用模板（单整数、数组、矩阵、多组用例、图等） |
 | ✅ **输出对比** | 填入期望输出，自动判定 ACCEPTED / WRONG ANSWER |
 | 🐛 **断点调试** | Python 可点击行号设置断点，逐行回放并查看变量变化 |
-| 💾 **自动保存** | Python / Go 草稿分别保存，切换语言和刷新均不丢失 |
+| 💾 **自动保存** | Python / Go / Java 草稿分别保存，切换语言和刷新均不丢失 |
 
 ### 使用方式
 
-1. 打开 [ACM 模拟 IDE](acm-playground.html)
-2. 选择 Python 或 Go，在左侧编辑器编写代码（或从真题文章粘贴）
+1. 打开 [ACM 模拟 IDE](https://onefly.top/zero2Leetcode/acm-playground.html)
+2. 选择 Python、Go 或 Java 17（Preview），在左侧编辑器编写代码（或从真题文章粘贴）
 3. 在右侧「输入」区粘贴测试数据
 4. 点击「运行」或按 `Ctrl+Enter` 执行
 5. 使用 Python 时可点击「调试」进入逐行回放模式，查看每步变量状态
+
+### Java 17（Preview）浏览器执行
+
+Java 源码完全在当前浏览器中处理：页面从 Leaning Technologies 官方 CDN 加载 CheerpJ 4.3，由随站点发布的 ECJ 3.42.0 编译 `Main.java`，再在 CheerpJ 的 Java 17 运行时中执行。源码、标准输入和程序输出不会上传到本站或第三方代码执行服务。
+
+这条执行链不依赖后端编译服务器，因此没有服务器按次执行费用。个人项目和 FOSS 项目可按 CheerpJ Community License 免费、不计量地使用官方 CDN，页面已保留所要求的可见署名；若项目所有者或使用性质变化，应重新核对官方许可。首次使用需要下载 CheerpJ 运行时和 Java runner，实际传输量会因浏览器与缓存状态不同约为 **13–24 MB**；资源缓存后，后续打开通常无需重复完整下载。首次加载必须能够访问 CheerpJ 官方 CDN。
+
+当前 Java 支持编译运行、stdin/stdout 和样例输出对比，作为 Java 17 Preview 提供；暂不支持逐行调试。逐行回放和变量查看仍仅适用于 Python。第三方组件、版本、校验值与许可证见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
 
 ---
 
@@ -201,7 +209,7 @@ flowchart TB
 
 ### 阶段五：ACM 模式笔试真题 (2-3 周) `./04_real_interviews/`
 
-进入 [大厂笔试机试真题](./04_real_interviews/)，按公司和岗位限时完成真实题目，并使用 [ACM 模拟 IDE](acm-playground.html) 训练标准输入输出、样例验证与现场调试。
+进入 [大厂笔试机试真题](./04_real_interviews/)，按公司和岗位限时完成真实题目，并使用 [ACM 模拟 IDE](https://onefly.top/zero2Leetcode/acm-playground.html) 训练标准输入输出、样例验证与现场调试。
 
 ### 阶段六：面试手撕 & 八股文 (2-3 周) `./05_interview/`
 
@@ -435,6 +443,8 @@ python3 -m http.server 8080
 python 00_python_basics/01_variables_types/concepts.py
 ```
 
+`python -m http.server` 即可验证 Java 浏览器执行，无需本地代理或执行服务器。首次运行 Java 时仍需联网从 CheerpJ 官方 CDN 加载运行时。
+
 ### 在线练习
 
 所有题解都链接到 LeetCode 官方，点击表格中的题目名称即可跳转在线练习！
@@ -457,6 +467,8 @@ python 00_python_basics/01_variables_types/concepts.py
 ## 📝 License
 
 MIT License © 2026
+
+CheerpJ、Eclipse ECJ 等第三方组件采用各自许可证，详见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
 
 ---
 

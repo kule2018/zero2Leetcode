@@ -622,6 +622,15 @@
     color: var(--text-muted);
 }
 
+.runtime-credit {
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.runtime-credit:hover {
+    color: var(--text-primary);
+}
+
 /* ---------- 文件保存与练习包 ---------- */
 .file-toast {
     position: fixed;
@@ -898,8 +907,22 @@
         display: none;
     }
 
-    .statusbar-right {
+    .acm-statusbar > .statusbar-sep,
+    #status-time,
+    .statusbar-right > .statusbar-tip:not(.runtime-credit),
+    .statusbar-right > .statusbar-sep {
         display: none;
+    }
+
+    #status-info {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .runtime-credit {
+        flex-shrink: 0;
+        white-space: nowrap;
     }
 }
 

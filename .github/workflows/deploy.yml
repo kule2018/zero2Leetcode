@@ -20,6 +20,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Validate browser scripts
+        run: |
+          node --check assets/js/acm-playground.js
+          node --check assets/js/acm-bridge.js
+          node --check assets/js/java-runner-worker.js
+      - name: Run Node tests
+        run: node --test tests/acm-java.test.cjs
+      - name: Build and test Java browser runner
+        run: |
+          bash tools/java-browser-runner/build.sh
+          bash tools/java-browser-runner/test.sh
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Build with Jekyll
@@ -27,6 +47,12 @@ jobs:
         with:
           source: ./
           destination: ./_site
+      - name: Verify Java deployment assets
+        run: |
+          test -s _site/assets/js/java-runner-worker.js
+          test -s _site/assets/vendor/zero2leetcode-java-runner.jar
+          test -s _site/THIRD_PARTY_NOTICES.md
+          test -s _site/LICENSE-EPL-2.0.txt
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

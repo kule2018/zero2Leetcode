@@ -274,6 +274,212 @@ func main() {
     }
 };
 
+const JAVA_FAST_SCANNER = `    private static final class FastScanner {
+        private final BufferedInputStream input = new BufferedInputStream(System.in);
+        private final byte[] buffer = new byte[1 << 16];
+        private int pointer = 0;
+        private int length = 0;
+
+        private int read() throws IOException {
+            if (pointer >= length) {
+                length = input.read(buffer);
+                pointer = 0;
+                if (length <= 0) return -1;
+            }
+            return buffer[pointer++] & 0xff;
+        }
+
+        String next() throws IOException {
+            StringBuilder value = new StringBuilder();
+            int ch;
+            do {
+                ch = read();
+            } while (ch <= ' ' && ch != -1);
+            while (ch > ' ') {
+                value.append((char) ch);
+                ch = read();
+            }
+            return value.toString();
+        }
+
+        int nextInt() throws IOException {
+            return Integer.parseInt(next());
+        }
+    }`;
+
+const JAVA_TEMPLATES = {
+    single: {
+        code: `import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        FastScanner in = new FastScanner();
+        int n = in.nextInt();
+        System.out.println(n);
+    }
+
+${JAVA_FAST_SCANNER}
+}
+`,
+        input: '42',
+        expected: '42'
+    },
+    two: {
+        code: `import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        FastScanner in = new FastScanner();
+        int n = in.nextInt();
+        int m = in.nextInt();
+        System.out.println(n + m);
+    }
+
+${JAVA_FAST_SCANNER}
+}
+`,
+        input: '3 5',
+        expected: '8'
+    },
+    array: {
+        code: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        FastScanner in = new FastScanner();
+        int n = in.nextInt();
+        int[] values = new int[n];
+        for (int i = 0; i < n; i++) {
+            values[i] = in.nextInt();
+        }
+
+        Arrays.sort(values);
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            if (i > 0) output.append(' ');
+            output.append(values[i]);
+        }
+        System.out.println(output);
+    }
+
+${JAVA_FAST_SCANNER}
+}
+`,
+        input: '5\n3 1 4 1 5',
+        expected: '1 1 3 4 5'
+    },
+    matrix: {
+        code: `import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        FastScanner in = new FastScanner();
+        int rows = in.nextInt();
+        int columns = in.nextInt();
+        int[][] matrix = new int[rows][columns];
+
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                matrix[row][column] = in.nextInt();
+            }
+        }
+
+        StringBuilder output = new StringBuilder();
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                if (column > 0) output.append(' ');
+                output.append(matrix[row][column]);
+            }
+            output.append('\\n');
+        }
+        System.out.print(output);
+    }
+
+${JAVA_FAST_SCANNER}
+}
+`,
+        input: '3 3\n1 2 3\n4 5 6\n7 8 9',
+        expected: '1 2 3\n4 5 6\n7 8 9'
+    },
+    multi: {
+        code: `import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        FastScanner in = new FastScanner();
+        int tests = in.nextInt();
+        StringBuilder output = new StringBuilder();
+
+        while (tests-- > 0) {
+            int n = in.nextInt();
+            long sum = 0;
+            for (int i = 0; i < n; i++) {
+                sum += in.nextInt();
+            }
+            output.append(sum).append('\\n');
+        }
+        System.out.print(output);
+    }
+
+${JAVA_FAST_SCANNER}
+}
+`,
+        input: '2\n3\n1 2 3\n4\n1 2 3 4',
+        expected: '6\n10'
+    },
+    string: {
+        code: `import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String text = reader.readLine();
+        System.out.println(new StringBuilder(text).reverse());
+    }
+}
+`,
+        input: 'hello',
+        expected: 'olleh'
+    },
+    graph: {
+        code: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        FastScanner in = new FastScanner();
+        int n = in.nextInt();
+        int m = in.nextInt();
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int node = 0; node <= n; node++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int edge = 0; edge < m; edge++) {
+            int from = in.nextInt();
+            int to = in.nextInt();
+            graph.get(from).add(to);
+            graph.get(to).add(from);
+        }
+
+        StringBuilder output = new StringBuilder();
+        for (int node = 1; node <= n; node++) {
+            Collections.sort(graph.get(node));
+            output.append("Node ").append(node).append(": ")
+                .append(graph.get(node)).append('\\n');
+        }
+        System.out.print(output);
+    }
+
+${JAVA_FAST_SCANNER}
+}
+`,
+        input: '4 4\n1 2\n1 3\n2 4\n3 4',
+        expected: 'Node 1: [2, 3]\nNode 2: [1, 4]\nNode 3: [1, 4]\nNode 4: [2, 3]'
+    }
+};
+
 const DEFAULT_CODE = `# ACM 模式：使用 input() 读取输入，print() 输出结果
 # 在右侧「输入」区粘贴测试数据，点击运行即可
 #
@@ -294,6 +500,7 @@ const DEFAULT_INPUT = `5
 3 1 4 1 5`;
 
 const DEFAULT_GO_CODE = GO_TEMPLATES.array.code;
+const DEFAULT_JAVA_CODE = JAVA_TEMPLATES.array.code;
 
 const LANGUAGES = {
     python: {
@@ -304,7 +511,10 @@ const LANGUAGES = {
         defaultCode: DEFAULT_CODE,
         defaultInput: DEFAULT_INPUT,
         templates: PYTHON_TEMPLATES,
-        supportsDebug: true
+        supportsDebug: true,
+        executionMode: 'browser',
+        runtime: 'pyodide',
+        executor: executePython
     },
     go: {
         label: 'Go',
@@ -314,11 +524,32 @@ const LANGUAGES = {
         defaultCode: DEFAULT_GO_CODE,
         defaultInput: DEFAULT_INPUT,
         templates: GO_TEMPLATES,
-        supportsDebug: false
+        supportsDebug: false,
+        executionMode: 'remote',
+        runtime: 'go-playground',
+        executor: executeGo
+    },
+    java: {
+        label: 'Java 17',
+        mode: 'text/x-java',
+        fileExtension: 'java',
+        mimeType: 'text/x-java;charset=utf-8',
+        defaultCode: DEFAULT_JAVA_CODE,
+        defaultInput: DEFAULT_INPUT,
+        templates: JAVA_TEMPLATES,
+        supportsDebug: false,
+        executionMode: 'browser',
+        runtime: 'cheerpj',
+        executor: executeJava,
+        maxTimeoutMs: 10000
     }
 };
 
 const GO_PLAYGROUND_API = 'https://play.golang.org/compile';
+const JAVA_WORKER_URL = 'assets/js/java-runner-worker.js?v=20260802';
+const JAVA_INIT_TIMEOUT_MS = 90000;
+const JAVA_MAX_CODE_BYTES = 48 * 1024;
+const JAVA_MAX_STDIN_BYTES = 16 * 1024;
 const STORAGE_LANGUAGE_KEY = 'z2l-acm-language';
 const LEGACY_STORAGE_KEY = 'z2l-acm-code';
 const LEGACY_STORAGE_INPUT_KEY = 'z2l-acm-input';
@@ -332,7 +563,18 @@ let pyodideLoading = false;
 let pyodideLoadFailed = false;
 let pyodideInitPromise = null;
 let isRunning = false;
-let goRuntimeState = 'ready';
+const remoteRuntimeStates = {
+    go: 'ready'
+};
+let javaWorker = null;
+let javaInitPromise = null;
+let javaInitResolve = null;
+let javaInitReject = null;
+let javaInitTimeoutId = null;
+let javaRuntimeState = 'idle';
+let javaRuntimeMessage = '';
+let javaPendingRequest = null;
+let javaRequestSequence = 0;
 let codeSaveTimer = null;
 let inputSaveTimer = null;
 let expectedSaveTimer = null;
@@ -343,7 +585,7 @@ let debugIndex = -1;
 let debugLineWidget = null; // CodeMirror line class marker
 const breakpoints = new Set(); // line numbers (0-based)
 let currentLanguage = getInitialLanguage();
-const lastSourceNames = { python: 'main', go: 'main' };
+const lastSourceNames = { python: 'main', go: 'main', java: 'Main' };
 
 function normalizeLanguage(language) {
     return Object.prototype.hasOwnProperty.call(LANGUAGES, language) ? language : 'python';
@@ -367,6 +609,10 @@ function getExpectedStorageKey(language) {
     return `z2l-acm-expected:${language}`;
 }
 
+function getTimeoutStorageKey(language) {
+    return `z2l-acm-timeout:${language}`;
+}
+
 function getSavedCode(language) {
     const saved = localStorage.getItem(getCodeStorageKey(language));
     if (saved !== null) return saved;
@@ -381,6 +627,18 @@ function getSavedInput(language) {
 
 function getSavedExpected(language) {
     return localStorage.getItem(getExpectedStorageKey(language));
+}
+
+function getSavedTimeout(language) {
+    return localStorage.getItem(getTimeoutStorageKey(language));
+}
+
+function restoreTimeoutSelection(language) {
+    const timeoutSelect = document.getElementById('timeout-select');
+    const saved = getSavedTimeout(language);
+    const hasSavedOption = saved !== null && Array.from(timeoutSelect.options)
+        .some((option) => option.value === saved);
+    timeoutSelect.value = hasSavedOption ? saved : '10000';
 }
 
 function setEditorValue(value) {
@@ -477,21 +735,39 @@ function updateRuntimeControls() {
     if (languageSelect) languageSelect.disabled = isRunning;
     if (importWorkspaceBtn) importWorkspaceBtn.disabled = isRunning;
 
-    if (currentLanguage === 'go') {
+    const config = LANGUAGES[currentLanguage];
+    if (config.runtime === 'go-playground') {
         const states = {
-            ready: ['Go 在线编译', 'ready'],
-            loading: ['Go 编译中...', 'loading'],
-            error: ['Go 服务异常', 'error']
+            ready: [`${config.label} 在线编译`, 'ready'],
+            loading: [`${config.label} 编译中...`, 'loading'],
+            checking: [`${config.label} 检查沙箱...`, 'loading'],
+            unavailable: [`${config.label} 暂不可用`, 'error'],
+            error: [`${config.label} 服务异常`, 'error']
         };
-        setRuntimeStatus(...states[goRuntimeState]);
-        runBtn.disabled = isRunning;
+        const runtimeState = remoteRuntimeStates[currentLanguage] || 'ready';
+        setRuntimeStatus(...states[runtimeState]);
+        runBtn.disabled = isRunning || runtimeState === 'checking' || runtimeState === 'unavailable';
         debugBtn.disabled = true;
-        debugBtn.title = 'Go 暂不支持逐行调试';
+        debugBtn.title = `${config.label} 暂不支持逐行调试`;
+        return;
+    }
+
+    if (config.runtime === 'cheerpj') {
+        const states = {
+            idle: ['Java 17 浏览器运行', 'ready'],
+            loading: [javaRuntimeMessage || 'Java 17 加载中...', 'loading'],
+            ready: ['Java 17 浏览器运行', 'ready'],
+            error: ['Java 17 加载失败', 'error']
+        };
+        setRuntimeStatus(...states[javaRuntimeState]);
+        runBtn.disabled = isRunning || javaRuntimeState === 'loading';
+        debugBtn.disabled = true;
+        debugBtn.title = 'Java 17 暂不支持逐行调试';
         return;
     }
 
     if (pyodide) {
-        setRuntimeStatus('Python 3 就绪', 'ready');
+        setRuntimeStatus(`${config.label} 就绪`, 'ready');
     } else if (pyodideLoadFailed) {
         setRuntimeStatus('Python 加载失败', 'error');
     } else {
@@ -534,23 +810,27 @@ let pyodideCorrupted = false; // 标记 Pyodide 运行时是否损坏（如超�
 
 function getTimeoutMs() {
     const sel = document.getElementById('timeout-select');
-    return sel ? parseInt(sel.value, 10) : 10000;
+    const value = sel ? parseInt(sel.value, 10) : 10000;
+    return Number.isFinite(value) ? value : 10000;
 }
 
 async function runCode() {
     if (isRunning) return;
 
     const languageAtStart = currentLanguage;
+    const languageConfig = LANGUAGES[languageAtStart];
     const stdoutArea = document.getElementById('stdout-area');
     const runStatus = document.getElementById('run-status');
     const statusInfo = document.getElementById('status-info');
     const statusTime = document.getElementById('status-time');
 
     isRunning = true;
-    if (languageAtStart === 'go') goRuntimeState = 'loading';
+    if (languageConfig.executionMode === 'remote') {
+        remoteRuntimeStates[languageAtStart] = 'loading';
+    }
     updateRuntimeControls();
     try {
-        if (languageAtStart === 'python' && (!pyodide || pyodideCorrupted)) {
+        if (languageConfig.runtime === 'pyodide' && (!pyodide || pyodideCorrupted)) {
             if (pyodideCorrupted) await reinitPyodide();
             if (!pyodide) {
                 stdoutArea.textContent = 'Python 运行时尚未就绪，请稍后重试。';
@@ -560,9 +840,14 @@ async function runCode() {
             }
         }
 
-        runStatus.textContent = languageAtStart === 'go' ? '编译中...' : '运行中...';
+        const isRemote = languageConfig.executionMode === 'remote';
+        const needsCompilation = languageConfig.runtime === 'go-playground' ||
+            languageConfig.runtime === 'cheerpj';
+        runStatus.textContent = needsCompilation ? '编译中...' : '运行中...';
         runStatus.className = 'run-status running';
-        statusInfo.textContent = languageAtStart === 'go' ? 'Go 编译中...' : '运行中...';
+        statusInfo.textContent = needsCompilation
+            ? `${languageConfig.label} 编译中...`
+            : '运行中...';
         stdoutArea.textContent = '';
         stdoutArea.classList.remove('has-error', 'placeholder-text');
 
@@ -571,27 +856,31 @@ async function runCode() {
         const t0 = performance.now();
 
         try {
-            const result = languageAtStart === 'go'
-                ? await executeGo(userCode, stdinText)
-                : await executePython(userCode, stdinText);
+            const result = await languageConfig.executor(userCode, stdinText);
             const elapsed = (performance.now() - t0).toFixed(1);
 
-            if (languageAtStart === 'go') {
-                goRuntimeState = result.phase === 'service' ? 'error' : 'ready';
+            if (isRemote) {
+                remoteRuntimeStates[languageAtStart] = result.phase === 'service' ? 'error' : 'ready';
             }
 
             if (result.error) {
                 const parts = [result.stdout, result.error].filter(Boolean);
                 stdoutArea.textContent = parts.join('\n');
                 stdoutArea.classList.add('has-error');
-                runStatus.textContent = result.phase === 'compile'
-                    ? '编译错误'
-                    : result.phase === 'service' ? '服务异常' : '运行错误';
+                const errorLabels = {
+                    compile: '编译错误',
+                    limit: '输出超限',
+                    request: '请求错误',
+                    'rate-limit': '请求受限',
+                    service: '服务异常',
+                    timeout: '执行超时'
+                };
+                runStatus.textContent = errorLabels[result.phase] || '运行错误';
                 runStatus.className = 'run-status error';
                 statusInfo.textContent = classifyError(result.error, languageAtStart, result.phase);
             } else {
                 const warningText = result.warning
-                    ? `Go vet:\n${String(result.warning).trimEnd()}`
+                    ? `${result.warningLabel || '警告'}:\n${String(result.warning).trimEnd()}`
                     : '';
                 stdoutArea.textContent = [result.stdout || '(无输出)', warningText]
                     .filter(Boolean)
@@ -603,10 +892,15 @@ async function runCode() {
             }
             statusTime.textContent = `耗时 ${elapsed} ms`;
 
-            // 自动对比
-            compareOutput(result.error ? null : result.stdout);
+            if (result.error) {
+                const diffResult = document.getElementById('diff-result');
+                diffResult.textContent = '';
+                diffResult.className = 'diff-result';
+            } else {
+                compareOutput(result.stdout);
+            }
         } catch (e) {
-            if (languageAtStart === 'go') goRuntimeState = 'error';
+            if (isRemote) remoteRuntimeStates[languageAtStart] = 'error';
             stdoutArea.textContent = String(e);
             stdoutArea.classList.add('has-error');
             runStatus.textContent = '异常';
@@ -615,8 +909,9 @@ async function runCode() {
         }
     } finally {
         isRunning = false;
-        if (languageAtStart === 'go' && goRuntimeState === 'loading') {
-            goRuntimeState = 'ready';
+        if (languageConfig.executionMode === 'remote' &&
+            remoteRuntimeStates[languageAtStart] === 'loading') {
+            remoteRuntimeStates[languageAtStart] = 'ready';
         }
         updateRuntimeControls();
     }
@@ -706,6 +1001,7 @@ async function executeGo(code, stdinText) {
             stdout,
             error: failed ? (stderr || `Go 程序异常退出（状态码 ${data.Status}）`) : null,
             warning: data.VetErrors || null,
+            warningLabel: 'Go vet',
             phase: failed ? 'runtime' : null
         };
     } catch (e) {
@@ -715,11 +1011,228 @@ async function executeGo(code, stdinText) {
             error: timedOut
                 ? `Go 在线编译请求超时（超过 ${(timeoutMs / 1000).toFixed(0)} 秒）`
                 : '无法连接 Go 在线编译服务，请检查网络后重试。',
-            phase: 'service'
+            phase: timedOut ? 'timeout' : 'service'
         };
     } finally {
         if (timeoutId !== null) clearTimeout(timeoutId);
     }
+}
+
+function getBoundedTimeoutMs(language) {
+    const configured = getTimeoutMs();
+    const maximum = LANGUAGES[language].maxTimeoutMs;
+    if (!maximum) return configured;
+    return configured <= 0 ? maximum : Math.min(configured, maximum);
+}
+
+function utf8ByteLength(value) {
+    return new TextEncoder().encode(String(value)).byteLength;
+}
+
+function stopJavaRuntime(nextState = 'idle', message = '') {
+    if (javaWorker) javaWorker.terminate();
+    if (javaInitTimeoutId !== null) clearTimeout(javaInitTimeoutId);
+    javaWorker = null;
+    javaInitPromise = null;
+    javaInitResolve = null;
+    javaInitReject = null;
+    javaInitTimeoutId = null;
+    javaRuntimeState = nextState;
+    javaRuntimeMessage = message;
+    updateRuntimeControls();
+}
+
+function failJavaRuntime(message) {
+    const initializationReject = javaInitReject;
+    const pending = javaPendingRequest;
+    javaPendingRequest = null;
+    if (pending) clearTimeout(pending.timeoutId);
+
+    stopJavaRuntime('error', message);
+    if (initializationReject) initializationReject(new Error(message));
+    if (pending) {
+        pending.resolve({
+            stdout: '',
+            error: `Java 浏览器运行时异常：${message}`,
+            phase: 'service'
+        });
+    }
+}
+
+function restartJavaRuntimeInBackground() {
+    stopJavaRuntime('idle');
+    if (currentLanguage !== 'java') return;
+    setTimeout(() => {
+        if (currentLanguage !== 'java') return;
+        initJavaRuntime().catch((error) => {
+            console.error('Java runtime reload error:', error);
+        });
+    }, 0);
+}
+
+function handleJavaWorkerMessage(event, sourceWorker) {
+    if (sourceWorker !== javaWorker) return;
+
+    const message = event.data || {};
+    if (message.type === 'status') {
+        javaRuntimeState = 'loading';
+        javaRuntimeMessage = String(message.message || 'Java 17 加载中...');
+        updateRuntimeControls();
+        return;
+    }
+
+    if (message.type === 'ready') {
+        const resolve = javaInitResolve;
+        if (javaInitTimeoutId !== null) clearTimeout(javaInitTimeoutId);
+        javaInitTimeoutId = null;
+        javaRuntimeState = 'ready';
+        javaRuntimeMessage = '';
+        javaInitResolve = null;
+        javaInitReject = null;
+        javaInitPromise = null;
+        updateRuntimeControls();
+        if (resolve) resolve(true);
+        return;
+    }
+
+    if (message.type === 'init-error') {
+        failJavaRuntime(String(message.message || 'Java 17 初始化失败。'));
+        return;
+    }
+
+    const pending = javaPendingRequest;
+    if (!pending || pending.id !== message.id) return;
+    clearTimeout(pending.timeoutId);
+    javaPendingRequest = null;
+
+    if (message.type === 'result') {
+        const result = message.result && typeof message.result === 'object'
+            ? message.result
+            : {
+                stdout: '',
+                error: 'Java 浏览器运行时返回了无效结果。',
+                phase: 'service'
+            };
+        pending.resolve(result);
+        if (result.restartRuntime) restartJavaRuntimeInBackground();
+        return;
+    }
+
+    const failureMessage = String(message.message || 'Java 编译器执行失败。');
+    stopJavaRuntime('error', failureMessage);
+    pending.resolve({
+        stdout: '',
+        error: `Java 浏览器运行时异常：${failureMessage}`,
+        phase: 'service'
+    });
+}
+
+function initJavaRuntime() {
+    if (javaRuntimeState === 'ready' && javaWorker) return Promise.resolve(true);
+    if (javaInitPromise) return javaInitPromise;
+
+    if (typeof Worker !== 'function') {
+        javaRuntimeState = 'error';
+        javaRuntimeMessage = '当前浏览器不支持 Web Worker。';
+        updateRuntimeControls();
+        return Promise.reject(new Error(javaRuntimeMessage));
+    }
+
+    javaRuntimeState = 'loading';
+    javaRuntimeMessage = '正在启动 Java 17...';
+    updateRuntimeControls();
+
+    javaInitPromise = new Promise((resolve, reject) => {
+        javaInitResolve = resolve;
+        javaInitReject = reject;
+        try {
+            const worker = new Worker(JAVA_WORKER_URL);
+            javaWorker = worker;
+            worker.onmessage = (event) => handleJavaWorkerMessage(event, worker);
+            worker.onerror = (event) => {
+                if (worker !== javaWorker) return;
+                if (event && typeof event.preventDefault === 'function') event.preventDefault();
+                failJavaRuntime(event && event.message
+                    ? event.message
+                    : 'Java Worker 加载失败。');
+            };
+        } catch (error) {
+            const message = error && error.message ? error.message : String(error);
+            setTimeout(() => failJavaRuntime(message), 0);
+            return;
+        }
+
+        javaInitTimeoutId = setTimeout(() => {
+            if (javaRuntimeState === 'loading') {
+                failJavaRuntime('Java 17 首次加载超时，请检查网络后重试。');
+            }
+        }, JAVA_INIT_TIMEOUT_MS);
+    });
+    return javaInitPromise;
+}
+
+async function executeJava(code, stdinText) {
+    if (utf8ByteLength(code) > JAVA_MAX_CODE_BYTES) {
+        return {
+            stdout: '',
+            error: 'Java 源码超过 48 KB 限制。',
+            phase: 'request'
+        };
+    }
+    if (utf8ByteLength(stdinText) > JAVA_MAX_STDIN_BYTES) {
+        return {
+            stdout: '',
+            error: 'Java 标准输入超过 16 KB 限制。',
+            phase: 'request'
+        };
+    }
+
+    try {
+        await initJavaRuntime();
+    } catch (error) {
+        return {
+            stdout: '',
+            error: `Java 17 浏览器运行时加载失败：${
+                error && error.message ? error.message : String(error)
+            }`,
+            phase: 'service'
+        };
+    }
+
+    const timeoutMs = getBoundedTimeoutMs('java');
+    const requestId = ++javaRequestSequence;
+    return new Promise((resolve) => {
+        const timeoutId = setTimeout(() => {
+            if (!javaPendingRequest || javaPendingRequest.id !== requestId) return;
+            javaPendingRequest = null;
+            stopJavaRuntime('idle');
+            resolve({
+                stdout: '',
+                error: `Java 编译或运行超过 ${timeoutMs / 1000} 秒，已终止浏览器 Worker。`,
+                phase: 'timeout'
+            });
+            restartJavaRuntimeInBackground();
+        }, timeoutMs);
+
+        javaPendingRequest = { id: requestId, resolve, timeoutId };
+        try {
+            javaWorker.postMessage({
+                type: 'execute',
+                id: requestId,
+                code,
+                stdin: stdinText
+            });
+        } catch (error) {
+            clearTimeout(timeoutId);
+            javaPendingRequest = null;
+            failJavaRuntime(error && error.message ? error.message : String(error));
+            resolve({
+                stdout: '',
+                error: '无法向 Java 浏览器 Worker 发送代码。',
+                phase: 'service'
+            });
+        }
+    });
 }
 
 async function executePython(code, stdinText) {
@@ -866,10 +1379,17 @@ function getErrorHint(errorText) {
 }
 
 function classifyError(errorText, language = currentLanguage, phase = null) {
-    if (/超时|timeout|timed out|__TIMEOUT__|__LoopTimeout__/i.test(errorText)) {
+    if (phase === 'timeout' || /超时|timeout|timed out|__TIMEOUT__|__LoopTimeout__/i.test(errorText)) {
         return '执行超时（可能无限循环）';
     }
-    if (phase === 'service') return 'Go 在线编译服务异常';
+    if (phase === 'limit') return '输出超过限制';
+    if (phase === 'request') return 'Java 请求无效';
+    if (phase === 'rate-limit') return 'Java 请求频率受限';
+    if (phase === 'service') {
+        if (language === 'java') return 'Java 17 浏览器运行时异常';
+        const label = LANGUAGES[language] ? LANGUAGES[language].label : '远程';
+        return `${label} 执行服务异常`;
+    }
     if (language === 'go') {
         if (phase === 'compile' || /syntax error|undefined:|imported and not used|cannot use/i.test(errorText)) {
             return 'Go 编译错误';
@@ -877,6 +1397,20 @@ function classifyError(errorText, language = currentLanguage, phase = null) {
         if (/deadlock/i.test(errorText)) return 'Go 协程死锁';
         if (/panic:|fatal error:/i.test(errorText)) return 'Go 运行时异常';
         return 'Go 运行错误';
+    }
+    if (language === 'java') {
+        if (phase === 'compile' || /cannot find symbol|class .* is public|';' expected|illegal start/i.test(errorText)) {
+            return 'Java 编译错误';
+        }
+        if (/NumberFormatException|InputMismatchException|NoSuchElementException/i.test(errorText)) {
+            return 'Java 输入格式错误';
+        }
+        if (/ArrayIndexOutOfBoundsException|IndexOutOfBoundsException/i.test(errorText)) return 'Java 下标越界';
+        if (/NullPointerException/i.test(errorText)) return 'Java 空指针异常';
+        if (/StackOverflowError/i.test(errorText)) return 'Java 栈溢出';
+        if (/OutOfMemoryError/i.test(errorText)) return 'Java 内存不足';
+        if (/ArithmeticException.*\/ by zero/i.test(errorText)) return 'Java 除零错误';
+        return 'Java 运行错误';
     }
     if (/SyntaxError/i.test(errorText)) return '语法错误';
     if (/ValueError.*invalid literal/i.test(errorText)) return '输入格式错误';
@@ -1366,10 +1900,12 @@ function applyImportedWorkspace(payload) {
     setEditorValue(payload.code);
     document.getElementById('stdin-area').value = payload.input;
     document.getElementById('expected-area').value = payload.expected;
+    restoreTimeoutSelection(currentLanguage);
     document.getElementById('template-select').value = '';
     clearBreakpoints();
     resetExecutionUi();
     updateLanguageUi();
+    activateCurrentRuntime();
     document.getElementById('status-info').textContent = '练习包已导入';
     showFileToast('练习包已导入，代码、输入和期望输出已恢复');
     window.acmEditor.focus();
@@ -1428,7 +1964,8 @@ function saveCurrentDraft() {
     return persistStorageEntries([
         [getCodeStorageKey(currentLanguage), window.acmEditor.getValue()],
         [getInputStorageKey(currentLanguage), document.getElementById('stdin-area').value],
-        [getExpectedStorageKey(currentLanguage), document.getElementById('expected-area').value]
+        [getExpectedStorageKey(currentLanguage), document.getElementById('expected-area').value],
+        [getTimeoutStorageKey(currentLanguage), document.getElementById('timeout-select').value]
     ]);
 }
 
@@ -1443,21 +1980,48 @@ function updateLanguageUi() {
 
     languageSelect.value = currentLanguage;
     languageHint.textContent = `${config.label} · ACM 模式`;
-    runtimeStatus.title = currentLanguage === 'go'
-        ? '代码通过官方 Go Playground 在线编译运行'
-        : 'Python 代码在当前浏览器内运行';
-    timeoutSelect.title = currentLanguage === 'go'
-        ? '请求等待上限；Go 程序另受官方沙箱时间限制'
-        : '执行超时时间';
+    const runtimeTitles = {
+        python: 'Python 代码在当前浏览器内运行',
+        go: '代码通过官方 Go Playground 在线编译运行',
+        java: 'Java 17 源码在当前浏览器内编译运行，代码不会上传'
+    };
+    runtimeStatus.title = runtimeTitles[currentLanguage];
+
+    Array.from(timeoutSelect.options).forEach((option) => {
+        const value = parseInt(option.value, 10);
+        option.disabled = Boolean(config.maxTimeoutMs) &&
+            (value === 0 || value > config.maxTimeoutMs);
+    });
+    if (config.maxTimeoutMs &&
+        (getTimeoutMs() === 0 || getTimeoutMs() > config.maxTimeoutMs)) {
+        timeoutSelect.value = String(config.maxTimeoutMs);
+        localStorage.setItem(getTimeoutStorageKey(currentLanguage), timeoutSelect.value);
+    }
+    timeoutSelect.title = config.maxTimeoutMs
+        ? `Java 编译与运行合计最多 ${config.maxTimeoutMs / 1000} 秒`
+        : currentLanguage === 'go'
+            ? '请求等待上限；Go 程序另受官方沙箱时间限制'
+            : '执行超时时间';
     debugTip.textContent = config.supportsDebug
         ? '点击行号设置断点'
-        : 'Go 暂不支持逐行调试';
+        : `${config.label} 暂不支持逐行调试`;
     saveCodeBtn.title = `保存为本地 .${config.fileExtension} 文件`;
 
     window.acmEditor.setOption('mode', config.mode);
     window.acmEditor.setOption('indentWithTabs', currentLanguage === 'go');
     window.acmEditor.refresh();
     updateRuntimeControls();
+}
+
+function activateCurrentRuntime() {
+    const config = LANGUAGES[currentLanguage];
+    if (config.runtime === 'pyodide') {
+        initPyodide();
+    } else if (config.runtime === 'cheerpj') {
+        initJavaRuntime().catch((error) => {
+            console.error('Java runtime preload error:', error);
+        });
+    }
 }
 
 function switchLanguage(nextLanguage) {
@@ -1482,10 +2046,14 @@ function switchLanguage(nextLanguage) {
     document.getElementById('stdin-area').value = savedInput !== null
         ? savedInput
         : config.defaultInput;
-    document.getElementById('expected-area').value = savedExpected !== null ? savedExpected : '';
+    document.getElementById('expected-area').value = savedExpected !== null
+        ? savedExpected
+        : '';
+    restoreTimeoutSelection(currentLanguage);
     document.getElementById('template-select').value = '';
     resetExecutionUi();
     updateLanguageUi();
+    activateCurrentRuntime();
 }
 
 // ---------- 事件绑定 ----------
@@ -1516,6 +2084,12 @@ function bindEvents() {
 
     document.getElementById('language-select').addEventListener('change', (e) => {
         switchLanguage(e.target.value);
+    });
+
+    const timeoutSelect = document.getElementById('timeout-select');
+    restoreTimeoutSelection(currentLanguage);
+    timeoutSelect.addEventListener('change', () => {
+        localStorage.setItem(getTimeoutStorageKey(currentLanguage), timeoutSelect.value);
     });
 
     document.getElementById('reset-btn').addEventListener('click', () => {
@@ -1617,8 +2191,12 @@ function bindEvents() {
         });
     }
 
-    // URL 参数：?language=go&code=...&input=...&expected=...（从真题文章跳转）
+    // URL 参数：?language=java&code=...&input=...&expected=...（从真题文章跳转）
     const params = new URLSearchParams(window.location.search);
+    if (shouldClearExpectedForUrl(params)) {
+        document.getElementById('expected-area').value = '';
+        localStorage.setItem(getExpectedStorageKey(currentLanguage), '');
+    }
     if (params.has('code')) {
         try {
             window.acmEditor.setValue(decodeB64(params.get('code')));
@@ -1643,6 +2221,10 @@ function bindEvents() {
     updateLanguageUi();
 }
 
+function shouldClearExpectedForUrl(params) {
+    return (params.has('code') || params.has('input')) && !params.has('expected');
+}
+
 // Base64 解码（支持 Unicode / 中文）
 // 注意：URLSearchParams 会把 + 转成空格，必须先还原
 function decodeB64(str) {
@@ -1661,5 +2243,5 @@ function decodeB64(str) {
 document.addEventListener('DOMContentLoaded', () => {
     initEditor();
     bindEvents();
-    initPyodide();
+    activateCurrentRuntime();
 });
