@@ -794,6 +794,101 @@ body.ai-open .ai-fab {
     font-size: inherit;
 }
 
+.ai-code-block {
+    max-width: 100%;
+    margin: var(--spacing-sm) 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-primary);
+}
+
+.ai-code-toolbar {
+    min-width: 0;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 5px 4px 10px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
+}
+
+.ai-code-language {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ai-code-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ai-code-action {
+    min-width: 56px;
+    min-height: 30px;
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.ai-code-action-apply {
+    min-width: 86px;
+    border-color: color-mix(in srgb, var(--primary) 35%, var(--border-color));
+}
+
+.ai-code-action:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 10%, var(--bg-secondary));
+    color: var(--primary-light);
+}
+
+.ai-code-action:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.ai-code-action:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.ai-msg-content .ai-code-block pre {
+    margin: 0;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 0;
+    border-radius: 0;
+}
+
+.ai-live-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .ai-msg-content ul,
 .ai-msg-content ol {
     padding-left: 1.2em;
@@ -842,6 +937,12 @@ body.ai-open .ai-fab {
 
 @keyframes ai-spin {
     to { transform: rotate(360deg); }
+}
+
+@media (pointer: coarse) {
+    .ai-code-action {
+        min-height: 44px;
+    }
 }
 
 @keyframes ai-typing-bounce {

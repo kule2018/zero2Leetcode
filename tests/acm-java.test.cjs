@@ -277,6 +277,100 @@ test('Java code, stdin, and expected output use isolated storage keys', () => {
     });
 });
 
+test('AI generated code writes through the ACM adapter and persists immediately', () => {
+    const context = createContext('?language=java');
+    const result = JSON.parse(evaluate(context, `
+        globalThis.__editorValue = 'public class Main { /* old */ }';
+        globalThis.__draftSaved = false;
+        window.acmEditor = {
+            getValue() { return globalThis.__editorValue; },
+            firstLine() { return 0; },
+            lastLine() { return 0; },
+            getLine() { return globalThis.__editorValue; },
+            replaceRange(value) { globalThis.__editorValue = value; },
+            operation(callback) { callback(); },
+            refresh() {},
+        };
+        saveCurrentDraft = () => { globalThis.__draftSaved = true; return true; };
+        clearBreakpoints = () => {};
+        resetExecutionUi = () => {};
+        document.getElementById = () => ({ value: '' });
+        const applied = window.acmApplyGeneratedCode({
+            language: 'java',
+            code: 'public class Main { public static void main(String[] args) {} }'
+        });
+        JSON.stringify({
+            applied,
+            value: globalThis.__editorValue,
+            stored: localStorage.getItem(getCodeStorageKey('java')),
+            draftSaved: globalThis.__draftSaved
+        });
+    `));
+
+    assert.equal(result.applied.ok, true);
+    assert.equal(result.applied.language, 'java');
+    assert.match(result.value, /public static void main/);
+    assert.equal(result.stored, result.value);
+    assert.equal(result.draftSaved, true);
+});
+
+test('AI generated cross-language writes preserve the source draft before switching', () => {
+    const context = createContext('?language=python');
+    const result = JSON.parse(evaluate(context, `
+        globalThis.__editorValue = 'print("source draft")';
+        globalThis.__switchedTo = '';
+        window.acmEditor = {
+            getValue() { return globalThis.__editorValue; },
+            firstLine() { return 0; },
+            lastLine() { return 0; },
+            getLine() { return globalThis.__editorValue; },
+            replaceRange(value) { globalThis.__editorValue = value; },
+            operation(callback) { callback(); },
+            clearHistory() {},
+            refresh() {},
+        };
+        switchLanguage = (nextLanguage) => {
+            localStorage.setItem(getCodeStorageKey(currentLanguage), globalThis.__editorValue);
+            globalThis.__editorValue = 'public class Main { /* prior Java draft */ }';
+            currentLanguage = nextLanguage;
+            globalThis.__switchedTo = nextLanguage;
+        };
+        clearBreakpoints = () => {};
+        resetExecutionUi = () => {};
+        document.getElementById = () => ({ value: '' });
+        const applied = window.acmApplyGeneratedCode({
+            language: 'java',
+            code: 'public class Main { public static void main(String[] args) {} }'
+        });
+        JSON.stringify({
+            applied,
+            currentLanguage,
+            switchedTo: globalThis.__switchedTo,
+            pythonDraft: localStorage.getItem(getCodeStorageKey('python')),
+            javaDraft: localStorage.getItem(getCodeStorageKey('java'))
+        });
+    `));
+
+    assert.equal(result.applied.ok, true);
+    assert.equal(result.currentLanguage, 'java');
+    assert.equal(result.switchedTo, 'java');
+    assert.equal(result.pythonDraft, 'print("source draft")');
+    assert.match(result.javaDraft, /public static void main/);
+});
+
+test('ACM generated code adapter rejects unknown languages without changing the editor', () => {
+    const context = createContext('?language=java');
+    const result = JSON.parse(evaluate(context, `
+        globalThis.__editorValue = 'keep me';
+        window.acmEditor = { getValue() { return globalThis.__editorValue; } };
+        const applied = window.acmApplyGeneratedCode({ language: 'javascript', code: 'alert(1)' });
+        JSON.stringify({ applied, value: globalThis.__editorValue });
+    `));
+
+    assert.equal(result.applied.ok, false);
+    assert.equal(result.value, 'keep me');
+});
+
 test('Java is enabled in the selector and CodeMirror loads Java syntax mode', () => {
     const html = fs.readFileSync(path.join(root, 'acm-playground.html'), 'utf8');
     const option = html.match(/<option\s+value="java"([^>]*)>Java 17<\/option>/);

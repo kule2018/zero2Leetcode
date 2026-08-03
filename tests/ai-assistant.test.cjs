@@ -8,15 +8,21 @@ const assistantPath = path.join(root, 'assets/js/ai-assistant.js');
 const assistantSource = fs.readFileSync(assistantPath, 'utf8');
 const {
     AIAssistant,
+    AI_DEFAULT_MODEL,
     QUICK_ACTIONS,
     SYSTEM_PROMPT,
     boundedHistory,
     buildContextMessage,
     collectAssistantContext,
+    copyTextToClipboard,
+    decorateAssistantCodeBlocks,
     getQuickActionPrompt,
     loadAIConfig,
+    normalizeConfiguredModel,
+    normalizeGeneratedCodeLanguage,
     saveAIConfig,
     streamChatCompletion,
+    validateAssistantResponse,
 } = require(assistantPath);
 
 function withBrowserGlobals(values, callback) {
@@ -181,6 +187,125 @@ test('assistant prompt and renderer are language-aware and sanitize Markdown HTM
     assert.match(assistantSource, /dangerousTags/);
     assert.match(assistantSource, /const safeHref =/);
     assert.match(assistantSource, /element\.removeAttribute\('href'\)/);
+});
+
+test('generated code language aliases are normalized without guessing unknown fences', () => {
+    for (const [input, expected] of [
+        ['python', 'python'], ['language-py', 'python'], ['Language-Python', 'python'], ['python3', 'python'],
+        ['go', 'go'], ['golang', 'go'], ['java', 'java'], ['java17', 'java'],
+        ['text', ''], ['', ''],
+    ]) {
+        assert.equal(normalizeGeneratedCodeLanguage(input), expected);
+    }
+});
+
+test('conversion response validation rejects safety classifiers and incomplete programs', () => {
+    assert.equal(validateAssistantResponse('User Safety: safe').valid, false);
+    assert.equal(validateAssistantResponse('User Safety: unsafe.').valid, false);
+    assert.equal(validateAssistantResponse('```java\nclass Solution {}\n```', 'java').valid, false);
+    assert.equal(validateAssistantResponse('```go\nfunc main() {}\n```', 'go').valid, false);
+    assert.equal(
+        validateAssistantResponse('```java\npublic class Main {}\n```', 'java').valid,
+        true
+    );
+    assert.equal(
+        validateAssistantResponse('```go\npackage main\nfunc main() {}\n```', 'go').valid,
+        true
+    );
+});
+
+test('legacy dynamic free router migrates to the verified code model', () => {
+    assert.equal(AI_DEFAULT_MODEL, 'poolside/laguna-s-2.1:free');
+    assert.equal(normalizeConfiguredModel('openrouter/free'), AI_DEFAULT_MODEL);
+    assert.equal(normalizeConfiguredModel('custom/model'), 'custom/model');
+
+    const writes = [];
+    const localStorage = {
+        getItem() {
+            return JSON.stringify({
+                baseUrl: 'https://openrouter.ai/api/v1',
+                apiKey: 'saved-key',
+                model: 'openrouter/free',
+            });
+        },
+        setItem(key, value) { writes.push([key, JSON.parse(value)]); },
+    };
+    withBrowserGlobals({ localStorage }, () => {
+        const config = loadAIConfig();
+        assert.equal(config.model, AI_DEFAULT_MODEL);
+        assert.equal(writes.length, 1);
+        assert.equal(writes[0][1].model, AI_DEFAULT_MODEL);
+    });
+});
+
+test('copy helper uses the browser clipboard without changing code text', async () => {
+    const copied = [];
+    const result = await copyTextToClipboard('System.out.println("<ok>");\n', {
+        clipboard: { writeText: async (value) => copied.push(value) },
+    }, null);
+    assert.equal(result, true);
+    assert.deepEqual(copied, ['System.out.println("<ok>");\n']);
+});
+
+test('code block decorator adds local copy and editor actions once', () => {
+    function element(tagName) {
+        const node = {
+            tagName: tagName.toUpperCase(),
+            children: [],
+            parentElement: null,
+            parentNode: null,
+            className: '',
+            dataset: {},
+            attributes: {},
+            textContent: '',
+            type: '',
+            disabled: false,
+            title: '',
+            setAttribute(name, value) { this.attributes[name] = String(value); },
+            append(...children) {
+                for (const child of children) {
+                    if (child.parentNode?.children) {
+                        child.parentNode.children = child.parentNode.children.filter((item) => item !== child);
+                    }
+                    child.parentNode = this;
+                    child.parentElement = this;
+                    this.children.push(child);
+                }
+            },
+            get classList() {
+                return { contains: (name) => this.className.split(/\s+/).includes(name) };
+            },
+        };
+        return node;
+    }
+
+    const root = element('div');
+    const pre = element('pre');
+    const code = element('code');
+    code.className = 'language-java';
+    code.textContent = 'public class Main {}\n';
+    pre.append(code);
+    root.append(pre);
+    root.ownerDocument = { createElement: element };
+    root.querySelectorAll = () => [code];
+    root.insertBefore = function insertBefore(child, reference) {
+        child.parentNode = this;
+        child.parentElement = this;
+        this.children.splice(this.children.indexOf(reference), 0, child);
+    };
+
+    assert.equal(decorateAssistantCodeBlocks(root, { surface: 'acm' }), 1);
+    assert.equal(decorateAssistantCodeBlocks(root, { surface: 'acm' }), 0);
+    const block = root.children[0];
+    assert.equal(block.className, 'ai-code-block');
+    assert.equal(block.dataset.aiCodeLanguage, 'java');
+    assert.equal(block.children[1], pre);
+    const actions = block.children[0].children[1].children;
+    assert.equal(actions[0].dataset.aiCodeAction, 'copy');
+    assert.equal(actions[0].textContent, '复制');
+    assert.equal(actions[1].dataset.aiCodeAction, 'apply');
+    assert.equal(actions[1].textContent, '写入编辑器');
+    assert.equal(actions[1].disabled, false);
 });
 
 test('history applies a hard limit even when the latest message is oversized', () => {

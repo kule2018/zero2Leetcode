@@ -1894,7 +1894,12 @@ if (typeof window !== 'undefined') {
 const STORAGE_KEY = 'z2l_playground_';
 
 function saveCode(problemId, code) {
-    try { localStorage.setItem(STORAGE_KEY + problemId, code); } catch (e) { /* quota */ }
+    try {
+        localStorage.setItem(STORAGE_KEY + problemId, code);
+        return true;
+    } catch (e) {
+        return false;
+    }
 }
 
 function loadCode(problemId) {
@@ -2280,3 +2285,58 @@ function clearOutput() {
     document.getElementById('result-summary').textContent = '';
     document.getElementById('result-summary').className = 'result-summary';
 }
+
+function replacePlaygroundEditorContents(value, origin = '+ai') {
+    const doc = editor?.getDoc?.() || editor;
+    if (typeof doc?.replaceRange !== 'function') {
+        editor?.setValue?.(value);
+        return;
+    }
+    const firstLine = typeof doc.firstLine === 'function' ? doc.firstLine() : 0;
+    const lastLine = typeof doc.lastLine === 'function'
+        ? doc.lastLine()
+        : Math.max(firstLine, (doc.lineCount?.() || 1) - 1);
+    const replace = () => doc.replaceRange(
+        value,
+        { line: firstLine, ch: 0 },
+        { line: lastLine, ch: (doc.getLine?.(lastLine) || '').length },
+        origin
+    );
+    if (typeof editor.operation === 'function') editor.operation(replace);
+    else replace();
+}
+
+function applyGeneratedCodeToPlayground(payload = {}) {
+    const language = String(payload.language || '');
+    const code = payload.code;
+    if (language !== 'python') {
+        return { ok: false, message: '当前练习场只支持写入 Python 代码。' };
+    }
+    if (typeof code !== 'string' || !code.trim()) {
+        return { ok: false, message: '代码块为空，无法写入编辑器。' };
+    }
+    if (new TextEncoder().encode(code).byteLength > 96 * 1024) {
+        return { ok: false, message: '代码超过 96 KB，无法写入编辑器。' };
+    }
+    if (!editor || !currentProblem) {
+        return { ok: false, message: '编辑器尚未准备好，请稍后重试。' };
+    }
+
+    const previousCode = editor.getValue();
+    if (previousCode !== code) {
+        try {
+            replacePlaygroundEditorContents(code);
+        } catch (error) {
+            return { ok: false, message: '写入编辑器失败，请重试。' };
+        }
+        if (!saveCode(currentProblem.id, code)) {
+            replacePlaygroundEditorContents(previousCode, '+ai-rollback');
+            return { ok: false, message: '浏览器无法保存生成的代码，已恢复原草稿。' };
+        }
+    }
+    clearOutput();
+    editor.refresh?.();
+    return { ok: true, language: 'python' };
+}
+
+window.leetcodeApplyGeneratedCode = applyGeneratedCodeToPlayground;

@@ -550,6 +550,7 @@ const JAVA_WORKER_URL = 'assets/js/java-runner-worker.js?v=20260803';
 const JAVA_INIT_TIMEOUT_MS = 90000;
 const JAVA_MAX_CODE_BYTES = 48 * 1024;
 const JAVA_MAX_STDIN_BYTES = 16 * 1024;
+const GENERATED_CODE_MAX_BYTES = 96 * 1024;
 const STORAGE_LANGUAGE_KEY = 'z2l-acm-language';
 const LEGACY_STORAGE_KEY = 'z2l-acm-code';
 const LEGACY_STORAGE_INPUT_KEY = 'z2l-acm-input';
@@ -645,6 +646,26 @@ function setEditorValue(value) {
     suppressEditorSave = true;
     window.acmEditor.setValue(value);
     suppressEditorSave = false;
+}
+
+function replaceEditorContents(editor, value, origin = '+ai') {
+    const doc = editor?.getDoc?.() || editor;
+    if (typeof doc?.replaceRange !== 'function') {
+        editor?.setValue?.(value);
+        return;
+    }
+    const firstLine = typeof doc.firstLine === 'function' ? doc.firstLine() : 0;
+    const lastLine = typeof doc.lastLine === 'function'
+        ? doc.lastLine()
+        : Math.max(firstLine, (doc.lineCount?.() || 1) - 1);
+    const replace = () => doc.replaceRange(
+        value,
+        { line: firstLine, ch: 0 },
+        { line: lastLine, ch: (doc.getLine?.(lastLine) || '').length },
+        origin
+    );
+    if (typeof editor.operation === 'function') editor.operation(replace);
+    else replace();
 }
 
 // ---------- CodeMirror 编辑器初始化 ----------
@@ -2055,6 +2076,60 @@ function switchLanguage(nextLanguage) {
     updateLanguageUi();
     activateCurrentRuntime();
 }
+
+function applyGeneratedCode(payload = {}) {
+    const language = String(payload.language || '');
+    const code = payload.code;
+    if (!Object.prototype.hasOwnProperty.call(LANGUAGES, language)) {
+        return { ok: false, message: '代码块未标注 Python、Go 或 Java 17。' };
+    }
+    if (typeof code !== 'string' || !code.trim()) {
+        return { ok: false, message: '代码块为空，无法写入编辑器。' };
+    }
+    if (isRunning) {
+        return { ok: false, message: '代码正在运行，请结束后再写入。' };
+    }
+    const maximumBytes = language === 'java' ? JAVA_MAX_CODE_BYTES : GENERATED_CODE_MAX_BYTES;
+    if (utf8ByteLength(code) > maximumBytes) {
+        return { ok: false, message: `代码超过 ${Math.round(maximumBytes / 1024)} KB，无法写入编辑器。` };
+    }
+    if (!window.acmEditor) {
+        return { ok: false, message: '编辑器尚未准备好，请稍后重试。' };
+    }
+
+    const changedLanguage = language !== currentLanguage;
+    if (changedLanguage) {
+        switchLanguage(language);
+        if (currentLanguage !== language) {
+            return { ok: false, message: '无法保存当前语言草稿，未切换编辑器。' };
+        }
+        window.acmEditor.clearHistory?.();
+    } else if (!saveCurrentDraft()) {
+        return { ok: false, message: '浏览器无法保存当前草稿，未写入代码。' };
+    }
+
+    const previousCode = window.acmEditor.getValue();
+    if (previousCode !== code) {
+        clearTimeout(codeSaveTimer);
+        try {
+            replaceEditorContents(window.acmEditor, code);
+        } catch (error) {
+            return { ok: false, message: '写入编辑器失败，请重试。' };
+        }
+        if (!persistStorageEntries([[getCodeStorageKey(language), code]])) {
+            replaceEditorContents(window.acmEditor, previousCode, '+ai-rollback');
+            return { ok: false, message: '浏览器无法保存生成的代码，已恢复原草稿。' };
+        }
+    }
+
+    clearBreakpoints();
+    document.getElementById('template-select').value = '';
+    resetExecutionUi();
+    window.acmEditor.refresh?.();
+    return { ok: true, language };
+}
+
+window.acmApplyGeneratedCode = applyGeneratedCode;
 
 // ---------- 事件绑定 ----------
 function bindEvents() {

@@ -3,6 +3,8 @@
 // =============================================
 
 const AI_STORAGE_KEY = 'z2l_ai_config';
+const AI_DEFAULT_MODEL = 'poolside/laguna-s-2.1:free';
+const AI_LEGACY_DYNAMIC_MODEL = 'openrouter/free';
 const AI_CONTEXT_LIMITS = Object.freeze({
     problem: 10000,
     code: 18000,
@@ -139,39 +141,57 @@ function getWindow() {
     return typeof window !== 'undefined' ? window : null;
 }
 
+function getNavigator() {
+    return typeof navigator !== 'undefined' ? navigator : null;
+}
+
 function getStorage() {
     return typeof localStorage !== 'undefined' ? localStorage : null;
 }
 
 let sessionAIConfig = null;
 
+function normalizeConfiguredModel(model) {
+    const value = String(model || '').trim();
+    return !value || value === AI_LEGACY_DYNAMIC_MODEL ? AI_DEFAULT_MODEL : value;
+}
+
 function loadAIConfig() {
     if (sessionAIConfig) return { ...sessionAIConfig };
     const defaults = {
         baseUrl: 'https://openrouter.ai/api/v1',
         apiKey: _dk(),
-        model: 'openrouter/free',
+        model: AI_DEFAULT_MODEL,
     };
     try {
-        const saved = getStorage()?.getItem(AI_STORAGE_KEY);
+        const storage = getStorage();
+        const saved = storage?.getItem(AI_STORAGE_KEY);
         if (!saved) return defaults;
         const parsed = JSON.parse(saved);
-        return {
+        const config = {
             baseUrl: String(parsed.baseUrl || defaults.baseUrl),
             apiKey: String(parsed.apiKey || ''),
-            model: String(parsed.model || defaults.model),
+            model: normalizeConfiguredModel(parsed.model),
         };
+        if (parsed.model === AI_LEGACY_DYNAMIC_MODEL) {
+            try { storage.setItem(AI_STORAGE_KEY, JSON.stringify(config)); } catch (error) { /* session config still works */ }
+        }
+        return config;
     } catch (error) {
         return defaults;
     }
 }
 
 function saveAIConfig(config) {
-    sessionAIConfig = { ...config };
+    const normalizedConfig = {
+        ...config,
+        model: normalizeConfiguredModel(config?.model),
+    };
+    sessionAIConfig = normalizedConfig;
     try {
         const storage = getStorage();
         if (!storage) return false;
-        storage.setItem(AI_STORAGE_KEY, JSON.stringify(config));
+        storage.setItem(AI_STORAGE_KEY, JSON.stringify(normalizedConfig));
         return true;
     } catch (error) {
         return false;
@@ -200,6 +220,47 @@ function markdownCodeBlock(code, language) {
     const longestRun = runs.reduce((longest, run) => Math.max(longest, run.length), 2);
     const fence = '`'.repeat(Math.max(3, longestRun + 1));
     return `${fence}${language}\n${code}\n${fence}`;
+}
+
+function normalizeGeneratedCodeLanguage(language) {
+    const value = String(language || '')
+        .trim()
+        .toLowerCase()
+        .replace(/^language-/, '');
+    const aliases = {
+        py: 'python',
+        python: 'python',
+        python3: 'python',
+        go: 'go',
+        golang: 'go',
+        java: 'java',
+        java17: 'java',
+        'java-17': 'java',
+    };
+    return aliases[value] || '';
+}
+
+function getGeneratedCodeLanguage(codeElement) {
+    const classes = String(codeElement?.className || '').split(/\s+/);
+    const languageClass = classes.find((className) => /^language-/i.test(className));
+    return normalizeGeneratedCodeLanguage(languageClass || '');
+}
+
+function validateAssistantResponse(content, expectedLanguage = '') {
+    const text = String(content || '').trim();
+    if (!text) return { valid: false, message: 'AI 服务未返回内容，请重试。' };
+    if (/^user\s+safety\s*:\s*(?:safe|unsafe)[.!]?$/i.test(text)) {
+        return { valid: false, message: 'AI 服务返回了安全分类结果，没有生成代码，请重试。' };
+    }
+
+    const language = normalizeGeneratedCodeLanguage(expectedLanguage);
+    if (language === 'java' && !/\bpublic\s+(?:final\s+)?class\s+Main\b/.test(text)) {
+        return { valid: false, message: 'AI 没有返回完整的 Java 17 Main 程序，请重试。' };
+    }
+    if (language === 'go' && !/^\s*package\s+main\b/m.test(text)) {
+        return { valid: false, message: 'AI 没有返回完整的 Go main 程序，请重试。' };
+    }
+    return { valid: true, message: '' };
 }
 
 function readElementValue(doc, id) {
@@ -499,6 +560,107 @@ function sanitizeMarkdownHtml(html, doc = getDocument()) {
     return template.innerHTML;
 }
 
+async function copyTextToClipboard(text, nav = getNavigator(), doc = getDocument()) {
+    const value = String(text ?? '');
+    try {
+        if (typeof nav?.clipboard?.writeText === 'function') {
+            await nav.clipboard.writeText(value);
+            return true;
+        }
+    } catch (error) {
+        // Fall back for denied clipboard permissions and non-secure origins.
+    }
+
+    if (!doc?.body || typeof doc.createElement !== 'function' || typeof doc.execCommand !== 'function') {
+        return false;
+    }
+    const previousFocus = doc.activeElement;
+    const textarea = doc.createElement('textarea');
+    textarea.value = value;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.inset = '0 auto auto -9999px';
+    textarea.style.opacity = '0';
+    doc.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange?.(0, value.length);
+    let copied = false;
+    try {
+        copied = doc.execCommand('copy') === true;
+    } catch (error) {
+        copied = false;
+    }
+    textarea.remove();
+    previousFocus?.focus?.();
+    return copied;
+}
+
+function decorateAssistantCodeBlocks(container, options = {}) {
+    if (!container?.querySelectorAll) return 0;
+    const doc = container.ownerDocument || getDocument();
+    const surface = options.surface === 'acm' ? 'acm' : 'leetcode';
+    const allowApply = options.allowApply !== false;
+    let decoratedCount = 0;
+
+    for (const codeElement of Array.from(container.querySelectorAll('pre > code'))) {
+        const pre = codeElement.parentElement;
+        if (!pre?.parentNode || pre.parentElement?.classList?.contains('ai-code-block')) continue;
+
+        const language = getGeneratedCodeLanguage(codeElement);
+        const languageClass = String(codeElement.className || '')
+            .split(/\s+/)
+            .find((className) => /^language-/i.test(className)) || '';
+        const rawLanguage = languageClass.replace(/^language-/i, '');
+        const languageLabel = AI_LANGUAGE_META[language]?.label || rawLanguage || '代码';
+        const supportsLanguage = surface === 'acm'
+            ? Boolean(AI_LANGUAGE_META[language])
+            : language === 'python';
+
+        const block = doc.createElement('div');
+        block.className = 'ai-code-block';
+        block.dataset.aiCodeLanguage = language;
+
+        const toolbar = doc.createElement('div');
+        toolbar.className = 'ai-code-toolbar';
+
+        const label = doc.createElement('span');
+        label.className = 'ai-code-language';
+        label.textContent = languageLabel;
+
+        const actions = doc.createElement('div');
+        actions.className = 'ai-code-actions';
+
+        const copyButton = doc.createElement('button');
+        copyButton.type = 'button';
+        copyButton.className = 'ai-code-action';
+        copyButton.dataset.aiCodeAction = 'copy';
+        copyButton.textContent = '复制';
+        copyButton.setAttribute('aria-label', `复制 ${languageLabel} 代码`);
+
+        const applyButton = doc.createElement('button');
+        applyButton.type = 'button';
+        applyButton.className = 'ai-code-action ai-code-action-apply';
+        applyButton.dataset.aiCodeAction = 'apply';
+        applyButton.textContent = '写入编辑器';
+        applyButton.setAttribute('aria-label', `将 ${languageLabel} 代码写入编辑器`);
+        applyButton.disabled = !allowApply || !supportsLanguage;
+        if (!allowApply) {
+            applyButton.title = '回复未完整生成，仅可复制';
+        } else if (!language) {
+            applyButton.title = '代码块未标注支持的语言';
+        } else if (!supportsLanguage) {
+            applyButton.title = '当前编辑器不支持这种语言';
+        }
+
+        actions.append(copyButton, applyButton);
+        toolbar.append(label, actions);
+        pre.parentNode.insertBefore(block, pre);
+        block.append(toolbar, pre);
+        decoratedCount += 1;
+    }
+    return decoratedCount;
+}
+
 class AIAssistant {
     constructor() {
         this.isOpen = false;
@@ -534,6 +696,7 @@ class AIAssistant {
         if (required.some((element) => !element)) return;
 
         this.prepareAccessibility();
+        this.prepareActionStatus();
         this.bindEvents();
         this.bindContextUpdates();
         this.showWelcome();
@@ -567,6 +730,20 @@ class AIAssistant {
         this.syncPanelSemantics();
     }
 
+    prepareActionStatus() {
+        if (this.liveStatus) {
+            this.actionStatus = this.liveStatus;
+            return;
+        }
+        const status = getDocument().createElement('div');
+        status.className = 'ai-live-status ai-action-status';
+        status.setAttribute('role', 'status');
+        status.setAttribute('aria-live', 'polite');
+        status.setAttribute('aria-atomic', 'true');
+        this.panel.appendChild(status);
+        this.actionStatus = status;
+    }
+
     bindEvents() {
         this.fab.addEventListener('click', () => this.toggle());
         this.closeBtn?.addEventListener('click', () => this.close());
@@ -590,6 +767,7 @@ class AIAssistant {
             const button = event.target.closest('.ai-quick-btn');
             if (button) this.handleQuickAction(button.dataset.action);
         });
+        this.messagesEl.addEventListener('click', (event) => this.handleCodeBlockAction(event));
 
         getDocument()?.getElementById('ai-config-save')?.addEventListener('click', () => this.saveConfig());
         getDocument()?.getElementById('ai-config-cancel')?.addEventListener('click', () => this.closeConfig());
@@ -763,7 +941,7 @@ class AIAssistant {
         const config = {
             baseUrl: doc.getElementById('ai-cfg-base-url').value.trim() || 'https://openrouter.ai/api/v1',
             apiKey: doc.getElementById('ai-cfg-api-key').value.trim(),
-            model: doc.getElementById('ai-cfg-model').value.trim() || 'openrouter/free',
+            model: doc.getElementById('ai-cfg-model').value.trim() || AI_DEFAULT_MODEL,
         };
         if (!config.apiKey) {
             doc.getElementById('ai-cfg-api-key').focus();
@@ -856,7 +1034,88 @@ class AIAssistant {
         }
         this.inputEl.value = getQuickActionPrompt(action, context);
         this.resizeInput?.();
-        this.send({ visibleMessage: quickAction.label });
+        this.send({
+            visibleMessage: quickAction.label,
+            expectedLanguage: targetLanguage,
+        });
+    }
+
+    announceAction(message) {
+        if (!this.actionStatus) return;
+        this.actionStatus.textContent = '';
+        const update = () => { this.actionStatus.textContent = message; };
+        if (typeof getWindow()?.requestAnimationFrame === 'function') {
+            getWindow().requestAnimationFrame(update);
+        } else {
+            update();
+        }
+    }
+
+    flashCodeActionButton(button, label) {
+        if (!button) return;
+        const defaultLabel = button.dataset.aiDefaultLabel || button.textContent;
+        button.dataset.aiDefaultLabel = defaultLabel;
+        if (button.aiResetTimer) getWindow()?.clearTimeout?.(button.aiResetTimer);
+        button.textContent = label;
+        button.aiResetTimer = getWindow()?.setTimeout?.(() => {
+            if (button.isConnected) button.textContent = defaultLabel;
+            button.aiResetTimer = null;
+        }, 1500);
+    }
+
+    async handleCodeBlockAction(event) {
+        const button = event.target?.closest?.('button[data-ai-code-action]');
+        if (!button || !this.messagesEl.contains(button) || button.disabled) return;
+        const block = button.closest('.ai-code-block');
+        const codeElement = block?.querySelector('pre > code');
+        if (!block || !codeElement) return;
+
+        const action = button.dataset.aiCodeAction;
+        const code = codeElement.textContent || '';
+        if (action === 'copy') {
+            const copied = await copyTextToClipboard(code);
+            this.flashCodeActionButton(button, copied ? '已复制' : '复制失败');
+            this.announceAction(copied ? '代码已复制' : '复制失败，请检查浏览器剪贴板权限');
+            return;
+        }
+        if (action !== 'apply') return;
+
+        const language = block.dataset.aiCodeLanguage || '';
+        const adapter = this.isAcm
+            ? getWindow()?.acmApplyGeneratedCode
+            : getWindow()?.leetcodeApplyGeneratedCode;
+        let result;
+        try {
+            result = typeof adapter === 'function'
+                ? adapter({ language, code })
+                : { ok: false, message: '编辑器尚未准备好，请稍后重试。' };
+        } catch (error) {
+            result = { ok: false, message: '写入编辑器失败，请重试。' };
+        }
+
+        if (!result?.ok) {
+            this.flashCodeActionButton(button, '写入失败');
+            this.announceAction(result?.message || '写入编辑器失败');
+            if (result?.message) this.addSystemMessage(result.message);
+            return;
+        }
+
+        const label = AI_LANGUAGE_META[result.language || language]?.label || '代码';
+        this.flashCodeActionButton(button, '已写入');
+        this.announceAction(`${label}代码已写入编辑器`);
+        this.updateContextSummary();
+
+        const focusEditor = () => {
+            const editor = this.isAcm ? getWindow()?.acmEditor : getWindow()?.editor;
+            editor?.refresh?.();
+            editor?.focus?.();
+        };
+        if (this.isOverlayMode()) this.close();
+        if (typeof getWindow()?.requestAnimationFrame === 'function') {
+            getWindow().requestAnimationFrame(focusEditor);
+        } else {
+            focusEditor();
+        }
     }
 
     updateContextSummary() {
@@ -933,10 +1192,21 @@ class AIAssistant {
                 contentElement.textContent = 'AI 服务未返回内容，请重试。';
                 completionAnnouncement = 'AI 服务未返回内容';
             } else if (!this.discardCurrentResponse) {
-                renderResponse();
-                chatHistory.push({ role: 'assistant', content: fullContent });
-                completionAnnouncement = responseTruncated ? 'AI 回复过长，已截断' : 'AI 回复已生成';
-                if (responseTruncated) {
+                const validation = validateAssistantResponse(fullContent, options.expectedLanguage);
+                if (!validation.valid) {
+                    contentElement.innerHTML = '';
+                    const invalidElement = getDocument().createElement('div');
+                    invalidElement.className = 'ai-error';
+                    invalidElement.textContent = validation.message;
+                    contentElement.appendChild(invalidElement);
+                    completionAnnouncement = 'AI 回复无效，请重试';
+                } else {
+                    renderResponse();
+                    this.decorateCodeBlocks(contentElement, { allowApply: !responseTruncated });
+                    chatHistory.push({ role: 'assistant', content: fullContent });
+                    completionAnnouncement = responseTruncated ? 'AI 回复过长，已截断' : 'AI 回复已生成';
+                }
+                if (responseTruncated && validation.valid) {
                     const limitMessage = getDocument().createElement('div');
                     limitMessage.className = 'ai-error';
                     limitMessage.textContent = '回复过长，已在 60000 字符处停止生成。';
@@ -949,6 +1219,7 @@ class AIAssistant {
                 if (fullContent.trim() && !this.discardCurrentResponse) {
                     chatHistory.push({ role: 'assistant', content: fullContent });
                     contentElement.innerHTML = this.renderMarkdown(fullContent);
+                    this.decorateCodeBlocks(contentElement, { allowApply: false });
                     completionAnnouncement = '已停止生成，保留当前回复';
                 } else if (!this.discardCurrentResponse) {
                     contentElement.textContent = '已停止生成';
@@ -958,6 +1229,7 @@ class AIAssistant {
                 if (fullContent.trim() && !this.discardCurrentResponse) {
                     chatHistory.push({ role: 'assistant', content: fullContent });
                     contentElement.innerHTML = this.renderMarkdown(fullContent);
+                    this.decorateCodeBlocks(contentElement, { allowApply: false });
                 } else if (!this.discardCurrentResponse) {
                     contentElement.innerHTML = '';
                 }
@@ -1010,6 +1282,9 @@ class AIAssistant {
                 <div class="ai-msg-content">${rendered}</div>
             </div>`;
         this.messagesEl.appendChild(message);
+        if (role === 'assistant' && !loading) {
+            this.decorateCodeBlocks(message.querySelector('.ai-msg-content'));
+        }
         this.scrollToBottom();
         return message;
     }
@@ -1035,6 +1310,13 @@ class AIAssistant {
             }
         }
         return escapeHtml(text).replace(/\n/g, '<br>');
+    }
+
+    decorateCodeBlocks(container, options = {}) {
+        return decorateAssistantCodeBlocks(container, {
+            surface: this.isAcm ? 'acm' : 'leetcode',
+            ...options,
+        });
     }
 
     renderLoadingIndicator() {
@@ -1066,6 +1348,7 @@ function initializeAIAssistant() {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         AIAssistant,
+        AI_DEFAULT_MODEL,
         AI_LANGUAGE_META,
         QUICK_ACTIONS,
         SYSTEM_PROMPT,
@@ -1073,13 +1356,19 @@ if (typeof module !== 'undefined' && module.exports) {
         buildContextMessage,
         clipText,
         collectAssistantContext,
+        copyTextToClipboard,
+        decorateAssistantCodeBlocks,
         getQuickActionPrompt,
+        getGeneratedCodeLanguage,
         markdownCodeBlock,
         loadAIConfig,
+        normalizeConfiguredModel,
+        normalizeGeneratedCodeLanguage,
         saveAIConfig,
         sanitizeMarkdownHtml,
         streamChatCompletion,
         summarizeContext,
+        validateAssistantResponse,
     };
 }
 
