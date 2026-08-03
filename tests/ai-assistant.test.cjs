@@ -10,10 +10,13 @@ const {
     AIAssistant,
     QUICK_ACTIONS,
     SYSTEM_PROMPT,
+    boundedHistory,
     buildContextMessage,
     collectAssistantContext,
+    getQuickActionPrompt,
     loadAIConfig,
     saveAIConfig,
+    streamChatCompletion,
 } = require(assistantPath);
 
 function withBrowserGlobals(values, callback) {
@@ -43,6 +46,8 @@ test('ACM AI DOM and local assets are wired', () => {
     for (const id of requiredIds) assert.match(html, new RegExp(`id="${id}"`));
     assert.match(html, /data-action="convert-java"/);
     assert.match(html, /data-action="convert-go"/);
+    assert.match(html, /marked@15\.0\.12\/marked\.min\.js/);
+    assert.match(html, /integrity="sha384-[^"]+"/);
     assert.ok(
         html.indexOf('marked.min.js') < html.indexOf('assets/js/ai-assistant.js'),
         'Marked must be declared before the assistant'
@@ -127,6 +132,17 @@ test('conversion actions issue complete target-specific ACM prompts', () => {
     }
 });
 
+test('conversion prompts use the actual source language', () => {
+    const prompt = getQuickActionPrompt('convert-java', {
+        surface: 'acm',
+        language: 'go',
+        languageLabel: 'Go',
+        code: 'package main',
+    });
+    assert.match(prompt, /当前 Go 实现/);
+    assert.doesNotMatch(prompt, /当前 Python 实现/);
+});
+
 test('shared assistant keeps the LeetCode problem and Python editor context', () => {
     const document = {
         body: { dataset: {} },
@@ -165,6 +181,74 @@ test('assistant prompt and renderer are language-aware and sanitize Markdown HTM
     assert.match(assistantSource, /dangerousTags/);
     assert.match(assistantSource, /const safeHref =/);
     assert.match(assistantSource, /element\.removeAttribute\('href'\)/);
+});
+
+test('history applies a hard limit even when the latest message is oversized', () => {
+    const result = boundedHistory([
+        { role: 'assistant', content: 'old' },
+        { role: 'user', content: 'x'.repeat(100000) },
+    ]);
+    assert.equal(result.length, 1);
+    assert.ok(result[0].content.length <= 60000);
+});
+
+test('stream parser preserves split UTF-8 and cancels after the done event', async () => {
+    const originalFetch = globalThis.fetch;
+    const encoder = new TextEncoder();
+    let cancelled = false;
+    const event = encoder.encode('data: {"choices":[{"delta":{"content":"你好"}}]}\n');
+    const splitAt = event.indexOf(0xe5) + 1;
+    const done = encoder.encode('data: [DONE]\n');
+    globalThis.fetch = async () => ({
+        ok: true,
+        body: new ReadableStream({
+            start(controller) {
+                controller.enqueue(event.slice(0, splitAt));
+                controller.enqueue(event.slice(splitAt));
+                controller.enqueue(done);
+            },
+            cancel() { cancelled = true; },
+        }),
+    });
+
+    try {
+        const chunks = [];
+        for await (const chunk of streamChatCompletion([], {
+            baseUrl: 'https://example.test/v1',
+            apiKey: 'key',
+            model: 'model',
+        })) chunks.push(chunk);
+        assert.deepEqual(chunks, ['你好']);
+        assert.equal(cancelled, true);
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+test('stream parser reads a final SSE event without a trailing newline', async () => {
+    const originalFetch = globalThis.fetch;
+    const encoder = new TextEncoder();
+    globalThis.fetch = async () => ({
+        ok: true,
+        body: new ReadableStream({
+            start(controller) {
+                controller.enqueue(encoder.encode('data: {"choices":[{"delta":{"content":"tail"}}]}'));
+                controller.close();
+            },
+        }),
+    });
+
+    try {
+        const chunks = [];
+        for await (const chunk of streamChatCompletion([], {
+            baseUrl: 'https://example.test/v1',
+            apiKey: 'key',
+            model: 'model',
+        })) chunks.push(chunk);
+        assert.deepEqual(chunks, ['tail']);
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
 });
 
 test('an unsaved custom API config remains active for the current page session', () => {

@@ -740,8 +740,8 @@ class AIAssistant {
         this.configModal.inert = false;
         this.configModal.classList.add('open');
         this.configModal.setAttribute('aria-hidden', 'false');
+        doc.getElementById('ai-cfg-base-url')?.focus();
         this.syncBackgroundInert();
-        getWindow()?.requestAnimationFrame?.(() => doc.getElementById('ai-cfg-base-url')?.focus());
     }
 
     closeConfig(options = {}) {
@@ -902,24 +902,57 @@ class AIAssistant {
         const assistantMessage = this.addMessage('assistant', '', { loading: true });
         const contentElement = assistantMessage.querySelector('.ai-msg-content');
         let fullContent = '';
+        let lastRenderAt = Number.NEGATIVE_INFINITY;
+        let responseTruncated = false;
+        let completionAnnouncement = '';
+        const currentTime = () => {
+            const performanceTime = getWindow()?.performance?.now?.();
+            return Number.isFinite(performanceTime) ? performanceTime : Date.now();
+        };
+        const renderResponse = () => {
+            contentElement.innerHTML = this.renderMarkdown(fullContent);
+            lastRenderAt = currentTime();
+            this.scrollToBottom();
+        };
 
         try {
             for await (const chunk of streamChatCompletion(apiMessages, config, this.abortController.signal)) {
+                const remaining = AI_CONTEXT_LIMITS.response - fullContent.length;
+                if (remaining <= 0 || chunk.length > remaining) {
+                    if (remaining > 0) fullContent += chunk.slice(0, remaining);
+                    responseTruncated = true;
+                    this.abortController.abort();
+                    break;
+                }
                 fullContent += chunk;
                 assistantMessage.classList.remove('ai-msg-loading');
-                contentElement.innerHTML = this.renderMarkdown(fullContent);
-                this.scrollToBottom();
+                const now = currentTime();
+                if (now - lastRenderAt >= 80) renderResponse();
             }
-            if (!fullContent.trim()) contentElement.textContent = 'AI 服务未返回内容，请重试。';
-            else if (!this.discardCurrentResponse) chatHistory.push({ role: 'assistant', content: fullContent });
+            if (!fullContent.trim()) {
+                contentElement.textContent = 'AI 服务未返回内容，请重试。';
+                completionAnnouncement = 'AI 服务未返回内容';
+            } else if (!this.discardCurrentResponse) {
+                renderResponse();
+                chatHistory.push({ role: 'assistant', content: fullContent });
+                completionAnnouncement = responseTruncated ? 'AI 回复过长，已截断' : 'AI 回复已生成';
+                if (responseTruncated) {
+                    const limitMessage = getDocument().createElement('div');
+                    limitMessage.className = 'ai-error';
+                    limitMessage.textContent = '回复过长，已在 60000 字符处停止生成。';
+                    contentElement.appendChild(limitMessage);
+                }
+            }
         } catch (error) {
             assistantMessage.classList.remove('ai-msg-loading');
             if (error.name === 'AbortError') {
                 if (fullContent.trim() && !this.discardCurrentResponse) {
                     chatHistory.push({ role: 'assistant', content: fullContent });
                     contentElement.innerHTML = this.renderMarkdown(fullContent);
+                    completionAnnouncement = '已停止生成，保留当前回复';
                 } else if (!this.discardCurrentResponse) {
                     contentElement.textContent = '已停止生成';
+                    completionAnnouncement = '已停止生成';
                 }
             } else {
                 if (fullContent.trim() && !this.discardCurrentResponse) {
@@ -933,12 +966,16 @@ class AIAssistant {
                     errorElement.className = 'ai-error';
                     errorElement.textContent = error.message;
                     contentElement.appendChild(errorElement);
+                    completionAnnouncement = 'AI 请求失败';
                 }
             }
         } finally {
             assistantMessage.classList.remove('ai-msg-loading');
             this.abortController = null;
             this.setStreamingState(false);
+            if (this.liveStatus && !this.discardCurrentResponse) {
+                this.liveStatus.textContent = completionAnnouncement;
+            }
             this.discardCurrentResponse = false;
             this.scrollToBottom();
         }
@@ -950,6 +987,7 @@ class AIAssistant {
 
     setStreamingState(active) {
         this.isStreaming = active;
+        if (active && this.liveStatus) this.liveStatus.textContent = '';
         this.messagesEl.setAttribute('aria-busy', active ? 'true' : 'false');
         this.panel.classList.toggle('is-streaming', active);
         this.sendBtn.classList.toggle('is-stop', active);
@@ -1031,13 +1069,16 @@ if (typeof module !== 'undefined' && module.exports) {
         AI_LANGUAGE_META,
         QUICK_ACTIONS,
         SYSTEM_PROMPT,
+        boundedHistory,
         buildContextMessage,
         clipText,
         collectAssistantContext,
+        getQuickActionPrompt,
         markdownCodeBlock,
         loadAIConfig,
         saveAIConfig,
         sanitizeMarkdownHtml,
+        streamChatCompletion,
         summarizeContext,
     };
 }

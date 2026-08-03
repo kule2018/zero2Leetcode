@@ -178,6 +178,18 @@ body[data-ai-surface="acm"] .acm-main {
     scrollbar-width: thin;
 }
 
+.ai-live-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .ai-welcome {
     margin: auto 0;
     padding: 24px 12px;
@@ -424,6 +436,17 @@ body[data-ai-surface="acm"] .acm-main {
     color: var(--text-primary);
 }
 
+.ai-quick-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.ai-quick-btn:disabled:hover {
+    border-color: var(--border-color);
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
 .ai-quick-btn-primary {
     min-height: 38px;
     display: inline-flex;
@@ -542,7 +565,7 @@ body[data-ai-surface="acm"] .acm-main {
 .ai-overlay {
     position: fixed;
     z-index: 1150;
-    inset: 60px 0 0;
+    inset: 0;
     visibility: hidden;
     pointer-events: none;
     opacity: 0;
@@ -673,16 +696,46 @@ body[data-ai-surface="acm"] .acm-main {
     }
 }
 
+@media (min-width: 1200px) and (max-width: 1550px) {
+    body[data-ai-surface="acm"].ai-open .acm-toolbar {
+        flex-wrap: wrap;
+    }
+
+    body[data-ai-surface="acm"].ai-open .toolbar-left {
+        width: 100%;
+    }
+
+    body[data-ai-surface="acm"].ai-open .toolbar-right {
+        margin-left: auto;
+    }
+}
+
 @media (max-width: 1199px) {
     .acm-ai-panel {
         width: min(440px, 92vw);
+    }
+
+    .ai-icon-btn,
+    .ai-send-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .ai-quick-btn,
+    .ai-config-btn {
+        min-height: 44px;
+    }
+
+    .ai-config-field input,
+    .ai-input {
+        min-height: 44px;
     }
 }
 
 @media (max-width: 768px) {
     .toolbar-right .btn-ai-coach {
-        width: 40px;
-        min-height: 40px;
+        width: 44px;
+        min-height: 44px;
         padding: 0;
     }
 
