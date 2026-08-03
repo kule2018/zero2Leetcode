@@ -380,6 +380,16 @@ test('Java is enabled in the selector and CodeMirror loads Java syntax mode', ()
     assert.match(html, /mode\/clike\/clike\.min\.js/);
 });
 
+test('ACM navigation prioritizes written and interview question archives', () => {
+    const html = fs.readFileSync(path.join(root, 'acm-playground.html'), 'utf8');
+    const nav = html.match(/<ul class="nav-menu">([\s\S]*?)<\/ul>/)?.[1] || '';
+
+    assert.match(nav, /href="04_real_interviews\/index\.html"[^>]*>笔试真题<\/a>/);
+    assert.match(nav, /href="05_interview\/"[^>]*>面试真题<\/a>/);
+    assert.doesNotMatch(nav, />学习路线<\/a>/);
+    assert.doesNotMatch(nav, />知识模块<\/a>/);
+});
+
 test('browser worker pins CheerpJ 4.3 and initializes Java 17', () => {
     const workerSource = fs.readFileSync(path.join(root, 'assets/js/java-runner-worker.js'), 'utf8');
 
