@@ -27,28 +27,28 @@ eyebrow: 面试手撕 / 美团
 | 排名 | 题目 | 样本频次 | 核心方法 |
 |------|------|----------|----------|
 | 1 | 手写快速排序 | **6** | 分治 + Partition |
-| 2 | LC 92 反转链表 II | **5** | 区间反转 + 节点重连 |
+| 2 | [LC 92 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/)（本站练习场暂未收录） | **5** | 区间反转 + 节点重连 |
 | 2 | [LC 102 二叉树的层序遍历](https://onefly.top/zero2Leetcode/playground.html?id=102) | **5** | BFS + 队列 |
 | 2 | [LC 206 反转链表](https://onefly.top/zero2Leetcode/playground.html?id=206) | **5** | 迭代 / 递归 |
-| 2 | LC 88 合并两个有序数组 | **5** | 逆向双指针 |
+| 2 | [LC 88 合并两个有序数组](https://leetcode.cn/problems/merge-sorted-array/)（本站练习场暂未收录） | **5** | 逆向双指针 |
 | 2 | [LC 142 环形链表 II](https://onefly.top/zero2Leetcode/playground.html?id=142) | **5** | Floyd 快慢指针 |
 | 7 | [LC 141 环形链表](https://onefly.top/zero2Leetcode/playground.html?id=141) | **4** | 快慢指针 |
 | 8 | [LC 21 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) | **3** | 双指针 + 哨兵节点 |
 | 8 | [LC 215 数组中的第 K 个最大元素](https://onefly.top/zero2Leetcode/playground.html?id=215) | **3** | 快速选择 / 堆 |
-| 8 | LC 144 二叉树的前序遍历 | **3** | 递归 / 迭代栈 |
+| 8 | [LC 144 二叉树的前序遍历](https://leetcode.cn/problems/binary-tree-preorder-traversal/)（本站练习场暂未收录） | **3** | 递归 / 迭代栈 |
 | 8 | [LC 19 删除链表的倒数第 N 个节点](https://onefly.top/zero2Leetcode/playground.html?id=19) | **3** | 快慢指针 |
-| 12 | LC 43 字符串相乘 | **2** | 竖式乘法模拟 |
-| 12 | LC 82 删除排序链表中的重复元素 II | **2** | 双指针 + 哨兵节点 |
+| 12 | [LC 43 字符串相乘](https://leetcode.cn/problems/multiply-strings/)（本站练习场暂未收录） | **2** | 竖式乘法模拟 |
+| 12 | [LC 82 删除排序链表中的重复元素 II](https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/)（本站练习场暂未收录） | **2** | 双指针 + 哨兵节点 |
 | 12 | [LC 32 最长有效括号](https://onefly.top/zero2Leetcode/playground.html?id=32) | **2** | DP / 栈 |
-| 12 | LC 14 最长公共前缀 | **2** | 横向扫描 / 排序 |
-| 12 | LC 111 二叉树的最小深度 | **2** | BFS / DFS |
+| 12 | [LC 14 最长公共前缀](https://leetcode.cn/problems/longest-common-prefix/)（本站练习场暂未收录） | **2** | 横向扫描 / 排序 |
+| 12 | [LC 111 二叉树的最小深度](https://leetcode.cn/problems/minimum-depth-of-binary-tree/)（本站练习场暂未收录） | **2** | BFS / DFS |
 | 12 | [LC 15 三数之和](https://onefly.top/zero2Leetcode/playground.html?id=15) | **2** | 排序 + 双指针 |
-| 12 | LC 143 重排链表 | **2** | 找中点 + 反转 + 合并 |
+| 12 | [LC 143 重排链表](https://leetcode.cn/problems/reorder-list/)（本站练习场暂未收录） | **2** | 找中点 + 反转 + 合并 |
 | 12 | [LC 23 合并 K 个升序链表](https://onefly.top/zero2Leetcode/playground.html?id=23) | **2** | 优先队列 / 分治 |
-| 12 | LC 8 字符串转换整数（atoi） | **2** | 字符串模拟 + 边界处理 |
+| 12 | [LC 8 字符串转换整数（atoi）](https://leetcode.cn/problems/string-to-integer-atoi/)（本站练习场暂未收录） | **2** | 字符串模拟 + 边界处理 |
 | 12 | [LC 239 滑动窗口最大值](https://onefly.top/zero2Leetcode/playground.html?id=239) | **2** | 单调队列 |
 
-> 带链接的题目已收录到本站练习场；其余题目可按题号在 LeetCode 练习。
+> 链接到本站练习场的题目可直接在线编码；标注“本站练习场暂未收录”的题目将跳转到 LeetCode 中文站。
 
 ---
 
@@ -183,8 +183,8 @@ LC 15 先排序，再枚举第一个数，剩余部分使用双指针。主要�
 字符串题数量不多，但都容易因边界处理失分：
 
 - LC 8 atoi：空格、正负号、非数字终止和 32 位整数截断。
-- LC 14 最长公共前缀：空数组和单字符串输入。
-- LC 43 字符串相乘：结果数组下标映射、进位和前导零。
+- [LC 14 最长公共前缀](https://leetcode.cn/problems/longest-common-prefix/)（本站练习场暂未收录）：空数组和单字符串输入。
+- [LC 43 字符串相乘](https://leetcode.cn/problems/multiply-strings/)（本站练习场暂未收录）：结果数组下标映射、进位和前导零。
 - LC 32 最长有效括号：需要熟悉 DP 或栈的状态含义。
 
 ---
@@ -198,9 +198,9 @@ LC 15 先排序，再枚举第一个数，剩余部分使用双指针。主要�
 | 题目 | 主要考点 |
 |------|----------|
 | [LC 146 LRU 缓存](https://onefly.top/zero2Leetcode/playground.html?id=146) | 哈希表 + 双向链表 |
-| LC 120 三角形最小路径和 | 动态规划 / 空间压缩 |
-| LC 143 重排链表 | 找中点 + 反转 + 合并 |
-| LC 93 复原 IP 地址 | 回溯 + 合法性判断 |
+| [LC 120 三角形最小路径和](https://leetcode.cn/problems/triangle/)（本站练习场暂未收录） | 动态规划 / 空间压缩 |
+| [LC 143 重排链表](https://leetcode.cn/problems/reorder-list/)（本站练习场暂未收录） | 找中点 + 反转 + 合并 |
+| [LC 93 复原 IP 地址](https://leetcode.cn/problems/restore-ip-addresses/)（本站练习场暂未收录） | 回溯 + 合法性判断 |
 | IP 地址与整数转换 | 位运算 / 字符串解析 |
 
 这一组题同时覆盖数据结构设计、动态规划、链表组合、回溯和网络地址转换，准备时应特别注意 IP 地址的合法范围与整数溢出问题。
@@ -209,7 +209,7 @@ LC 15 先排序，再枚举第一个数，剩余部分使用双指针。主要�
 
 | 题目 | 主要考点 |
 |------|----------|
-| LC 143 重排链表 | 链表综合操作 |
+| [LC 143 重排链表](https://leetcode.cn/problems/reorder-list/)（本站练习场暂未收录） | 链表综合操作 |
 | [LC 32 最长有效括号](https://onefly.top/zero2Leetcode/playground.html?id=32) | DP / 栈 |
 
 两道题都不是单一模板的直接套用，重点练习多步骤算法的口述和边界验证。
@@ -218,7 +218,7 @@ LC 15 先排序，再枚举第一个数，剩余部分使用双指针。主要�
 
 | 题目 | 主要考点 |
 |------|----------|
-| LC 718 最长重复子数组 | 二维 DP / 滚动数组 |
+| [LC 718 最长重复子数组](https://leetcode.cn/problems/maximum-length-of-repeated-subarray/)（本站练习场暂未收录） | 二维 DP / 滚动数组 |
 | [LC 23 合并 K 个升序链表](https://onefly.top/zero2Leetcode/playground.html?id=23) | 优先队列 / 分治 |
 
 LC 718 需要区分“子数组”和“子序列”：子数组要求元素连续，状态转移不能沿用最长公共子序列的写法。
@@ -227,9 +227,9 @@ LC 718 需要区分“子数组”和“子序列”：子数组要求元素连�
 
 | 题目 | 主要考点 |
 |------|----------|
-| LC 16 最接近的三数之和 | 排序 + 双指针 |
+| [LC 16 最接近的三数之和](https://leetcode.cn/problems/3sum-closest/)（本站练习场暂未收录） | 排序 + 双指针 |
 | [LC 42 接雨水](https://onefly.top/zero2Leetcode/playground.html?id=42) | 双指针 / 单调栈 |
-| LC 647 回文子串 | 中心扩展 / DP |
+| [LC 647 回文子串](https://leetcode.cn/problems/palindromic-substrings/)（本站练习场暂未收录） | 中心扩展 / DP |
 
 这一组以数组和字符串为主。接雨水建议掌握双指针和单调栈两种方法，并能说明每种方法维护的状态。
 
@@ -240,7 +240,7 @@ LC 718 需要区分“子数组”和“子序列”：子数组要求元素连�
 | [LC 124 二叉树中的最大路径和](https://onefly.top/zero2Leetcode/playground.html?id=124) | 后序遍历 + 全局最优值 |
 | [LC 128 最长连续序列](https://onefly.top/zero2Leetcode/playground.html?id=128) | 哈希集合 |
 | [LC 236 二叉树的最近公共祖先](https://onefly.top/zero2Leetcode/playground.html?id=236) | 递归后序遍历 |
-| LC 468 验证 IP 地址 | 字符串解析 + 严格校验 |
+| [LC 468 验证 IP 地址](https://leetcode.cn/problems/validate-ip-address/)（本站练习场暂未收录） | 字符串解析 + 严格校验 |
 
 二叉树题占一半。LC 124 和 LC 236 都需要先定义递归返回值，再组合左右子树结果。
 
@@ -248,8 +248,8 @@ LC 718 需要区分“子数组”和“子序列”：子数组要求元素连�
 
 | 题目 | 主要考点 |
 |------|----------|
-| LC 718 最长重复子数组 | 二维 DP / 滚动数组 |
-| LC 103 二叉树的锯齿形层序遍历 | BFS + 层序方向控制 |
+| [LC 718 最长重复子数组](https://leetcode.cn/problems/maximum-length-of-repeated-subarray/)（本站练习场暂未收录） | 二维 DP / 滚动数组 |
+| [LC 103 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)（本站练习场暂未收录） | BFS + 层序方向控制 |
 
 锯齿形遍历可以在普通层序遍历基础上改变每层写入顺序，不需要改变节点入队顺序。
 
@@ -258,13 +258,13 @@ LC 718 需要区分“子数组”和“子序列”：子数组要求元素连�
 | 题目 | 主要考点 |
 |------|----------|
 | [LC 5 最长回文子串](https://onefly.top/zero2Leetcode/playground.html?id=5) | 中心扩展 / DP |
-| LC 468 验证 IP 地址 | 字符串解析 + 边界处理 |
+| [LC 468 验证 IP 地址](https://leetcode.cn/problems/validate-ip-address/)（本站练习场暂未收录） | 字符串解析 + 边界处理 |
 
 最长回文子串优先掌握中心扩展法；验证 IP 地址要分别处理 IPv4 和 IPv6 的段数、字符范围与前导零规则。
 
 ### 8. 智慧交通测试岗补充
 
-样本还记录到 LC 326「3 的幂」。这道题可以用循环除法，也可以讨论整数范围内最大 3 的幂取模的做法。准备测试岗时，应同时说明零、负数和非 3 次幂输入的处理。
+样本还记录到 [LC 326「3 的幂」](https://leetcode.cn/problems/power-of-three/)（本站练习场暂未收录）。这道题可以用循环除法，也可以讨论整数范围内最大 3 的幂取模的做法。准备测试岗时，应同时说明零、负数和非 3 次幂输入的处理。
 
 ---
 
