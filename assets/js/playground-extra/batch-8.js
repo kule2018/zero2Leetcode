@@ -45,7 +45,7 @@ def _run_rotate(nums, k):
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/rotate-array/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/22228302.html',
   },
   {
     id: 238,
@@ -85,7 +85,7 @@ def _run_rotate(nums, k):
     ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/product-of-array-except-self/solutions/',
-    blogUrl: '',
+    blogUrl: 'https://www.cnblogs.com/ranxi169/p/22228304.html',
   },
   {
     id: 146,
