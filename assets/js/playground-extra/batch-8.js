@@ -1,7 +1,92 @@
-// Extra playground problems (batch 8) — 设计类题目
+// Extra playground problems (batch 8) — 设计与其他技巧
 // Note: Keep this file self-contained. It only appends objects into window.PLAYGROUND_EXTRA_PROBLEMS.
 
 window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).concat([
+  {
+    id: 189,
+    title: 'LC 189 - 轮转数组',
+    difficulty: 'Medium',
+    tags: ['数组', '双指针'],
+    description: `
+<h3>189. 轮转数组 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给定一个整数数组 <code>nums</code>，将数组中的元素向右轮转 <code>k</code> 个位置，其中 <code>k</code> 是非负数。</p>
+<p>请<strong>原地</strong>修改数组；本站测试会读取修改后的 <code>nums</code>，无需返回值。</p>
+<h4>示例</h4>
+<pre>输入：nums = [1,2,3,4,5,6,7], k = 3
+输出：[5,6,7,1,2,3,4]</pre>
+<pre>输入：nums = [-1,-100,3,99], k = 2
+输出：[3,99,-1,-100]</pre>
+<h4>提示</h4>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10<sup>5</sup></li>
+<li>0 &lt;= k &lt;= 10<sup>5</sup></li>
+<li>尝试使用空间复杂度为 <code>O(1)</code> 的原地算法。</li>
+</ul>`,
+    template: `def rotate(nums, k):
+    """
+    :type nums: List[int]
+    :type k: int
+    :rtype: None
+    """
+    # 请原地修改 nums
+    pass
+`,
+    functionName: '_run_rotate',
+    setup: `
+def _run_rotate(nums, k):
+    rotate(nums, k)
+    return nums
+`,
+    testCases: [
+      { input: [[1, 2, 3, 4, 5, 6, 7], 3], expected: [5, 6, 7, 1, 2, 3, 4] },
+      { input: [[-1, -100, 3, 99], 2], expected: [3, 99, -1, -100] },
+      { input: [[1, 2], 3], expected: [2, 1] },
+      { input: [[1], 0], expected: [1] },
+    ],
+    compareFunc: 'equal',
+    solutionUrl: 'https://leetcode.cn/problems/rotate-array/solutions/',
+    blogUrl: '',
+  },
+  {
+    id: 238,
+    title: 'LC 238 - 除自身以外数组的乘积',
+    difficulty: 'Medium',
+    tags: ['数组', '前缀积'],
+    description: `
+<h3>238. 除自身以外数组的乘积 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个整数数组 <code>nums</code>，返回数组 <code>answer</code>，其中 <code>answer[i]</code> 等于 <code>nums</code> 中除 <code>nums[i]</code> 之外其余各元素的乘积。</p>
+<p>题目数据保证数组中任意元素的全部前缀元素和后缀元素的乘积都在 32 位整数范围内。</p>
+<p>请在 <code>O(n)</code> 时间复杂度内完成，并且不能使用除法。</p>
+<h4>示例</h4>
+<pre>输入：nums = [1,2,3,4]
+输出：[24,12,8,6]</pre>
+<pre>输入：nums = [-1,1,0,-3,3]
+输出：[0,0,9,0,0]</pre>
+<h4>提示</h4>
+<ul>
+<li>2 &lt;= nums.length &lt;= 10<sup>5</sup></li>
+<li>-30 &lt;= nums[i] &lt;= 30</li>
+<li>进阶：除输出数组外，能否只使用 <code>O(1)</code> 额外空间？</li>
+</ul>`,
+    template: `def product_except_self(nums):
+    """
+    :type nums: List[int]
+    :rtype: List[int]
+    """
+    # 在这里写你的代码
+    pass
+`,
+    functionName: 'product_except_self',
+    testCases: [
+      { input: [[1, 2, 3, 4]], expected: [24, 12, 8, 6] },
+      { input: [[-1, 1, 0, -3, 3]], expected: [0, 0, 9, 0, 0] },
+      { input: [[0, 0]], expected: [0, 0] },
+      { input: [[2, 3]], expected: [3, 2] },
+    ],
+    compareFunc: 'equal',
+    solutionUrl: 'https://leetcode.cn/problems/product-of-array-except-self/solutions/',
+    blogUrl: '',
+  },
   {
     id: 146,
     title: 'LC 146 - LRU 缓存',

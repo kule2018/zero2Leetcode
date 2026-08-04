@@ -300,7 +300,7 @@ Top 20 之后，不建议继续按总榜名次零散刷题。把同类题集中�
 - [LC 437 路径总和 III](https://onefly.top/zero2Leetcode/playground.html?id=437)
 - [LC 138 随机链表的复制](https://onefly.top/zero2Leetcode/playground.html?id=138)
 - [LC 73 矩阵置零](https://onefly.top/zero2Leetcode/playground.html?id=73)
-- LC 238 除自身以外数组的乘积（本站练习场暂未收录）
+- [LC 238 除自身以外数组的乘积](https://onefly.top/zero2Leetcode/playground.html?id=238)
 - [LC 438 找到字符串中所有字母异位词](https://onefly.top/zero2Leetcode/playground.html?id=438)
 
 其余未统计项为平台内部基础题，例如 A+B、数组求和、矩阵求和和基础链表遍历，不属于严格的 Hot 100 范围。

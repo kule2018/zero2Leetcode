@@ -125,6 +125,8 @@ const PROBLEMS_DATA = [
     { id: 240, title: "搜索二维矩阵 II", difficulty: "medium", category: "matrix", url: "https://leetcode.cn/problems/search-a-2d-matrix-ii/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778848.html" },
 
     // 其他技巧
+    { id: 189, title: "轮转数组", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/rotate-array/", blogUrl: "" },
+    { id: 238, title: "除自身以外数组的乘积", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/product-of-array-except-self/", blogUrl: "" },
     { id: 136, title: "只出现一次的数字", difficulty: "easy", category: "other", url: "https://leetcode.cn/problems/single-number/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19731715" },
     { id: 169, title: "多数元素", difficulty: "easy", category: "other", url: "https://leetcode.cn/problems/majority-element/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19736326" },
     { id: 75, title: "颜色分类", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/sort-colors/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778849.html" },
