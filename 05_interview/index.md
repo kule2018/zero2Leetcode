@@ -25,6 +25,7 @@ eyebrow: Module 06
 | [腾讯](coding/tencent-202604/) | 2026.4 | 3784 篇面经 | LC原题TOP10 + 25%原创场景题 + 腾讯vs字节对比分析 |
 | [华为](coding/huawei/) | 2026.4 | 25/26届面经 | Top20高频题 + 完整题单 + 10天备考规划 + AI岗ML手撕 |
 | [阿里千问](coding/alibaba-qwen-vibecoding/) | 2026.4 | VibeCoding | 高性能增量数据同步 CLI 工具，含完整范式方法论 |
+| [Hot 100 真实考频](coding/hot100-frequency-202608/) | 2026.8 | 6139 篇独立样本 | 华为/腾讯/字节 Top 50 高频题 + 分章节刷题路线 |
 
 ## 综合测评 {#assessment}
 
