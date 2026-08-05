@@ -215,6 +215,8 @@ modules:
             slug: "huawei/dev-20260724"
           - title: "AI岗 7.24"
             slug: "huawei/ai-20260724"
+          - title: "AI岗 8.5"
+            slug: "huawei/ai-20260805"
           - title: "机考备考指南"
             slug: "huawei/exam-guide"
           - title: "AI机考一周速成攻略"
