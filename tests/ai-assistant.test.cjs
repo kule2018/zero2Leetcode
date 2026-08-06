@@ -52,6 +52,8 @@ test('ACM AI DOM and local assets are wired', () => {
     for (const id of requiredIds) assert.match(html, new RegExp(`id="${id}"`));
     assert.match(html, /data-action="convert-java"/);
     assert.match(html, /data-action="convert-go"/);
+    assert.match(html, /assets\/images\/ai-assistant-logo\.svg/);
+    assert.doesNotMatch(html, /<rect x="4" y="7" width="16" height="11" rx="4"/);
     assert.match(html, /marked@15\.0\.12\/marked\.min\.js/);
     assert.match(html, /integrity="sha384-[^"]+"/);
     assert.ok(
@@ -73,10 +75,25 @@ test('ACM AI DOM and local assets are wired', () => {
 test('LeetCode quick actions include a Python code generation button', () => {
     const html = fs.readFileSync(path.join(root, 'playground.html'), 'utf8');
 
+    assert.match(html, /assets\/images\/ai-assistant-logo\.svg/);
+    assert.doesNotMatch(html, /<rect x="4" y="7" width="16" height="11" rx="4"/);
+
     assert.match(html, /data-action="give-code"[^>]*>💻 给我代码<\/button>/);
     assert.equal(QUICK_ACTIONS['give-code'].label, '给我代码');
     assert.match(QUICK_ACTIONS['give-code'].prompt, /Python 3/);
     assert.match(QUICK_ACTIONS['give-code'].prompt, /完整/);
+});
+
+test('AI assistant logo is a transparent scalable SVG used by dynamic messages', () => {
+    const logo = fs.readFileSync(path.join(root, 'assets/images/ai-assistant-logo.svg'), 'utf8');
+
+    assert.match(logo, /viewBox="0 0 64 64"/);
+    assert.match(logo, /stroke="url\(#left\)"/);
+    assert.match(logo, /stroke="url\(#right\)"/);
+    assert.match(logo, /fill="url\(#spark\)"/);
+    assert.doesNotMatch(logo, /<rect|background|#[Ff]{6}/);
+    assert.match(assistantSource, /assets\/images\/ai-assistant-logo\.svg/);
+    assert.doesNotMatch(assistantSource, /<rect x="4" y="7" width="16" height="11" rx="4"/);
 });
 
 test('give-code quick action sends its dedicated Python implementation prompt', () => {

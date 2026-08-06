@@ -103,28 +103,10 @@ function _dk() {
 }
 
 const AI_ICON_SVG = `
-<svg class="ai-brand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M12 3v3" />
-    <path d="M9 3h6" />
-    <rect x="4" y="7" width="16" height="11" rx="4" />
-    <path d="M9 11h.01" />
-    <path d="M15 11h.01" />
-    <path d="M8.5 15h7" />
-    <path d="M7 21v-3" />
-    <path d="M17 21v-3" />
-</svg>`;
+<img class="ai-brand-icon" src="assets/images/ai-assistant-logo.svg" width="18" height="18" alt="" aria-hidden="true">`;
 
 const AI_WELCOME_ICON_SVG = `
-<svg class="ai-brand-icon ai-brand-icon-large" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M12 3v3" />
-    <path d="M9 3h6" />
-    <rect x="4" y="7" width="16" height="11" rx="4" />
-    <path d="M9 11h.01" />
-    <path d="M15 11h.01" />
-    <path d="M8.5 15h7" />
-    <path d="M7 21v-3" />
-    <path d="M17 21v-3" />
-</svg>`;
+<img class="ai-brand-icon ai-brand-icon-large" src="assets/images/ai-assistant-logo.svg" width="64" height="64" alt="" aria-hidden="true">`;
 
 const AI_USER_ICON_SVG = `
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
