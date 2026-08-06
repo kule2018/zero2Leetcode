@@ -1175,7 +1175,8 @@ class AIAssistant {
         this.abortController = new AbortController();
         this.discardCurrentResponse = false;
         this.setStreamingState(true);
-        const assistantMessage = this.addMessage('assistant', '', { loading: true });
+        const assistantMessage = this.addMessage('assistant', '', { loading: true, scroll: false });
+        this.scrollMessageToStart(assistantMessage);
         const contentElement = assistantMessage.querySelector('.ai-msg-content');
         let fullContent = '';
         let lastRenderAt = Number.NEGATIVE_INFINITY;
@@ -1188,7 +1189,6 @@ class AIAssistant {
         const renderResponse = () => {
             contentElement.innerHTML = this.renderMarkdown(fullContent);
             lastRenderAt = currentTime();
-            this.scrollToBottom();
         };
 
         try {
@@ -1266,7 +1266,6 @@ class AIAssistant {
                 this.liveStatus.textContent = completionAnnouncement;
             }
             this.discardCurrentResponse = false;
-            this.scrollToBottom();
         }
     }
 
@@ -1302,7 +1301,7 @@ class AIAssistant {
         if (role === 'assistant' && !loading) {
             this.decorateCodeBlocks(message.querySelector('.ai-msg-content'));
         }
-        this.scrollToBottom();
+        if (options.scroll !== false) this.scrollToBottom();
         return message;
     }
 
@@ -1349,6 +1348,13 @@ class AIAssistant {
     scrollToBottom() {
         getWindow()?.requestAnimationFrame?.(() => {
             this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+        });
+    }
+
+    scrollMessageToStart(message) {
+        if (!message || !this.messagesEl) return;
+        getWindow()?.requestAnimationFrame?.(() => {
+            this.messagesEl.scrollTop = Math.max(0, message.offsetTop - 12);
         });
     }
 }

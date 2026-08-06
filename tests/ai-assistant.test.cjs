@@ -349,6 +349,31 @@ test('code block decorator adds local copy and editor actions once', () => {
     assert.equal(actions[1].disabled, false);
 });
 
+test('streaming responses pin the viewport to the start instead of chasing new tokens', () => {
+    assert.match(assistantSource, /scrollMessageToStart\(assistantMessage\)/);
+    assert.match(assistantSource, /addMessage\('assistant', '', \{ loading: true, scroll: false \}\)/);
+
+    const renderResponseBody = assistantSource.match(/const renderResponse = \(\) => \{([\s\S]*?)\n        \};/i)?.[1] || '';
+    assert.doesNotMatch(renderResponseBody, /scrollToBottom/);
+    assert.doesNotMatch(assistantSource, /this\.discardCurrentResponse = false;\n\s*this\.scrollToBottom\(\);/);
+});
+
+test('scrollMessageToStart aligns the new answer with a small reading offset', () => {
+    const assistant = Object.create(AIAssistant.prototype);
+    const scheduled = [];
+    assistant.messagesEl = { scrollTop: 0 };
+    const message = { offsetTop: 240 };
+
+    withBrowserGlobals({
+        window: { requestAnimationFrame: (callback) => scheduled.push(callback) },
+    }, () => {
+        assistant.scrollMessageToStart(message);
+        assert.equal(assistant.messagesEl.scrollTop, 0);
+        scheduled[0]();
+        assert.equal(assistant.messagesEl.scrollTop, 228);
+    });
+});
+
 test('history applies a hard limit even when the latest message is oversized', () => {
     const result = boundedHistory([
         { role: 'assistant', content: 'old' },
