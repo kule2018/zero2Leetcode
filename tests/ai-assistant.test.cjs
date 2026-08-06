@@ -80,7 +80,9 @@ test('LeetCode quick actions include a Python code generation button', () => {
 
     assert.match(html, /data-action="give-code"[^>]*>💻 给我代码<\/button>/);
     assert.equal(QUICK_ACTIONS['give-code'].label, '给我代码');
-    assert.match(QUICK_ACTIONS['give-code'].prompt, /Python 3/);
+    assert.match(QUICK_ACTIONS['give-code'].prompt, /Python 3\.6/);
+    assert.match(QUICK_ACTIONS['give-code'].prompt, /原始代码模板/);
+    assert.match(QUICK_ACTIONS['give-code'].prompt, /Optional/);
     assert.match(QUICK_ACTIONS['give-code'].prompt, /完整/);
 });
 
@@ -104,7 +106,9 @@ test('give-code quick action sends its dedicated Python implementation prompt', 
 
     assistant.handleQuickAction('give-code');
 
-    assert.match(assistant.inputEl.value, /Python 3/);
+    assert.match(assistant.inputEl.value, /Python 3\.6/);
+    assert.match(assistant.inputEl.value, /原始代码模板/);
+    assert.match(assistant.inputEl.value, /Optional/);
     assert.match(assistant.inputEl.value, /完整/);
     assert.deepEqual(sent, [{ visibleMessage: '给我代码', expectedLanguage: '' }]);
 });
@@ -188,45 +192,104 @@ test('conversion prompts use the actual source language', () => {
     assert.doesNotMatch(prompt, /当前 Python 实现/);
 });
 
-test('LeetCode context includes a hard Python-only execution harness', () => {
+test('LeetCode context includes a Python 3.6 harness and the exact starter template', () => {
+    const starterTemplate = `# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+def add_two_numbers(l1, l2):
+    """
+    :type l1: ListNode
+    :type l2: ListNode
+    :rtype: ListNode
+    """
+    # 在这里写你的代码
+    pass
+`;
     const message = buildContextMessage('给出代码', {
         surface: 'leetcode',
         language: 'python',
         languageLabel: 'Python 3',
-        problemTitle: '合并 K 个升序链表',
-        problem: '合并所有链表并返回。',
+        problemTitle: '两数相加',
+        problem: '将两个逆序链表表示的数相加。',
+        template: starterTemplate,
     });
 
     assert.match(message, /【运行环境硬约束】/);
-    assert.match(message, /仅支持 Python 3/);
-    assert.match(message, /禁止输出 Java、Go/);
+    assert.match(message, /Python 3\.6/);
+    assert.match(message, /不支持 Python 3\.7 及以上才提供的语法/);
+    assert.match(message, /禁止使用 typing\.Optional|禁止使用 Optional/);
+    assert.match(message, /不得输出 class Solution/);
+    assert.match(message, /【原始代码模板】/);
+    assert.match(message, /def add_two_numbers\(l1, l2\):/);
+    assert.doesNotMatch(message, /def addTwoNumbers\(/);
     assert.ok(
-        message.indexOf('【运行环境硬约束】') < message.indexOf('【用户提问】'),
-        'The Python-only harness must be injected before the user request'
+        message.indexOf('【运行环境硬约束】') < message.indexOf('【原始代码模板】') &&
+        message.indexOf('【原始代码模板】') < message.indexOf('【用户提问】'),
+        'The Python 3.6 harness and starter template must precede the user request'
     );
 });
 
-test('LeetCode response validation rejects non-Python generated code', () => {
+test('LeetCode response validation rejects non-Python and incompatible local template code', () => {
+    const starterTemplate = 'def add_two_numbers(l1, l2):\n    pass\n';
     assert.equal(
-        validateAssistantResponse('```python\ndef merge_k_lists(lists):\n    return None\n```', 'python').valid,
+        validateAssistantResponse('```python\ndef add_two_numbers(l1, l2):\n    return None\n```', 'python', starterTemplate).valid,
         true
     );
     assert.equal(
-        validateAssistantResponse('```java\nclass Solution {}\n```', 'python').valid,
+        validateAssistantResponse('`Optional[ListNode]` 是官方题解常见的类型标注，但本页面不要使用。', 'python', starterTemplate).valid,
+        true
+    );
+    assert.equal(
+        validateAssistantResponse('```python\ndef solve(key=lambda x: x):\n    return key(1)\n```', 'python').valid,
+        true
+    );
+    assert.equal(
+        validateAssistantResponse('```java\nclass Solution {}\n```', 'python', starterTemplate).valid,
         false
     );
     assert.equal(
-        validateAssistantResponse('public class Solution {}', 'python').valid,
+        validateAssistantResponse('public class Solution {}', 'python', starterTemplate).valid,
         false
     );
     assert.equal(
-        validateAssistantResponse('```go\npackage main\nfunc main() {}\n```', 'python').valid,
+        validateAssistantResponse('```go\npackage main\nfunc main() {}\n```', 'python', starterTemplate).valid,
+        false
+    );
+    assert.equal(
+        validateAssistantResponse('```python\nclass Solution(object):\n    def addTwoNumbers(self, l1, l2):\n        return None\n```', 'python', starterTemplate).valid,
+        false
+    );
+    assert.equal(
+        validateAssistantResponse('```python\ndef add_two_numbers(l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:\n    return None\n```', 'python', starterTemplate).valid,
+        false
+    );
+    assert.equal(
+        validateAssistantResponse('```python\ndef addTwoNumbers(l1, l2):\n    return None\n```', 'python', starterTemplate).valid,
+        false
+    );
+    assert.equal(
+        validateAssistantResponse('```python\ndef add_two_numbers(l1, l2, carry=0):\n    return None\n```', 'python', starterTemplate).valid,
+        false
+    );
+    assert.equal(
+        validateAssistantResponse('```python\ndef add_two_numbers(l1, l2):\n    if (n := 1):\n        return n\n```', 'python', starterTemplate).valid,
         false
     );
 });
 
-test('ordinary LeetCode sends enforce Python response validation', () => {
+test('ACM Python validation is not coupled to the LeetCode starter template', () => {
+    assert.equal(
+        validateAssistantResponse('```python\ndef solve(nums: list) -> int:\n    return len(nums)\n```', '').valid,
+        true
+    );
+});
+
+test('ordinary LeetCode sends enforce Python response validation with the starter template', () => {
     assert.match(assistantSource, /const expectedLanguage = options\.expectedLanguage \|\| \(context\.surface === 'leetcode' \? 'python' : ''\)/);
+    assert.match(assistantSource, /validateAssistantResponse\(fullContent, expectedLanguage, context\.template\)/);
 });
 
 test('shared assistant keeps the LeetCode problem and Python editor context', () => {
@@ -254,8 +317,9 @@ test('shared assistant keeps the LeetCode problem and Python editor context', ()
         const message = buildContextMessage('给我提示');
         assert.match(message, /两数之和/);
         assert.match(message, /返回两个数的下标/);
-        assert.match(message, /```python/);
-        assert.match(message, /def two_sum/);
+        assert.match(message, /【原始代码模板】/);
+        assert.match(message, /```python\n# template/);
+        assert.match(message, /```python\ndef two_sum/);
         assert.match(message, /【用户提问】\n给我提示/);
     });
 });

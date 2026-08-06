@@ -40,10 +40,11 @@ const SYSTEM_PROMPT = `你是一名面向算法初学者的编程教练。你会
 - 保持简洁，不用无关铺垫，也不只给出黑盒答案。`;
 
 const LEETCODE_PYTHON_HARNESS = `【运行环境硬约束】
-当前页面是本地力扣模拟，仅支持 Python 3 执行。
-如果回答中包含实现代码、修正版、补全代码或可写入编辑器的代码，只能输出 Python 3，并使用 python 代码块；禁止输出 Java、Go、C++、JavaScript 或其他语言代码。
-必须沿用当前题目的 Python 函数签名和已提供的 ListNode、TreeNode 等运行环境约定，不要改成 Java 的 class Solution 或 ACM 的 stdin/stdout 完整程序。
-即使用户只说“给出代码”“写代码”“给答案”等未指定语言的请求，也必须返回 Python 3。`;
+当前页面是本地力扣模拟，执行环境按 Python 3.6 兼容标准运行，仅接受题目原始模板定义的顶层函数。
+如果回答中包含实现代码、修正版、补全代码或可写入编辑器的代码，只能输出兼容 Python 3.6 的代码，并使用 python 代码块；禁止输出 Java、Go、C++、JavaScript 或其他语言代码。
+不支持 Python 3.7 及以上才提供的语法和标准库特性。函数签名中禁止使用 typing.Optional、Optional、List、Dict、Set、Tuple 等类型注解，禁止使用参数类型注解和 -> 返回值注解。
+必须原样沿用下方【原始代码模板】中的函数名、参数列表、下划线命名及 ListNode、TreeNode 等运行环境约定；只替换模板中的 pass 或待实现函数体。不得输出 class Solution，不得把 snake_case 函数名改成 LeetCode 官方 camelCase 方法，也不得改成 ACM 的 stdin/stdout 完整程序。
+即使用户只说“给出代码”“写代码”“给答案”等未指定语言的请求，也必须按上述模板返回兼容 Python 3.6 的实现。`;
 
 const QUICK_ACTIONS = Object.freeze({
     'convert-java': {
@@ -84,7 +85,7 @@ const QUICK_ACTIONS = Object.freeze({
     },
     'give-code': {
         label: '给我代码',
-        prompt: '请直接给出这道题完整、可运行、可写入当前编辑器的 Python 3 代码。严格沿用题目提供的函数签名和本地力扣模拟环境，只输出 python 代码块，再用不超过 3 点说明关键思路。',
+        prompt: '请直接给出这道题完整、可运行、可写入当前编辑器的 Python 3.6 兼容代码。严格沿用【原始代码模板】中的顶层函数名、参数列表和 snake_case 命名，只补全函数体；不要使用 Optional 等 typing 类型注解、参数类型注解、返回值注解或 class Solution。只输出 python 代码块，再用不超过 3 点说明关键思路。',
     },
 });
 
@@ -238,7 +239,29 @@ function getGeneratedCodeLanguage(codeElement) {
     return normalizeGeneratedCodeLanguage(languageClass || '');
 }
 
-function validateAssistantResponse(content, expectedLanguage = '') {
+function extractPythonCode(content) {
+    const text = String(content || '');
+    const blocks = Array.from(text.matchAll(/```\s*(?:python|py|python3)?\s*\n([\s\S]*?)```/gi));
+    return blocks.length ? blocks.map((match) => match[1]).join('\n') : '';
+}
+
+function parseTopLevelFunctionSignature(source) {
+    const match = String(source || '').match(/^def\s+([A-Za-z_]\w*)\s*\((.*)\)\s*(->\s*[^:]+)?\s*:/m);
+    if (!match) return null;
+    const parameters = match[2].split(',').map((parameter) => parameter.trim()).filter(Boolean);
+    const hasAnnotation = Boolean(match[3]) || parameters.some((parameter) => {
+        const equalIndex = parameter.indexOf('=');
+        const declaration = equalIndex >= 0 ? parameter.slice(0, equalIndex) : parameter;
+        return declaration.includes(':');
+    });
+    return {
+        name: match[1],
+        parameters: parameters.map((parameter) => parameter.split('=')[0].split(':')[0].trim()),
+        hasAnnotation,
+    };
+}
+
+function validateAssistantResponse(content, expectedLanguage = '', expectedTemplate = '') {
     const text = String(content || '').trim();
     if (!text) return { valid: false, message: 'AI 服务未返回内容，请重试。' };
     if (/^user\s+safety\s*:\s*(?:safe|unsafe)[.!]?$/i.test(text)) {
@@ -249,8 +272,20 @@ function validateAssistantResponse(content, expectedLanguage = '') {
     if (language === 'python') {
         const foreignFence = /```\s*(?:java(?:17)?|go(?:lang)?|cpp|c\+\+|javascript|typescript|js|ts)\b/i.test(text);
         const foreignSyntax = /\bpublic\s+(?:final\s+)?class\s+\w+\b|^\s*package\s+main\b/m.test(text);
+        const pythonCode = extractPythonCode(text);
+        const incompatibleLeetCodeShape = /^\s*class\s+Solution\s*(?:\([^\n)]*\))?\s*:/m.test(pythonCode);
+        const generatedSignature = parseTopLevelFunctionSignature(pythonCode);
+        const templateSignature = parseTopLevelFunctionSignature(expectedTemplate);
+        const incompatibleSyntax = /:=|^\s*match\s+.+:\s*$|^\s*case\s+.+:\s*$/m.test(pythonCode);
         if (foreignFence || foreignSyntax) {
-            return { valid: false, message: '本地力扣模拟仅支持 Python 3，AI 返回了其他语言代码，请重试。' };
+            return { valid: false, message: '本地力扣模拟仅支持 Python 3.6，AI 返回了其他语言代码，请重试。' };
+        }
+        const signatureMismatch = generatedSignature && templateSignature && (
+            generatedSignature.name !== templateSignature.name ||
+            generatedSignature.parameters.join('\u0000') !== templateSignature.parameters.join('\u0000')
+        );
+        if (incompatibleLeetCodeShape || generatedSignature?.hasAnnotation || signatureMismatch || incompatibleSyntax) {
+            return { valid: false, message: 'AI 返回的代码不符合本地力扣模拟的 Python 3.6 原始函数模板，请重试。' };
         }
     }
     if (language === 'java' && !/\bpublic\s+(?:final\s+)?class\s+Main\b/.test(text)) {
@@ -344,6 +379,7 @@ function collectAssistantContext() {
         languageLabel: 'Python 3',
         problemTitle,
         problem,
+        template,
         code: code === template ? '' : code,
     };
 }
@@ -356,6 +392,7 @@ function normalizeContext(context) {
         languageLabel: String(context?.languageLabel || AI_LANGUAGE_META[language].label),
         problemTitle: String(context?.problemTitle || ''),
         problem: String(context?.problem || ''),
+        template: String(context?.template || ''),
         code: String(context?.code || ''),
         stdin: String(context?.stdin || ''),
         stdout: String(context?.stdout || ''),
@@ -377,6 +414,13 @@ function buildContextMessage(userMessage, contextOverride = null) {
     const problem = clipText(context.problem.trim(), AI_CONTEXT_LIMITS.problem);
     if (problem) {
         parts.push(`【当前题目】\n${context.problemTitle.trim()}\n${problem}`.trim());
+    }
+
+    if (context.surface === 'leetcode') {
+        const template = clipText(context.template.trim(), AI_CONTEXT_LIMITS.code);
+        if (template) {
+            parts.push(`【原始代码模板】\n必须保留以下函数签名，只替换待实现部分：\n${markdownCodeBlock(template, 'python')}`);
+        }
     }
 
     const code = clipText(context.code.trim(), AI_CONTEXT_LIMITS.code);
@@ -1195,7 +1239,7 @@ class AIAssistant {
                 contentElement.textContent = 'AI 服务未返回内容，请重试。';
                 completionAnnouncement = 'AI 服务未返回内容';
             } else if (!this.discardCurrentResponse) {
-                const validation = validateAssistantResponse(fullContent, expectedLanguage);
+                const validation = validateAssistantResponse(fullContent, expectedLanguage, context.template);
                 if (!validation.valid) {
                     contentElement.innerHTML = '';
                     const invalidElement = getDocument().createElement('div');
