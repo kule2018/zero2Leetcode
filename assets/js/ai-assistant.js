@@ -82,6 +82,10 @@ const QUICK_ACTIONS = Object.freeze({
         label: '优化代码',
         prompt: '我的代码能通过，但想知道有没有更好的写法。',
     },
+    'give-code': {
+        label: '给我代码',
+        prompt: '请直接给出这道题完整、可运行、可写入当前编辑器的 Python 3 代码。严格沿用题目提供的函数签名和本地力扣模拟环境，只输出 python 代码块，再用不超过 3 点说明关键思路。',
+    },
 });
 
 // Free 模型专用 key。它只用于默认体验，Base64 不是安全存储。

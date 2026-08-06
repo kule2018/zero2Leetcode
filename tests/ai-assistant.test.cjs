@@ -70,6 +70,28 @@ test('ACM AI DOM and local assets are wired', () => {
     }
 });
 
+test('LeetCode quick actions include a Python code generation button', () => {
+    const html = fs.readFileSync(path.join(root, 'playground.html'), 'utf8');
+
+    assert.match(html, /data-action="give-code"[^>]*>💻 给我代码<\/button>/);
+    assert.equal(QUICK_ACTIONS['give-code'].label, '给我代码');
+    assert.match(QUICK_ACTIONS['give-code'].prompt, /Python 3/);
+    assert.match(QUICK_ACTIONS['give-code'].prompt, /完整/);
+});
+
+test('give-code quick action sends its dedicated Python implementation prompt', () => {
+    const assistant = Object.create(AIAssistant.prototype);
+    assistant.inputEl = { value: '', style: {}, scrollHeight: 40 };
+    const sent = [];
+    assistant.send = (options) => sent.push(options);
+
+    assistant.handleQuickAction('give-code');
+
+    assert.match(assistant.inputEl.value, /Python 3/);
+    assert.match(assistant.inputEl.value, /完整/);
+    assert.deepEqual(sent, [{ visibleMessage: '给我代码', expectedLanguage: '' }]);
+});
+
 test('ACM context includes language, code, stdin, stdout, expected output, and status', () => {
     const elements = {
         'language-select': { value: 'python' },
