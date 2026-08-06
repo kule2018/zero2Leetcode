@@ -39,6 +39,12 @@ const SYSTEM_PROMPT = `你是一名面向算法初学者的编程教练。你会
 - 优先给出完整、可运行、可用现有样例验证的版本。
 - 保持简洁，不用无关铺垫，也不只给出黑盒答案。`;
 
+const LEETCODE_PYTHON_HARNESS = `【运行环境硬约束】
+当前页面是本地力扣模拟，仅支持 Python 3 执行。
+如果回答中包含实现代码、修正版、补全代码或可写入编辑器的代码，只能输出 Python 3，并使用 python 代码块；禁止输出 Java、Go、C++、JavaScript 或其他语言代码。
+必须沿用当前题目的 Python 函数签名和已提供的 ListNode、TreeNode 等运行环境约定，不要改成 Java 的 class Solution 或 ACM 的 stdin/stdout 完整程序。
+即使用户只说“给出代码”“写代码”“给答案”等未指定语言的请求，也必须返回 Python 3。`;
+
 const QUICK_ACTIONS = Object.freeze({
     'convert-java': {
         label: '转为 Java 17',
@@ -254,6 +260,13 @@ function validateAssistantResponse(content, expectedLanguage = '') {
     }
 
     const language = normalizeGeneratedCodeLanguage(expectedLanguage);
+    if (language === 'python') {
+        const foreignFence = /```\s*(?:java(?:17)?|go(?:lang)?|cpp|c\+\+|javascript|typescript|js|ts)\b/i.test(text);
+        const foreignSyntax = /\bpublic\s+(?:final\s+)?class\s+\w+\b|^\s*package\s+main\b/m.test(text);
+        if (foreignFence || foreignSyntax) {
+            return { valid: false, message: '本地力扣模拟仅支持 Python 3，AI 返回了其他语言代码，请重试。' };
+        }
+    }
     if (language === 'java' && !/\bpublic\s+(?:final\s+)?class\s+Main\b/.test(text)) {
         return { valid: false, message: 'AI 没有返回完整的 Java 17 Main 程序，请重试。' };
     }
@@ -371,6 +384,8 @@ function buildContextMessage(userMessage, contextOverride = null) {
 
     if (context.surface === 'acm') {
         parts.push(`【ACM 环境】\n当前语言：${context.languageLabel}\n请保持现有标准输入与标准输出协议。`);
+    } else {
+        parts.push(LEETCODE_PYTHON_HARNESS);
     }
 
     const problem = clipText(context.problem.trim(), AI_CONTEXT_LIMITS.problem);
@@ -1148,7 +1163,9 @@ class AIAssistant {
         this.inputEl.style.height = 'auto';
         this.updateContextSummary();
 
-        const contextMessage = buildContextMessage(userMessage);
+        const context = collectAssistantContext();
+        const contextMessage = buildContextMessage(userMessage, context);
+        const expectedLanguage = options.expectedLanguage || (context.surface === 'leetcode' ? 'python' : '');
         chatHistory.push({ role: 'user', content: contextMessage });
         const apiMessages = [
             { role: 'system', content: SYSTEM_PROMPT },
@@ -1192,7 +1209,7 @@ class AIAssistant {
                 contentElement.textContent = 'AI 服务未返回内容，请重试。';
                 completionAnnouncement = 'AI 服务未返回内容';
             } else if (!this.discardCurrentResponse) {
-                const validation = validateAssistantResponse(fullContent, options.expectedLanguage);
+                const validation = validateAssistantResponse(fullContent, expectedLanguage);
                 if (!validation.valid) {
                     contentElement.innerHTML = '';
                     const invalidElement = getDocument().createElement('div');

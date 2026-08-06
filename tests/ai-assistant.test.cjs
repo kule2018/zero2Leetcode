@@ -149,6 +149,47 @@ test('conversion prompts use the actual source language', () => {
     assert.doesNotMatch(prompt, /当前 Python 实现/);
 });
 
+test('LeetCode context includes a hard Python-only execution harness', () => {
+    const message = buildContextMessage('给出代码', {
+        surface: 'leetcode',
+        language: 'python',
+        languageLabel: 'Python 3',
+        problemTitle: '合并 K 个升序链表',
+        problem: '合并所有链表并返回。',
+    });
+
+    assert.match(message, /【运行环境硬约束】/);
+    assert.match(message, /仅支持 Python 3/);
+    assert.match(message, /禁止输出 Java、Go/);
+    assert.ok(
+        message.indexOf('【运行环境硬约束】') < message.indexOf('【用户提问】'),
+        'The Python-only harness must be injected before the user request'
+    );
+});
+
+test('LeetCode response validation rejects non-Python generated code', () => {
+    assert.equal(
+        validateAssistantResponse('```python\ndef merge_k_lists(lists):\n    return None\n```', 'python').valid,
+        true
+    );
+    assert.equal(
+        validateAssistantResponse('```java\nclass Solution {}\n```', 'python').valid,
+        false
+    );
+    assert.equal(
+        validateAssistantResponse('public class Solution {}', 'python').valid,
+        false
+    );
+    assert.equal(
+        validateAssistantResponse('```go\npackage main\nfunc main() {}\n```', 'python').valid,
+        false
+    );
+});
+
+test('ordinary LeetCode sends enforce Python response validation', () => {
+    assert.match(assistantSource, /const expectedLanguage = options\.expectedLanguage \|\| \(context\.surface === 'leetcode' \? 'python' : ''\)/);
+});
+
 test('shared assistant keeps the LeetCode problem and Python editor context', () => {
     const document = {
         body: { dataset: {} },
