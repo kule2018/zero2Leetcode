@@ -329,6 +329,8 @@ modules:
         articles:
           - title: "笔试必知必会"
             slug: "tips/exam-essentials"
+          - title: "27届秋招笔试时间线与规则"
+            slug: "tips/autumn-2027-timeline"
           - title: "算法岗必考ML编程题"
             slug: "tips/ml-coding-trend"
           - title: "Hot100面试手撕考频排行"
