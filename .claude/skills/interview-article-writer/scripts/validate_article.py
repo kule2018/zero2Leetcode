@@ -17,6 +17,11 @@ MATH_RE = re.compile(
     re.DOTALL,
 )
 PYTHON_BLOCK_RE = re.compile(r"^```python\s*\n(.*?)^```\s*$", re.MULTILINE | re.DOTALL)
+SQL_BLOCK_RE = re.compile(r"^```sql\s*\n(.*?)^```\s*$", re.MULTILINE | re.DOTALL)
+SQL_SOLUTION_RE = re.compile(
+    r"^### (?:SQL 代码|题解代码)\s*$.*?^```sql\s*\n(.*?)^```\s*$",
+    re.MULTILINE | re.DOTALL,
+)
 FENCED_CODE_RE = re.compile(r"^```[^\n]*\n.*?^```\s*$", re.MULTILINE | re.DOTALL)
 INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
 QUESTION_RE = re.compile(r"^## 第 \d+ 题(?:：|:)", re.MULTILINE)
@@ -114,14 +119,19 @@ def validate_structure(text: str, errors: list[str]) -> list[str]:
         return sections
 
     owned_python_blocks = 0
+    owned_sql_blocks = 0
     for section_number, section in enumerate(sections, 1):
-        code_count = len(PYTHON_BLOCK_RE.findall(section))
+        python_count = len(PYTHON_BLOCK_RE.findall(section))
+        sql_count = len(SQL_SOLUTION_RE.findall(section))
+        code_count = python_count + sql_count
         sample_count = len(SAMPLE_RE.findall(section))
         complexity_count = len(re.findall(r"^### 复杂度分析\s*$", section, re.MULTILINE))
-        owned_python_blocks += code_count
+        owned_python_blocks += python_count
+        owned_sql_blocks += sql_count
         if code_count != 1:
             errors.append(
-                f"question section {section_number}: expected 1 Python block, found {code_count}"
+                f"question section {section_number}: expected exactly 1 Python or SQL block, "
+                f"found {python_count} Python and {sql_count} SQL"
             )
         if sample_count < 1:
             errors.append(
@@ -137,6 +147,11 @@ def validate_structure(text: str, errors: list[str]) -> list[str]:
     if owned_python_blocks != total_python_blocks:
         errors.append(
             f"{total_python_blocks - owned_python_blocks} Python block(s) are outside canonical question sections"
+        )
+    total_sql_blocks = len(SQL_SOLUTION_RE.findall(text))
+    if owned_sql_blocks != total_sql_blocks:
+        errors.append(
+            f"{total_sql_blocks - owned_sql_blocks} SQL block(s) are outside canonical question sections"
         )
     return sections
 
@@ -191,6 +206,7 @@ def validate_generated_html(
     site_dir: Path,
     permalink: str,
     python_count: int,
+    sql_count: int,
     complexity_count: int,
     errors: list[str],
 ) -> None:
@@ -231,6 +247,12 @@ def validate_generated_html(
         )
     if python_count and "acm-bridge.js" not in source:
         errors.append("generated HTML does not load acm-bridge.js")
+
+    rendered_sql_count = source.count("language-sql")
+    if rendered_sql_count < sql_count:
+        errors.append(
+            f"generated HTML has {rendered_sql_count} SQL blocks; expected at least {sql_count}"
+        )
 
 
 def main() -> int:
@@ -273,6 +295,7 @@ def main() -> int:
             )
 
     python_blocks = PYTHON_BLOCK_RE.findall(text)
+    sql_blocks = SQL_SOLUTION_RE.findall(text)
     for match in PYTHON_BLOCK_RE.finditer(text):
         forbidden = FORBIDDEN_EXIT_RE.search(match.group(1))
         if forbidden:
@@ -299,6 +322,7 @@ def main() -> int:
                 args.site_dir,
                 permalink,
                 len(python_blocks),
+                len(sql_blocks),
                 complexity_count,
                 errors,
             )
@@ -308,7 +332,11 @@ def main() -> int:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
 
-    details = [f"{len(python_blocks)} Python block(s)", f"{complexity_count} complexity section(s)"]
+    details = [
+        f"{len(python_blocks)} Python block(s)",
+        f"{len(sql_blocks)} SQL block(s)",
+        f"{complexity_count} complexity section(s)",
+    ]
     if args.run_samples:
         details.append(f"{sample_runs} sample pair(s) in CPython and ACM wrapper")
     if args.site_dir:

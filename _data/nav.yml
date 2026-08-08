@@ -221,6 +221,10 @@ modules:
             slug: "huawei/exam-guide"
           - title: "AI机考一周速成攻略"
             slug: "huawei/ai-exam-guide"
+      - name: "京东"
+        articles:
+          - title: "数据分析岗 8.8"
+            slug: "jd/data-20260808"
       - name: "网易"
         articles:
           - title: "雷火研发岗 4.2"
