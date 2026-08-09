@@ -261,6 +261,12 @@ modules:
             slug: "pinduoduo/data-20260719"
           - title: "秋招-通用 8.2"
             slug: "pinduoduo/general-20260802"
+          - title: "秋招-数据分析岗 8.2"
+            slug: "pinduoduo/data-20260802"
+      - name: "OPPO"
+        articles:
+          - title: "数据分析岗 8.8"
+            slug: "oppo/data-20260808"
       - name: "携程"
         articles:
           - title: "研发岗 3.29"
