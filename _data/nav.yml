@@ -267,6 +267,10 @@ modules:
         articles:
           - title: "数据分析岗 8.8"
             slug: "oppo/data-20260808"
+          - title: "算法岗 8.8"
+            slug: "oppo/algo-20260808"
+          - title: "AI 算法岗 8.8"
+            slug: "oppo/ai-20260808"
       - name: "携程"
         articles:
           - title: "研发岗 3.29"
