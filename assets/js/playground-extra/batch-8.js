@@ -243,6 +243,131 @@ def _run_class_ops(operations, arguments):
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/solutions/',
   },
+  {
+    id: 103,
+    title: 'LC 103 - 二叉树的锯齿形层序遍历',
+    difficulty: 'Medium',
+    tags: ['二叉树', '广度优先搜索'],
+    description: `
+<h3>103. 二叉树的锯齿形层序遍历 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你二叉树的根节点 <code>root</code>，返回其节点值的锯齿形层序遍历：第一层从左到右，下一层从右到左，以此类推。</p>
+<h4>示例</h4>
+<pre>输入：root = [3,9,20,null,null,15,7]
+输出：[[3],[20,9],[15,7]]</pre>
+<pre>输入：root = [1]
+输出：[[1]]</pre>
+<h4>提示</h4>
+<ul>
+<li>树中节点数目在 <code>[0, 2000]</code> 范围内</li>
+<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
+</ul>`,
+    template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def zigzag_level_order(root):
+    """
+    :type root: TreeNode
+    :rtype: List[List[int]]
+    """
+    pass
+`,
+    functionName: 'zigzag_level_order',
+    setup: BINARY_TREE_SETUP,
+    argWrappers: ['_to_tree'],
+    testCases: [
+      { input: [[3, 9, 20, null, null, 15, 7]], expected: [[3], [20, 9], [15, 7]] },
+      { input: [[1]], expected: [[1]] },
+      { input: [[]], expected: [] },
+      { input: [[1, 2, 3, 4, null, null, 5]], expected: [[1], [3, 2], [4, 5]] },
+    ],
+    compareFunc: 'equal',
+    solutionUrl: 'https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/solutions/',
+  },
+  {
+    id: 572,
+    title: 'LC 572 - 另一棵树的子树',
+    difficulty: 'Easy',
+    tags: ['二叉树', '深度优先搜索'],
+    description: `
+<h3>572. 另一棵树的子树 <span class="difficulty-tag easy">Easy</span></h3>
+<p>给你两棵二叉树 <code>root</code> 和 <code>subRoot</code>，检验 <code>root</code> 中是否包含一棵与 <code>subRoot</code> 具有相同结构和节点值的子树。</p>
+<h4>示例</h4>
+<pre>输入：root = [3,4,5,1,2], subRoot = [4,1,2]
+输出：True</pre>
+<pre>输入：root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]
+输出：False</pre>
+<h4>提示</h4>
+<ul>
+<li><code>root</code> 的节点数目范围是 <code>[1, 2000]</code></li>
+<li><code>subRoot</code> 的节点数目范围是 <code>[1, 1000]</code></li>
+<li><code>-10<sup>4</sup> &lt;= Node.val &lt;= 10<sup>4</sup></code></li>
+</ul>`,
+    template: `# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+def is_subtree(root, sub_root):
+    """
+    :type root: TreeNode
+    :type sub_root: TreeNode
+    :rtype: bool
+    """
+    pass
+`,
+    functionName: 'is_subtree',
+    setup: BINARY_TREE_SETUP,
+    argWrappers: ['_to_tree', '_to_tree'],
+    testCases: [
+      { input: [[3, 4, 5, 1, 2], [4, 1, 2]], expected: true },
+      { input: [[3, 4, 5, 1, 2, null, null, null, null, 0], [4, 1, 2]], expected: false },
+      { input: [[1, 1], [1]], expected: true },
+      { input: [[1, 2, 3], [2, 3]], expected: false },
+    ],
+    compareFunc: 'equal',
+    solutionUrl: 'https://leetcode.cn/problems/subtree-of-another-tree/solutions/',
+  },
+  {
+    id: 695,
+    title: 'LC 695 - 岛屿的最大面积',
+    difficulty: 'Medium',
+    tags: ['深度优先搜索', '广度优先搜索', '矩阵'],
+    description: `
+<h3>695. 岛屿的最大面积 <span class="difficulty-tag medium">Medium</span></h3>
+<p>给你一个大小为 <code>m x n</code> 的二进制矩阵 <code>grid</code>。岛屿由水平或竖直方向相邻的 <code>1</code> 组成，返回其中最大的岛屿面积；如果没有岛屿，返回 <code>0</code>。</p>
+<h4>示例</h4>
+<pre>输入：grid = [[0,0,1,0],[1,1,1,0],[0,1,0,0]]
+输出：5</pre>
+<pre>输入：grid = [[0,0,0,0]]
+输出：0</pre>
+<h4>提示</h4>
+<ul>
+<li><code>1 &lt;= m, n &lt;= 50</code></li>
+<li><code>grid[i][j]</code> 为 <code>0</code> 或 <code>1</code></li>
+</ul>`,
+    template: `def max_area_of_island(grid):
+    """
+    :type grid: List[List[int]]
+    :rtype: int
+    """
+    pass
+`,
+    functionName: 'max_area_of_island',
+    testCases: [
+      { input: [[[0, 0, 1, 0], [1, 1, 1, 0], [0, 1, 0, 0]]], expected: 5 },
+      { input: [[[0, 0, 0, 0]]], expected: 0 },
+      { input: [[[1]]], expected: 1 },
+      { input: [[[1, 0, 1], [0, 1, 0], [1, 0, 1]]], expected: 1 },
+    ],
+    compareFunc: 'equal',
+    solutionUrl: 'https://leetcode.cn/problems/max-area-of-island/solutions/',
+  },
 ]);
 
 if (typeof window.syncPlaygroundProblems === 'function' && document.readyState !== 'loading') {

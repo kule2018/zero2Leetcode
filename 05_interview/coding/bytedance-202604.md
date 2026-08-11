@@ -9,7 +9,7 @@ permalink: /05_interview/coding/bytedance-202604/
 
 # 字节跳动面试高频手撕【27 届秋招翻新版】
 
-> 本次更新收录 163 道记录：87 道 LeetCode 高频题、35 道算法岗专项题，以及另行整理的 ACM 入门题和面试官原创题。本文聚焦适用于所有技术岗的 87 道 LeetCode 高频题。频次表示当前样本中的出现次数，不等同于真实出题概率。
+> 本次更新收录 163 道记录：87 道 LeetCode 高频题、35 道算法岗专项题，以及另行整理的 ACM 入门题和面试官原创题。本文聚焦适用于所有技术岗的 87 道 LeetCode 高频题。频次表示当前样本中的出现次数，不等同于真实出题概率。本文出现的题目链接均直达本站力扣模拟练习场。
 
 ## 一、六大分类总览
 
@@ -41,7 +41,7 @@ permalink: /05_interview/coding/bytedance-202604/
 | 9 | [LC 19 删除链表的倒数第 N 个结点](https://onefly.top/zero2Leetcode/playground.html?id=19) | **43** | 快慢指针 |
 | 10 | [LC 300 最长递增子序列](https://onefly.top/zero2Leetcode/playground.html?id=300) | **43** | DP / 贪心 + 二分 |
 
-LC 3 的频次明显领先，应该练到 10 分钟内稳定写完。LC 146 要手写双向链表与哈希表；LC 215 应同时准备快速选择和堆；LC 200 应能在 DFS 与 BFS 之间切换。
+[LC 3](https://onefly.top/zero2Leetcode/playground.html?id=3) 的频次明显领先，应该练到 10 分钟内稳定写完。[LC 146](https://onefly.top/zero2Leetcode/playground.html?id=146) 要手写双向链表与哈希表；[LC 215](https://onefly.top/zero2Leetcode/playground.html?id=215) 应同时准备快速选择和堆；[LC 200](https://onefly.top/zero2Leetcode/playground.html?id=200) 应能在 DFS 与 BFS 之间切换。
 
 ---
 
@@ -57,7 +57,7 @@ LC 3 的频次明显领先，应该练到 10 分钟内稳定写完。LC 146 要�
 | [LC 23 合并 K 个升序链表](https://onefly.top/zero2Leetcode/playground.html?id=23) | 36 |
 | [LC 21 合并两个有序链表](https://onefly.top/zero2Leetcode/playground.html?id=21) | 29 |
 
-反转系列 LC 206、LC 25、LC 92 合计出现 125 次。训练重点不是背答案，而是固定哨兵节点、区间反转和前后分组重连的写法。
+反转系列 [LC 206](https://onefly.top/zero2Leetcode/playground.html?id=206)、[LC 25](https://onefly.top/zero2Leetcode/playground.html?id=25)、[LC 92](https://onefly.top/zero2Leetcode/playground.html?id=92) 合计出现 125 次。训练重点不是背答案，而是固定哨兵节点、区间反转和前后分组重连的写法。
 
 ### 2. 二叉树与搜索图论（21 道 · 390 次）
 
@@ -70,7 +70,7 @@ LC 3 的频次明显领先，应该练到 10 分钟内稳定写完。LC 146 要�
 | [LC 199 二叉树的右视图](https://onefly.top/zero2Leetcode/playground.html?id=199) | 26 |
 | [LC 572 另一棵树的子树](https://onefly.top/zero2Leetcode/playground.html?id=572) | 17 |
 
-LC 102、LC 103、LC 199 共用同一个按层 BFS 框架，区别主要在每层结果的收集方式。LC 200 建议同时掌握 DFS 与 BFS，并连带练习 LC 695 岛屿的最大面积。
+[LC 102](https://onefly.top/zero2Leetcode/playground.html?id=102)、[LC 103](https://onefly.top/zero2Leetcode/playground.html?id=103)、[LC 199](https://onefly.top/zero2Leetcode/playground.html?id=199) 共用同一个按层 BFS 框架，区别主要在每层结果的收集方式。[LC 200](https://onefly.top/zero2Leetcode/playground.html?id=200) 建议同时掌握 DFS 与 BFS，并连带练习 [LC 695 岛屿的最大面积](https://onefly.top/zero2Leetcode/playground.html?id=695)。
 
 ### 3. 动态规划（13 道 · 277 次）
 
@@ -81,7 +81,7 @@ LC 102、LC 103、LC 199 共用同一个按层 BFS 框架，区别主要在每�
 | [LC 72 编辑距离](https://onefly.top/zero2Leetcode/playground.html?id=72) | 34 |
 | [LC 1143 最长公共子序列](https://onefly.top/zero2Leetcode/playground.html?id=1143) | 23 |
 
-子串、子序列是这一类的重点。LC 300 除了 $O(n^2)$ 动态规划，还要准备 $O(n\log n)$ 的贪心加二分写法。
+子串、子序列是这一类的重点。[LC 300](https://onefly.top/zero2Leetcode/playground.html?id=300) 除了 $O(n^2)$ 动态规划，还要准备 $O(n\log n)$ 的贪心加二分写法。
 
 ### 4. 双指针、滑动窗口与字符串（9 道 · 337 次）
 
@@ -91,7 +91,7 @@ LC 102、LC 103、LC 199 共用同一个按层 BFS 框架，区别主要在每�
 | [LC 15 三数之和](https://onefly.top/zero2Leetcode/playground.html?id=15) | 44 |
 | [LC 42 接雨水](https://onefly.top/zero2Leetcode/playground.html?id=42) | 38 |
 
-LC 3 一题就占该分类样本频次的一半以上。LC 15 重点检查排序后的去重，LC 42 应至少熟练掌握双指针或单调栈中的一种，并能解释另一种思路。
+[LC 3](https://onefly.top/zero2Leetcode/playground.html?id=3) 一题就占该分类样本频次的一半以上。[LC 15](https://onefly.top/zero2Leetcode/playground.html?id=15) 重点检查排序后的去重，[LC 42](https://onefly.top/zero2Leetcode/playground.html?id=42) 应至少熟练掌握双指针或单调栈中的一种，并能解释另一种思路。
 
 ### 5. 栈、队列、哈希、贪心与设计（16 道 · 373 次）
 
@@ -101,13 +101,13 @@ LC 3 一题就占该分类样本频次的一半以上。LC 15 重点检查排序
 | [LC 215 数组中的第 K 个最大元素](https://onefly.top/zero2Leetcode/playground.html?id=215) | 64 |
 | [LC 20 有效的括号](https://onefly.top/zero2Leetcode/playground.html?id=20) | 36 |
 
-LC 146 主要考代码组织与指针边界；LC 215 的快速选择容易在 `partition` 边界处出错，建议固定一套经过测试的模板。
+[LC 146](https://onefly.top/zero2Leetcode/playground.html?id=146) 主要考代码组织与指针边界；[LC 215](https://onefly.top/zero2Leetcode/playground.html?id=215) 的快速选择容易在 `partition` 边界处出错，建议固定一套经过测试的模板。
 
 ### 6. 二分查找、排序与数组（14 道 · 325 次）
 
 这类题除常规二分外，还要特别准备手写排序与字符串模拟。高频题单中有一批不在 Hot 100 内，例如：
 
-- [LC 902 最大为 N 的数字组合](https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/)
+- [LC 902 最大为 N 的数字组合](https://onefly.top/zero2Leetcode/playground.html?id=902)
 - [LC 912 排序数组](https://onefly.top/zero2Leetcode/playground.html?id=912)
 - [LC 415 字符串相加](https://onefly.top/zero2Leetcode/playground.html?id=415)
 - [LC 165 比较版本号](https://onefly.top/zero2Leetcode/playground.html?id=165)
@@ -120,7 +120,7 @@ LC 146 主要考代码组织与指针边界；LC 215 的快速选择容易在 `p
 
 1. 先刷本页 Top 10，建立最核心的题型模板。
 2. 再按链表、树与图、滑动窗口三个高频方向补齐。
-3. 最后专项补 LC 902、LC 912、LC 415、LC 165 等 Hot 100 之外的题。
+3. 最后专项补 [LC 902](https://onefly.top/zero2Leetcode/playground.html?id=902)、[LC 912](https://onefly.top/zero2Leetcode/playground.html?id=912)、[LC 415](https://onefly.top/zero2Leetcode/playground.html?id=415)、[LC 165](https://onefly.top/zero2Leetcode/playground.html?id=165) 等 Hot 100 之外的题。
 
 算法岗还需要额外准备 35 道专项手撕，包括 Multi-Head Attention、交叉熵损失和 LLM 常见损失函数等；本文的通用题单只是基础部分。
 

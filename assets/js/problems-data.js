@@ -44,6 +44,7 @@ const PROBLEMS_DATA = [
     { id: 19, title: "删除链表的倒数第 N 个结点", difficulty: "medium", category: "linked-list", url: "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19766939" },
     { id: 24, title: "两两交换链表中的节点", difficulty: "medium", category: "linked-list", url: "https://leetcode.cn/problems/swap-nodes-in-pairs/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19766940" },
     { id: 25, title: "K 个一组翻转链表", difficulty: "hard", category: "linked-list", url: "https://leetcode.cn/problems/reverse-nodes-in-k-group/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772921.html" },
+    { id: 92, title: "反转链表 II", difficulty: "medium", category: "linked-list", url: "https://leetcode.cn/problems/reverse-linked-list-ii/" },
     { id: 138, title: "随机链表的复制", difficulty: "medium", category: "linked-list", url: "https://leetcode.cn/problems/copy-list-with-random-pointer/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19766941" },
     { id: 148, title: "排序链表", difficulty: "medium", category: "linked-list", url: "https://leetcode.cn/problems/sort-list/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19766942" },
     { id: 23, title: "合并 K 个升序链表", difficulty: "hard", category: "linked-list", url: "https://leetcode.cn/problems/merge-k-sorted-lists/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772922.html" },
@@ -56,6 +57,7 @@ const PROBLEMS_DATA = [
     { id: 101, title: "对称二叉树", difficulty: "easy", category: "tree", url: "https://leetcode.cn/problems/symmetric-tree/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19766911" },
     { id: 543, title: "二叉树的直径", difficulty: "easy", category: "tree", url: "https://leetcode.cn/problems/diameter-of-binary-tree/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19766912" },
     { id: 102, title: "二叉树的层序遍历", difficulty: "medium", category: "tree", url: "https://leetcode.cn/problems/binary-tree-level-order-traversal/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772923.html" },
+    { id: 103, title: "二叉树的锯齿形层序遍历", difficulty: "medium", category: "tree", url: "https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/" },
     { id: 108, title: "将有序数组转换为二叉搜索树", difficulty: "easy", category: "tree", url: "https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19766901" },
     { id: 98, title: "验证二叉搜索树", difficulty: "medium", category: "tree", url: "https://leetcode.cn/problems/validate-binary-search-tree/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772924.html" },
     { id: 230, title: "二叉搜索树中第K小的元素", difficulty: "medium", category: "tree", url: "https://leetcode.cn/problems/kth-smallest-element-in-a-bst/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772925.html" },
@@ -64,10 +66,12 @@ const PROBLEMS_DATA = [
     { id: 105, title: "从前序与中序遍历序列构造二叉树", difficulty: "medium", category: "tree", url: "https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772928.html" },
     { id: 437, title: "路径总和 III", difficulty: "medium", category: "tree", url: "https://leetcode.cn/problems/path-sum-iii/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772929.html" },
     { id: 236, title: "二叉树的最近公共祖先", difficulty: "medium", category: "tree", url: "https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772930.html" },
+    { id: 572, title: "另一棵树的子树", difficulty: "easy", category: "tree", url: "https://leetcode.cn/problems/subtree-of-another-tree/" },
     { id: 124, title: "二叉树中的最大路径和", difficulty: "hard", category: "tree", url: "https://leetcode.cn/problems/binary-tree-maximum-path-sum/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772931.html" },
 
     // 图论
     { id: 200, title: "岛屿数量", difficulty: "medium", category: "graph", url: "https://leetcode.cn/problems/number-of-islands/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772932.html" },
+    { id: 695, title: "岛屿的最大面积", difficulty: "medium", category: "graph", url: "https://leetcode.cn/problems/max-area-of-island/" },
     { id: 994, title: "腐烂的橘子", difficulty: "medium", category: "graph", url: "https://leetcode.cn/problems/rotting-oranges/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772933.html" },
     { id: 207, title: "课程表", difficulty: "medium", category: "graph", url: "https://leetcode.cn/problems/course-schedule/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772934.html" },
     { id: 208, title: "实现 Trie (前缀树)", difficulty: "medium", category: "graph", url: "https://leetcode.cn/problems/implement-trie-prefix-tree/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19772935.html" },
@@ -132,6 +136,9 @@ const PROBLEMS_DATA = [
     { id: 75, title: "颜色分类", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/sort-colors/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778849.html" },
     { id: 31, title: "下一个排列", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/next-permutation/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778850.html" },
     { id: 287, title: "寻找重复数", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/find-the-duplicate-number/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778852.html" },
+    { id: 165, title: "比较版本号", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/compare-version-numbers/" },
+    { id: 415, title: "字符串相加", difficulty: "easy", category: "other", url: "https://leetcode.cn/problems/add-strings/" },
+    { id: 912, title: "排序数组", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/sort-an-array/" },
     { id: 902, title: "最大为 N 的数字组合", difficulty: "hard", category: "other", url: "https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/" },
     { id: 41, title: "缺失的第一个正数", difficulty: "hard", category: "other", url: "https://leetcode.cn/problems/first-missing-positive/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778854.html" },
 ];
