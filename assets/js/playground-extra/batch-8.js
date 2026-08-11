@@ -200,6 +200,49 @@ def _run_class_ops(operations, arguments):
     solutionUrl: 'https://leetcode.cn/problems/lru-cache/solutions/',
     blogUrl: 'https://www.cnblogs.com/ranxi169/p/19769206',
   },
+  {
+    id: 902,
+    title: 'LC 902 - 最大为 N 的数字组合',
+    difficulty: 'Hard',
+    tags: ['动态规划', '数位 DP'],
+    description: `
+<h3>902. 最大为 N 的数字组合 <span class="difficulty-tag hard">Hard</span></h3>
+<p>给定一个按非递减顺序排列且元素互不相同的数字字符数组 <code>digits</code>，你可以使用其中任意次数的数字组成正整数。</p>
+<p>返回可以生成的小于或等于整数 <code>n</code> 的正整数个数。</p>
+<h4>示例</h4>
+<pre>输入：digits = ["1","3","5","7"], n = 100
+输出：20</pre>
+<pre>输入：digits = ["1","4","9"], n = 1000000000
+输出：29523</pre>
+<pre>输入：digits = ["7"], n = 8
+输出：1</pre>
+<h4>提示</h4>
+<ul>
+<li><code>1 &lt;= digits.length &lt;= 9</code></li>
+<li><code>digits[i]</code> 是从 <code>'1'</code> 到 <code>'9'</code> 的数字字符</li>
+<li><code>digits</code> 中的所有值互不相同，并按非递减顺序排列</li>
+<li><code>1 &lt;= n &lt;= 10<sup>9</sup></code></li>
+</ul>`,
+    template: `def at_most_n_given_digit_set(digits, n):
+    """
+    :type digits: List[str]
+    :type n: int
+    :rtype: int
+    """
+    # 在这里写你的代码
+    pass
+`,
+    functionName: 'at_most_n_given_digit_set',
+    testCases: [
+      { input: [["1", "3", "5", "7"], 100], expected: 20 },
+      { input: [["1", "4", "9"], 1000000000], expected: 29523 },
+      { input: [["7"], 8], expected: 1 },
+      { input: [["1", "2", "3", "4", "5", "6", "7", "8", "9"], 9], expected: 9 },
+      { input: [["3", "4", "8"], 4], expected: 2 },
+    ],
+    compareFunc: 'equal',
+    solutionUrl: 'https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/solutions/',
+  },
 ]);
 
 if (typeof window.syncPlaygroundProblems === 'function' && document.readyState !== 'loading') {

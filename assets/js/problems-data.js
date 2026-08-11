@@ -132,6 +132,7 @@ const PROBLEMS_DATA = [
     { id: 75, title: "颜色分类", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/sort-colors/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778849.html" },
     { id: 31, title: "下一个排列", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/next-permutation/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778850.html" },
     { id: 287, title: "寻找重复数", difficulty: "medium", category: "other", url: "https://leetcode.cn/problems/find-the-duplicate-number/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778852.html" },
+    { id: 902, title: "最大为 N 的数字组合", difficulty: "hard", category: "other", url: "https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/" },
     { id: 41, title: "缺失的第一个正数", difficulty: "hard", category: "other", url: "https://leetcode.cn/problems/first-missing-positive/", blogUrl: "https://www.cnblogs.com/ranxi169/p/19778854.html" },
 ];
 
