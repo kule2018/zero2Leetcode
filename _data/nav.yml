@@ -356,7 +356,7 @@ modules:
     groups:
       - name: "手撕代码"
         articles:
-          - title: "字节跳动高频手撕 2026.4"
+          - title: "字节跳动高频手撕 2026.8"
             slug: "coding/bytedance-202604"
           - title: "腾讯高频手撕 2026.4"
             slug: "coding/tencent-202604"
