@@ -396,3 +396,5 @@ modules:
             slug: "fundamentals/kubernetes-agent-infra"
           - title: "程序员八股文50题"
             slug: "fundamentals/general-backend"
+          - title: "2026年8月近15天面经新题"
+            slug: "fundamentals/recent-2026-august"
