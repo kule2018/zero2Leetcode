@@ -392,5 +392,7 @@ modules:
             slug: "fundamentals/baidu-backend"
           - title: "Go 后端面试八股文"
             slug: "fundamentals/go-backend"
+          - title: "Kubernetes 与 Agent 基础设施八股文"
+            slug: "fundamentals/kubernetes-agent-infra"
           - title: "程序员八股文50题"
             slug: "fundamentals/general-backend"
