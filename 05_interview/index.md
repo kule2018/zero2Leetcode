@@ -45,7 +45,7 @@ eyebrow: Module 06
 | [腾讯 - 后台开发](fundamentals/tencent-backend/) | 后台AI开发 | Go语言(GMP/逃逸分析)、Redis单线程原理、RocketMQ vs Kafka选型 |
 | [美团 - 后台开发](fundamentals/meituan-backend/) | 后台AI开发 | MySQL(原子性/持久性/InnoDB锁/分库分表)、Java并发(线程池/ThreadLocal)、AI工程化(Prompt/RAG) |
 | [百度 - 后端开发](fundamentals/baidu-backend/) | Go/服务端 | Go运行时与并发、MySQL、Redis、API设计、网络、K线行情存储系统设计 |
-| [Go 后端八股 Batch 1](fundamentals/go-interview-batch-1/) | Go/服务端 | 30道高频题：goroutine、GMP、channel、同步原语、GC、map、defer、panic与性能排查 |
+| [Go 后端面试八股文](fundamentals/go-backend/) | Go/服务端 | 30道高频题：goroutine、GMP、channel、同步原语、GC、map、defer、panic与性能排查 |
 | [程序员八股文50题](fundamentals/general-backend/) | 通用技术岗 | 数据结构+操作系统+网络+数据库+系统设计，50道高频题全解析 |
 
 ## 备考建议

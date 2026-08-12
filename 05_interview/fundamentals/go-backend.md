@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Go 后端面试八股文 Batch 1：并发、调度与运行时
+title: Go 后端面试八股文：并发、调度与运行时
 description: Go 后端高频面试题整理，覆盖 goroutine、channel、GMP 调度、同步原语、内存管理、GC、map、defer、panic、recover 与定时器
 eyebrow: 八股文 / Go 后端
-permalink: /05_interview/fundamentals/go-interview-batch-1/
+permalink: /05_interview/fundamentals/go-backend/
 ---
 
-# Go 后端面试八股文 Batch 1：并发、调度与运行时
+# Go 后端面试八股文：并发、调度与运行时
 
 > 建议先用一句话给结论，再解释机制、边界和工程取舍。涉及运行时内部实现时，应明确区分语言规范与特定 Go 版本的实现。
 
