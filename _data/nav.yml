@@ -388,5 +388,7 @@ modules:
             slug: "fundamentals/bytedance-backend"
           - title: "美团后台开发八股文"
             slug: "fundamentals/meituan-backend"
+          - title: "百度后端开发八股文"
+            slug: "fundamentals/baidu-backend"
           - title: "程序员八股文50题"
             slug: "fundamentals/general-backend"
