@@ -368,6 +368,8 @@ modules:
             slug: "coding/hot100-frequency-202608"
           - title: "美团高频手撕与部门题单"
             slug: "coding/meituan"
+          - title: "AI Coding 笔试手撕通关指南"
+            slug: "coding/ai-coding-assessment-guide"
       - name: "综合测评"
         articles:
           - title: "华为综合测评与面试流程"
