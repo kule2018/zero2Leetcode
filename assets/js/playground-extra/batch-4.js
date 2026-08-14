@@ -116,27 +116,43 @@ window.PLAYGROUND_EXTRA_PROBLEMS = (window.PLAYGROUND_EXTRA_PROBLEMS || []).conc
     id: 4,
     title: 'LC 4 - 寻找两个正序数组的中位数',
     difficulty: 'Hard',
-    tags: ['binary-search'],
+    tags: ['数组', '二分查找', '分治'],
     description: `
 <h3>4. 寻找两个正序数组的中位数 <span class="difficulty-tag hard">Hard</span></h3>
-<p>给定两个大小分别为 <code>m</code> 和 <code>n</code> 的正序数组 <code>nums1</code> 和 <code>nums2</code>，请你找出并返回这两个正序数组的中位数。</p>
-<p>要求算法的时间复杂度为 <code>O(log(m+n))</code>。</p>
+<p>给定两个大小分别为 <code>m</code> 和 <code>n</code> 的正序（从小到大）数组 <code>nums1</code> 和 <code>nums2</code>，请你找出并返回这两个正序数组的中位数。</p>
+<p>算法的时间复杂度应该为 <code>O(log(m+n))</code>。</p>
 <h4>示例</h4>
-<pre>nums1 = [1,3], nums2 = [2]
-输出: 2.0</pre>
-<pre>nums1 = [1,2], nums2 = [3,4]
-输出: 2.5</pre>`,
+<pre>输入：nums1 = [1,3], nums2 = [2]
+输出：2.0
+解释：合并数组 = [1,2,3]，中位数 2</pre>
+<pre>输入：nums1 = [1,2], nums2 = [3,4]
+输出：2.5
+解释：合并数组 = [1,2,3,4]，中位数 (2 + 3) / 2 = 2.5</pre>
+<h4>提示</h4>
+<ul>
+<li><code>nums1.length == m</code>，<code>nums2.length == n</code></li>
+<li><code>0 &lt;= m, n &lt;= 1000</code>，<code>1 &lt;= m + n &lt;= 2000</code></li>
+<li><code>-10<sup>6</sup> &lt;= nums1[i], nums2[i] &lt;= 10<sup>6</sup></code></li>
+<li><code>nums1</code> 和 <code>nums2</code> 均按非递减顺序排列</li>
+</ul>`,
     template: `def find_median_sorted_arrays(nums1, nums2):
     """
     :type nums1: List[int]
     :type nums2: List[int]
     :rtype: float
     """
-    # write your code here
+    # 在这里写你的代码
     pass
 `,
     functionName: 'find_median_sorted_arrays',
-    testCases: [],
+    testCases: [
+      { input: [[1, 3], [2]], expected: 2.0 },
+      { input: [[1, 2], [3, 4]], expected: 2.5 },
+      { input: [[], [1]], expected: 1.0 },
+      { input: [[2], []], expected: 2.0 },
+      { input: [[0, 0], [0, 0]], expected: 0.0 },
+      { input: [[1, 2, 5, 8], [3, 4, 6, 7, 9]], expected: 5.0 },
+    ],
     compareFunc: 'equal',
     solutionUrl: 'https://leetcode.cn/problems/median-of-two-sorted-arrays/solutions/',
     blogUrl: 'https://www.cnblogs.com/ranxi169/p/19778823.html',
