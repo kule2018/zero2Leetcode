@@ -267,6 +267,8 @@ modules:
             slug: "pinduoduo/general-20260802"
           - title: "秋招-数据分析岗 8.2"
             slug: "pinduoduo/data-20260802"
+          - title: "秋招-算法岗 8.16"
+            slug: "pinduoduo/algo-20260816"
       - name: "OPPO"
         articles:
           - title: "数据分析岗 8.8"

@@ -163,6 +163,7 @@ eyebrow: Module 05
 | [2026-7-19](pinduoduo/data-20260719/) | 数据分析岗 | LEFT JOIN分组聚合、两级条件聚合、LAG+分组孤岛 |
 | [2026-8-2](pinduoduo/general-20260802/) | 通用（研发/算法） | 前缀和、贪心构造、分层图最短路、环上独立集覆盖 |
 | [2026-8-2](pinduoduo/data-20260802/) | 数据分析岗 | ROW_NUMBER分组Top1、LAG月度环比、CASE WHEN RFM分层 |
+| [2026-8-16](pinduoduo/algo-20260816/) | 算法岗 | 位运算枚举、栈模拟、树状数组优化DP、加权区间调度 |
 
 ### OPPO 笔试真题 {#oppo}
 
