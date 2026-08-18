@@ -20,6 +20,7 @@ const {
     loadAIConfig,
     normalizeConfiguredModel,
     normalizeGeneratedCodeLanguage,
+    resolveExpectedResponseLanguage,
     saveAIConfig,
     streamChatCompletion,
     validateAssistantResponse,
@@ -287,8 +288,16 @@ test('ACM Python validation is not coupled to the LeetCode starter template', ()
     );
 });
 
-test('ordinary LeetCode sends enforce Python response validation with the starter template', () => {
-    assert.match(assistantSource, /const expectedLanguage = options\.expectedLanguage \|\| \(context\.surface === 'leetcode' \? 'python' : ''\)/);
+test('LeetCode response validation only applies to explicit code-generation requests', () => {
+    assert.equal(resolveExpectedResponseLanguage('result = [None] 是什么写法', { surface: 'leetcode' }), '');
+    assert.equal(resolveExpectedResponseLanguage('为什么这里要用列表包一层？', { surface: 'leetcode' }), '');
+    assert.equal(resolveExpectedResponseLanguage('请直接给出完整代码', { surface: 'leetcode' }), 'python');
+    assert.equal(resolveExpectedResponseLanguage('帮我补全函数实现', { surface: 'leetcode' }), 'python');
+    assert.equal(resolveExpectedResponseLanguage('解释这段代码', { surface: 'leetcode' }), '');
+    assert.equal(resolveExpectedResponseLanguage('给我提示，不要直接给代码', { surface: 'leetcode' }), '');
+    assert.equal(resolveExpectedResponseLanguage('任意问题', { surface: 'acm' }), '');
+    assert.equal(resolveExpectedResponseLanguage('任意问题', { surface: 'leetcode' }, 'java'), 'java');
+    assert.match(assistantSource, /resolveExpectedResponseLanguage\(userMessage, context, options\.expectedLanguage\)/);
     assert.match(assistantSource, /validateAssistantResponse\(fullContent, expectedLanguage, context\.template\)/);
 });
 

@@ -297,6 +297,18 @@ function validateAssistantResponse(content, expectedLanguage = '', expectedTempl
     return { valid: true, message: '' };
 }
 
+function resolveExpectedResponseLanguage(userMessage, context = {}, explicitLanguage = '') {
+    if (explicitLanguage) return normalizeGeneratedCodeLanguage(explicitLanguage) || explicitLanguage;
+    if (context.surface !== 'leetcode') return '';
+
+    const request = String(userMessage || '').trim();
+    const rejectsDirectCode = /(?:不要|不用|无需|别)\s*(?:直接)?\s*(?:给|写|输出|提供|生成)?[^。！？\n]{0,8}(?:代码|答案|实现)/.test(request);
+    if (rejectsDirectCode) return '';
+
+    const requestsCode = /(?:给我|给出|提供|输出|生成|写出|写一份|写一个|补全|完成|改写|重写|修复|修改)[^。！？\n]{0,16}(?:代码|函数|实现|程序)|(?:完整|可运行|可提交|修正后|正确的)[^。！？\n]{0,8}(?:代码|实现|程序)/.test(request);
+    return requestsCode ? 'python' : '';
+}
+
 function readElementValue(doc, id) {
     const element = doc?.getElementById(id);
     if (!element) return '';
@@ -1195,7 +1207,7 @@ class AIAssistant {
 
         const context = collectAssistantContext();
         const contextMessage = buildContextMessage(userMessage, context);
-        const expectedLanguage = options.expectedLanguage || (context.surface === 'leetcode' ? 'python' : '');
+        const expectedLanguage = resolveExpectedResponseLanguage(userMessage, context, options.expectedLanguage);
         chatHistory.push({ role: 'user', content: contextMessage });
         const apiMessages = [
             { role: 'system', content: SYSTEM_PROMPT },
@@ -1417,6 +1429,7 @@ if (typeof module !== 'undefined' && module.exports) {
         loadAIConfig,
         normalizeConfiguredModel,
         normalizeGeneratedCodeLanguage,
+        resolveExpectedResponseLanguage,
         saveAIConfig,
         sanitizeMarkdownHtml,
         streamChatCompletion,
