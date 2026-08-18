@@ -450,6 +450,21 @@ body[data-ai-surface="acm"] .acm-main {
     font-size: 0.78rem;
 }
 
+.ai-retry-btn {
+    margin-top: 8px;
+    padding: 6px 11px;
+    border: 1px solid color-mix(in srgb, var(--ai-accent) 55%, var(--border-color));
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--ai-accent) 12%, transparent);
+    color: var(--ai-accent);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ai-retry-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--ai-accent) 20%, transparent); }
+.ai-retry-btn:disabled { opacity: 0.55; cursor: wait; }
+
 .ai-typing {
     min-height: 20px;
     display: inline-flex;

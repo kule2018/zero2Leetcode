@@ -924,6 +924,21 @@ body.ai-open .ai-fab {
     font-size: 0.82rem;
 }
 
+.ai-retry-btn {
+    margin-top: var(--spacing-sm);
+    padding: 7px 13px;
+    border: 1px solid rgba(6, 182, 212, 0.55);
+    border-radius: var(--radius-sm);
+    background: rgba(6, 182, 212, 0.12);
+    color: #67e8f9;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ai-retry-btn:hover:not(:disabled) { background: rgba(6, 182, 212, 0.22); }
+.ai-retry-btn:disabled { opacity: 0.55; cursor: wait; }
+
 /* 加载动画 */
 .ai-spinner {
     display: inline-block;

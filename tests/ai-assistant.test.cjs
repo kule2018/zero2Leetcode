@@ -297,8 +297,16 @@ test('LeetCode response validation only applies to explicit code-generation requ
     assert.equal(resolveExpectedResponseLanguage('给我提示，不要直接给代码', { surface: 'leetcode' }), '');
     assert.equal(resolveExpectedResponseLanguage('任意问题', { surface: 'acm' }), '');
     assert.equal(resolveExpectedResponseLanguage('任意问题', { surface: 'leetcode' }, 'java'), 'java');
-    assert.match(assistantSource, /resolveExpectedResponseLanguage\(userMessage, context, options\.expectedLanguage\)/);
+    assert.match(assistantSource, /resolveExpectedResponseLanguage\(userMessage, context\)/);
     assert.match(assistantSource, /validateAssistantResponse\(fullContent, expectedLanguage, context\.template\)/);
+});
+
+test('failed AI requests render a retry button and retry without duplicating the user turn', () => {
+    assert.match(assistantSource, /isRetryableAIError\(error\)/);
+    assert.match(assistantSource, /retryButton\.textContent = '重新生成'/);
+    assert.match(assistantSource, /retry: true/);
+    assert.match(assistantSource, /if \(!isRetry\) \{/);
+    assert.match(assistantSource, /if \(!isRetry\) chatHistory\.push/);
 });
 
 test('shared assistant keeps the LeetCode problem and Python editor context', () => {

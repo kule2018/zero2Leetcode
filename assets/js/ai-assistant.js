@@ -507,6 +507,11 @@ function parseSseLine(line) {
     }
 }
 
+function isRetryableAIError(error) {
+    const message = String(error?.message || '');
+    return /API 请求失败 \((?:408|429|5\d\d)\)|Failed to fetch|NetworkError|网络/i.test(message);
+}
+
 async function* streamChatCompletion(messages, config, signal) {
     const url = `${config.baseUrl.replace(/\/+$/, '')}/chat/completions`;
     const response = await fetch(url, {
@@ -1190,7 +1195,8 @@ class AIAssistant {
     }
 
     async send(options = {}) {
-        const userMessage = this.inputEl.value.trim();
+        const isRetry = options.retry === true;
+        const userMessage = isRetry ? String(options.userMessage || '').trim() : this.inputEl.value.trim();
         if (!userMessage || this.isStreaming) return;
 
         const config = loadAIConfig();
@@ -1199,17 +1205,19 @@ class AIAssistant {
             return;
         }
 
-        this.messagesEl.querySelector('.ai-welcome')?.remove();
-        this.addMessage('user', options.visibleMessage || userMessage);
-        this.inputEl.value = '';
-        this.inputEl.style.height = 'auto';
-        this.updateContextSummary();
+        if (!isRetry) {
+            this.messagesEl.querySelector('.ai-welcome')?.remove();
+            this.addMessage('user', options.visibleMessage || userMessage);
+            this.inputEl.value = '';
+            this.inputEl.style.height = 'auto';
+            this.updateContextSummary();
+        }
 
-        const context = collectAssistantContext();
-        const contextMessage = buildContextMessage(userMessage, context);
-        const expectedLanguage = resolveExpectedResponseLanguage(userMessage, context, options.expectedLanguage);
-        chatHistory.push({ role: 'user', content: contextMessage });
-        const apiMessages = [
+        const context = options.context || collectAssistantContext();
+        const contextMessage = options.contextMessage || buildContextMessage(userMessage, context);
+        const expectedLanguage = options.expectedLanguage || resolveExpectedResponseLanguage(userMessage, context);
+        if (!isRetry) chatHistory.push({ role: 'user', content: contextMessage });
+        const apiMessages = options.apiMessages || [
             { role: 'system', content: SYSTEM_PROMPT },
             ...boundedHistory(chatHistory),
         ];
@@ -1297,7 +1305,28 @@ class AIAssistant {
                     errorElement.className = 'ai-error';
                     errorElement.textContent = error.message;
                     contentElement.appendChild(errorElement);
-                    completionAnnouncement = 'AI 请求失败';
+                    if (isRetryableAIError(error)) {
+                        const retryButton = getDocument().createElement('button');
+                        retryButton.type = 'button';
+                        retryButton.className = 'ai-retry-btn';
+                        retryButton.textContent = '重新生成';
+                        retryButton.setAttribute('aria-label', '重新发送上一条问题');
+                        retryButton.addEventListener('click', () => {
+                            if (this.isStreaming) return;
+                            retryButton.disabled = true;
+                            assistantMessage.remove();
+                            this.send({
+                                retry: true,
+                                userMessage,
+                                context,
+                                contextMessage,
+                                expectedLanguage,
+                                apiMessages,
+                            });
+                        });
+                        contentElement.appendChild(retryButton);
+                    }
+                    completionAnnouncement = 'AI 请求失败，可重新生成';
                 }
             }
         } finally {
