@@ -305,6 +305,8 @@ modules:
             slug: "mihoyo/general-20260419"
           - title: "暑期实习 4.28"
             slug: "mihoyo/general-20260428"
+          - title: "运维开发（平台向）8.16"
+            slug: "mihoyo/devops-20260816"
       - name: "蔚来"
         articles:
           - title: "通用 4.19"
