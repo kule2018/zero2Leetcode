@@ -358,6 +358,56 @@ test('AI generated cross-language writes preserve the source draft before switch
     assert.match(result.javaDraft, /public static void main/);
 });
 
+test('AI generated cross-language writes carry stdin and expected output into the target editor', () => {
+    const context = createContext('?language=python');
+    const result = JSON.parse(evaluate(context, `
+        globalThis.__editorValue = 'print("source")';
+        const fields = {
+            'stdin-area': { value: '4 5\\n2 0 0 0 0\\n' },
+            'expected-area': { value: '7\\n' },
+            'template-select': { value: '' },
+            'timeout-select': { value: '10000', options: [] }
+        };
+        window.acmEditor = {
+            getValue() { return globalThis.__editorValue; },
+            firstLine() { return 0; },
+            lastLine() { return 0; },
+            getLine() { return globalThis.__editorValue; },
+            replaceRange(value) { globalThis.__editorValue = value; },
+            operation(callback) { callback(); },
+            clearHistory() {},
+            refresh() {},
+        };
+        document.getElementById = (id) => fields[id] || { value: '', textContent: '', className: '' };
+        switchLanguage = (nextLanguage) => {
+            saveCurrentDraft();
+            currentLanguage = nextLanguage;
+            globalThis.__editorValue = 'public class Main { /* target draft */ }';
+            fields['stdin-area'].value = '';
+            fields['expected-area'].value = '';
+        };
+        clearBreakpoints = () => {};
+        resetExecutionUi = () => {};
+        const applied = window.acmApplyGeneratedCode({
+            language: 'java',
+            code: 'public class Main { public static void main(String[] args) {} }'
+        });
+        JSON.stringify({
+            applied,
+            input: fields['stdin-area'].value,
+            expected: fields['expected-area'].value,
+            storedInput: localStorage.getItem(getInputStorageKey('java')),
+            storedExpected: localStorage.getItem(getExpectedStorageKey('java'))
+        });
+    `));
+
+    assert.equal(result.applied.ok, true);
+    assert.equal(result.input, '4 5\n2 0 0 0 0\n');
+    assert.equal(result.expected, '7\n');
+    assert.equal(result.storedInput, result.input);
+    assert.equal(result.storedExpected, result.expected);
+});
+
 test('ACM generated code adapter rejects unknown languages without changing the editor', () => {
     const context = createContext('?language=java');
     const result = JSON.parse(evaluate(context, `

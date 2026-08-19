@@ -2098,6 +2098,12 @@ function applyGeneratedCode(payload = {}) {
     }
 
     const changedLanguage = language !== currentLanguage;
+    const sourceInput = changedLanguage
+        ? document.getElementById('stdin-area').value
+        : null;
+    const sourceExpected = changedLanguage
+        ? document.getElementById('expected-area').value
+        : null;
     if (changedLanguage) {
         switchLanguage(language);
         if (currentLanguage !== language) {
@@ -2109,6 +2115,15 @@ function applyGeneratedCode(payload = {}) {
     }
 
     const previousCode = window.acmEditor.getValue();
+    const inputArea = document.getElementById('stdin-area');
+    const expectedArea = document.getElementById('expected-area');
+    const targetInput = changedLanguage ? sourceInput : inputArea.value;
+    const targetExpected = changedLanguage ? sourceExpected : expectedArea.value;
+    const storageEntries = [
+        [getCodeStorageKey(language), code],
+        [getInputStorageKey(language), targetInput],
+        [getExpectedStorageKey(language), targetExpected]
+    ];
     if (previousCode !== code) {
         clearTimeout(codeSaveTimer);
         try {
@@ -2116,10 +2131,22 @@ function applyGeneratedCode(payload = {}) {
         } catch (error) {
             return { ok: false, message: '写入编辑器失败，请重试。' };
         }
-        if (!persistStorageEntries([[getCodeStorageKey(language), code]])) {
+    }
+    if (!persistStorageEntries(storageEntries)) {
+        if (previousCode !== code) {
             replaceEditorContents(window.acmEditor, previousCode, '+ai-rollback');
-            return { ok: false, message: '浏览器无法保存生成的代码，已恢复原草稿。' };
         }
+        if (changedLanguage) {
+            inputArea.value = sourceInput;
+            expectedArea.value = sourceExpected;
+        }
+        return { ok: false, message: '浏览器无法保存生成的代码，输入和期望输出未被覆盖。' };
+    }
+    if (changedLanguage) {
+        clearTimeout(inputSaveTimer);
+        clearTimeout(expectedSaveTimer);
+        inputArea.value = targetInput;
+        expectedArea.value = targetExpected;
     }
 
     clearBreakpoints();
