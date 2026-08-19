@@ -87,6 +87,25 @@ print(article["title"])
 print(article["markdown"])  # 图片引用本地路径
 ```
 
+## Zero2Leetcode 入库流程
+
+当该技能用于 `/root/zero2Leetcode` 的笔试真题入库时，抓取文章只是第一步，不能视为任务完成。新增每篇文章后必须同步完成：
+
+1. 在 `04_real_interviews/<company>/` 创建规范的 Jekyll Markdown 页面，并补齐 frontmatter、`permalink` 和题解内容。
+2. 更新 `04_real_interviews/index.md` 的公司汇总表。
+3. **更新 `_data/nav.yml` 左侧目录**：将文章注册到对应公司的 `groups[].articles[]`，填写用户可读的 `title` 和与页面路径对应的 `slug`。这是页面能否出现在左侧“大厂真题”目录中的必要步骤，不能遗漏。
+4. 验证目录中的 slug 对应页面实际存在，并检查新增页面没有公众号名称、原文链接、来源说明或引流广告。
+5. 执行 `git diff --check`、项目测试和构建；发布前确认左侧目录渲染后能看到新增文章。
+
+推荐的目录条目格式：
+
+```yaml
+- title: "算法岗 8.18"
+  slug: "meituan/algo-20260818"
+```
+
+不要只检查文章详情页或汇总页是否可访问；左侧目录注册是独立的数据入口，必须单独核对。
+
 ## 限制
 
 - 需要有效且未过期的微信文章 URL——无法搜索或列出某公众号的文章列表
